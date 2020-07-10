@@ -24,75 +24,60 @@ public class FindAllContactsCommand implements Command {
     }
 
     private List<Contact> getList() {
-        return new ArrayList<>() {
-            {
-                add(new Contact(1,
-                        "Ivan",
-                        "Ivanov",
-                        "Ivanovich",
-                        LocalDate.of(1990, 1, 1),
-                        "Men",
-                        "Belarus",
-                        "Single",
-                        "google.com",
-                        "ex@mail.ru",
-                        "iTechArt",
-                        new Address(1, 1, "Belarus", "Minsk", "Nemiga 26", 220030)));
+        List<Contact> contacts = new ArrayList<>();
+        contacts.add(new Contact(1,
+                "Ivan",
+                "Ivanov",
+                "Ivanovich",
+                LocalDate.of(1990, 1, 1),
+                "Men",
+                "Belarus",
+                "Single",
+                "google.com",
+                "ex@mail.ru",
+                "iTechArt",
+                new Address(1, 1, "Belarus", "Minsk", "Nemiga 26", 220030)));
 
-                add(new Contact(2,
-                        "Ivan2",
-                        "Ivanov2",
-                        "Ivanovich2",
-                        LocalDate.of(1990, 1, 1),
-                        "Men",
-                        "Belarus",
-                        "Single",
-                        "google.com",
-                        "ex@mail.ru",
-                        "iTechArt",
-                        new Address(1, 1, "Belarus", "Minsk", "Nemiga 26", 220030)));
+        contacts.add(new Contact(2,
+                "Ivan2",
+                "Ivanov2",
+                "Ivanovich2",
+                LocalDate.of(1990, 1, 1),
+                "Men",
+                "Belarus",
+                "Single",
+                "google.com",
+                "ex@mail.ru",
+                "iTechArt",
+                new Address(2, 2, "Belarus", "Minsk", "Nemiga 26", 220030)));
 
-                add(new Contact(3,
-                        "Ivan3",
-                        "Ivanov3",
-                        "Ivanovich3",
-                        LocalDate.of(1990, 1, 1),
-                        "Men",
-                        "Belarus",
-                        "Single",
-                        "google.com",
-                        "ex@mail.ru",
-                        "iTechArt",
-                        new Address(1, 1, "Belarus", "Minsk", "Nemiga 26", 220030)));
+        contacts.add(new Contact(3,
+                "Ivan3",
+                "Ivanov3",
+                "Ivanovich3",
+                LocalDate.of(1990, 1, 1),
+                "Men",
+                "Belarus",
+                "Single",
+                "google.com",
+                "ex@mail.ru",
+                "iTechArt",
+                new Address(3, 3, "Belarus", "Minsk", "Nemiga 26", 220030)));
 
-                add(new Contact(4,
-                        "Ivan4",
-                        "Ivanov4",
-                        "Ivanovich4",
-                        LocalDate.of(1990, 1, 1),
-                        "Men",
-                        "Belarus",
-                        "Single",
-                        "google.com",
-                        "ex@mail.ru",
-                        "iTechArt",
-                        new Address(1, 1, "Belarus", "Minsk", "Nemiga 26", 220030)));
+        contacts.add(new Contact(1,
+                "Ivan4",
+                "Ivanov4",
+                "Ivanovich4",
+                LocalDate.of(1990, 1, 1),
+                "Men",
+                "Belarus",
+                "Single",
+                "google.com",
+                "ex@mail.ru",
+                "iTechArt",
+                new Address(4, 4, "Belarus", "Minsk", "Nemiga 26", 220030)));
 
-                add(new Contact(5,
-                        "Ivan5",
-                        "Ivanov5",
-                        "Ivanovich5",
-                        LocalDate.of(1990, 1, 1),
-                        "Men",
-                        "Belarus",
-                        "Single",
-                        "google.com",
-                        "ex@mail.ru",
-                        "iTechArt",
-                        new Address(1, 1, "Belarus", "Minsk", "Nemiga 26", 220030)));
-            }
-        };
-
+        return contacts;
 
     }
 }
