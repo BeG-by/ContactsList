@@ -1,5 +1,5 @@
 //test
-const findAllUrl = "http://localhost:8080/contacts/findAll";
+const findAllUrl = "http://localhost:8080/contactsList/contacts/findAll";
 
 function getData(url, type, callback) {
     const xhr = new XMLHttpRequest();

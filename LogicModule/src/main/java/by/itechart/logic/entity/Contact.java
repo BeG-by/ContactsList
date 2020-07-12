@@ -211,4 +211,77 @@ public class Contact implements Serializable {
                 '}';
     }
 
+    public static class Builder {
+        private Contact contact;
+
+        public Builder() {
+            contact = new Contact();
+        }
+
+        public Builder id(long id) {
+            contact.setId(id);
+            return this;
+        }
+
+        public Builder firstName(String firstName) {
+            contact.setFirstName(firstName);
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            contact.setLastName(lastName);
+            return this;
+        }
+
+        public Builder middleName(String middleName) {
+            contact.setMiddleName(middleName);
+            return this;
+        }
+
+        public Builder birthday(LocalDate birthday) {
+            contact.setBirthday(birthday);
+            return this;
+        }
+
+        public Builder sex(String sex) {
+            contact.setSex(sex);
+            return this;
+        }
+
+        public Builder nationality(String nationality) {
+            contact.setNationality(nationality);
+            return this;
+        }
+
+        public Builder maritalStatus(String status) {
+            contact.setMaritalStatus(status);
+            return this;
+        }
+
+        public Builder urlWebSite(String url) {
+            contact.setUrlWebSite(url);
+            return this;
+        }
+
+        public Builder email(String email) {
+            contact.setEmail(email);
+            return this;
+        }
+
+        public Builder currentJob(String job) {
+            contact.setCurrentJob(job);
+            return this;
+        }
+
+        public Builder address(Address address) {
+            contact.setAddress(address);
+            return this;
+        }
+
+        public Contact build() {
+            return contact;
+        }
+
+    }
+
 }

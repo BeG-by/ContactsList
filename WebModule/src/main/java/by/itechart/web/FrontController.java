@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/contacts/*")
+@WebServlet("/contactsList/*")
 public class FrontController extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(FrontController.class);
-    private final static String ENTRY_POINT = "/contacts/";
+    private final static String ENTRY_POINT = "/contactsList/";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

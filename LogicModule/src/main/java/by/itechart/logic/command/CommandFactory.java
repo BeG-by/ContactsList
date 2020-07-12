@@ -10,7 +10,7 @@ public class CommandFactory {
     private Map<String, Command> commandMap = new HashMap<>();
 
     {
-        commandMap.put("findAll", new FindAllContactsCommand());
+        commandMap.put("contacts/findAll", new FindAllContactsCommand());
     }
 
 
