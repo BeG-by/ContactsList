@@ -20,7 +20,7 @@ CREATE TABLE `contacts_list_db`.`address`
     `country`    VARCHAR(45) NOT NULL,
     `city`       VARCHAR(45) NOT NULL,
     `street`     VARCHAR(45) NOT NULL,
-    `index`      INT         NOT NULL,
+    `post_index`      INT         NOT NULL,
     `contact_id` BIGINT(20)  NULL,
     PRIMARY KEY (`id`),
     INDEX `contact_id_idx` (`contact_id` ASC) VISIBLE,
@@ -41,7 +41,7 @@ VALUES ('Ivan', 'Ivanov', 'Ivanovich', '1990-01-03', 'male', 'Belarus', 'single'
        ('Lexa', 'Lennon', 'Valerevich', '1988-01-04', 'male', 'Belarus', 'single', 'github.com', 'lexa@mail.ru',
         'Wargaming');
 
-INSERT INTO `contacts_list_db`.`address` ( `country`, `city`, `street`, `index`, `contact_id`) VALUES
+INSERT INTO `contacts_list_db`.`address` ( `country`, `city`, `street`, `post_index`, `contact_id`) VALUES
 ('Belarus', 'Minsk', 'Nemiga 20/42', '220040', '1'),
 ( 'USA', 'New York', '114 Indian Summer St.', '10016', '2'),
 ( 'Russia', 'Moscow', 'Lenina', '23234', '3'),

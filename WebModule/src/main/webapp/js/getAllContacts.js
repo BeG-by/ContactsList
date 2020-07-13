@@ -52,7 +52,7 @@ function getAllContacts(response) {
         tableContact.country.textContent = address["country"];
         tableContact.city.textContent = address["city"];
         tableContact.street.textContent = address["street"];
-        tableContact.index.textContent = address["index"];
+        tableContact.index.textContent = address["postIndex"];
         tableContact.currentJob.textContent = contact["currentJob"];
 
         for (var propertyTdKey in tableContact) {

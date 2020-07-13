@@ -8,7 +8,7 @@ public interface ContactDAO {
 
     List<Contact> findAll();
 
-    long save();
+    long save(Contact contact);
 
     void deleteAll(List<Long> idList);
 

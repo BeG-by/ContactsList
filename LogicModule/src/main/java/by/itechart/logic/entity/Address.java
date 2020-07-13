@@ -10,20 +10,26 @@ public class Address implements Serializable {
     private String country;
     private String city;
     private String street;
-    private int index;
+    private int postIndex;
 
     public Address() {
     }
 
-    public Address(long id, long contactId, String country, String city, String street, int index) {
+    public Address(long id, long contactId, String country, String city, String street, int postIndex) {
         this.id = id;
         this.contactId = contactId;
         this.country = country;
         this.city = city;
         this.street = street;
-        this.index = index;
+        this.postIndex = postIndex;
     }
 
+    public Address(String country, String city, String street, int postIndex) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.postIndex = postIndex;
+    }
 
     public long getId() {
         return id;
@@ -65,12 +71,12 @@ public class Address implements Serializable {
         this.street = street;
     }
 
-    public int getIndex() {
-        return index;
+    public int getPostIndex() {
+        return postIndex;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setPostIndex(int postIndex) {
+        this.postIndex = postIndex;
     }
 
     @Override
@@ -79,7 +85,7 @@ public class Address implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
         return id == address.id &&
-                index == address.index &&
+                postIndex == address.postIndex &&
                 Objects.equals(country, address.country) &&
                 Objects.equals(city, address.city) &&
                 Objects.equals(street, address.street);
@@ -87,7 +93,7 @@ public class Address implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, city, street, index);
+        return Objects.hash(id, country, city, street, postIndex);
     }
 
     @Override
@@ -97,7 +103,7 @@ public class Address implements Serializable {
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
-                ", index=" + index +
+                ", index=" + postIndex +
                 '}';
     }
 

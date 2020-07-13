@@ -29,8 +29,7 @@ public class ConnectionFactory {
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            logger.error("JDBC driver not found");
-            logger.error(e);
+            logger.error("JDBC driver not found --- " + e);
         }
         return DriverManager.getConnection(url, username, password);
     }

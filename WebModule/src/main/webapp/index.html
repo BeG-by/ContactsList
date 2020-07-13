@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Main</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="js/getAllContacts.js"></script>
+    <script src="js/deleteContacts.js"></script>
 </head>
 <body>
 <header>
@@ -11,16 +15,18 @@
     </div>
     <nav>
         <ul>
-            <li><a href="#">Create</a></li>
+            <li><a href="createForm.html">Create</a></li>
             <li><a href="#">Update</a></li>
-            <li><button id = delete-btn>Delete</button></li>
+            <li>
+                <button id=delete-btn>Delete</button>
+            </li>
             <li><a href="#">Search</a></li>
             <li><a href="#">Send email</a></li>
         </ul>
     </nav>
 </header>
 <main>
-    <table id="contacts-table" border="1">
+    <table id="contacts-table" class="table table-striped">
         <tr>
             <th>V</th>
             <th>First name</th>
@@ -30,7 +36,7 @@
             <th>Country</th>
             <th>City</th>
             <th>Street</th>
-            <th>Index</th>
+            <th>Post index</th>
             <th>Current job</th>
         </tr>
     </table>
@@ -38,8 +44,6 @@
 <footer>footer</footer>
 
 <script src="js/sendRequest.js"></script>
-<script src="js/getAllContacts.js"></script>
-<script src="js/deleteContacts.js"></script>
 <script src="js/contactsFormApp.js"></script>
 
 </body>

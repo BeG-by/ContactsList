@@ -23,6 +23,7 @@ public class DeleteAllContactsCommand implements Command {
         final Gson gson = new Gson();
         final long[] listId = gson.fromJson(req.getReader().readLine(), long[].class);
         contactDAO.deleteAll(Arrays.stream(listId).boxed().collect(Collectors.toList()));
+        resp.getWriter().write(gson.toJson("Contacts have been deleted"));
     }
 
 }

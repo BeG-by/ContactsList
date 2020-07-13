@@ -16,6 +16,10 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String FIND_ALL_CONTACTS_QUERY = "SELECT * FROM contact c LEFT JOIN address a ON c.id = a.contact_id;";
     private static final String DELETE_ALL_CONTACTS_QUERY = "DELETE FROM contact WHERE id = ?;";
     private static final String DELETE_ALL_ADDRESS_QUERY = "DELETE FROM address WHERE contact_id = ?;";
+    private static final String SAVE_CONTACT_QUERY =
+            "INSERT INTO contact (first_name, last_name, middle_name, birthday, sex, nationality, marital_status, url, email, job) VALUES (?,?,?,?,?,?,?,?,?,?)";
+
+    private static final String SAVE_ADDRESS_QUERY = "INSERT INTO address ( country, city, street, post_index, contact_id) VALUES (?,?,?,?,?)";
 
 
     private static Logger logger = Logger.getLogger(ContactDAOImpl.class);
@@ -57,16 +61,59 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
         } catch (SQLException e) {
-            logger.error("SQL error [findAll]");
-            logger.error(e);
+            e.printStackTrace();
+            logger.error("SQL error [findAll] --- " + e);
         }
 
         return contacts;
     }
 
+    //need Date validation (NullPointerException)
     @Override
-    public long save() {
-        return 0;
+    public long save(Contact contact) {
+
+        long contactId = -1;
+
+        try (Connection connection = ConnectionFactory.createConnection()) {
+            final PreparedStatement contactStatement = connection.prepareStatement(SAVE_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS);
+            final PreparedStatement addressStatement = connection.prepareStatement(SAVE_ADDRESS_QUERY);
+
+            connection.setAutoCommit(false);
+            contactStatement.setString(1, contact.getFirstName());
+            contactStatement.setString(2, contact.getLastName());
+            contactStatement.setString(3, contact.getMiddleName());
+            contactStatement.setDate(4, Date.valueOf(contact.getBirthday()));
+            contactStatement.setString(5, contact.getSex());
+            contactStatement.setString(6, contact.getNationality());
+            contactStatement.setString(7, contact.getMaritalStatus());
+            contactStatement.setString(8, contact.getUrlWebSite());
+            contactStatement.setString(9, contact.getEmail());
+            contactStatement.setString(10, contact.getCurrentJob());
+            contactStatement.executeUpdate();
+
+            ResultSet generatedKeys = contactStatement.getGeneratedKeys();
+            while (generatedKeys.next()) {
+                contactId = generatedKeys.getLong(1);
+            }
+
+            Address address = contact.getAddress();
+
+            addressStatement.setString(1, address.getCountry());
+            addressStatement.setString(2, address.getCity());
+            addressStatement.setString(3, address.getStreet());
+            addressStatement.setInt(4, address.getPostIndex());
+            addressStatement.setLong(5, contactId);
+
+            addressStatement.executeUpdate();
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.error("SQL error [save] --- " + e);
+        }
+
+        return contactId;
     }
 
     @Override
@@ -88,8 +135,8 @@ public class ContactDAOImpl implements ContactDAO {
             connection.commit();
 
         } catch (SQLException e) {
-            logger.error("SQL error [deleteAll]");
-            logger.error(e);
+            e.printStackTrace();
+            logger.error("SQL error [deleteAll] --- " + e);
         }
 
     }
