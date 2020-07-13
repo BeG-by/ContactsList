@@ -49,29 +49,6 @@ public class Contact implements Serializable {
         this.address = address;
     }
 
-    public Contact(String firstName, String lastName,
-                   String middleName,
-                   LocalDate birthday,
-                   String sex,
-                   String nationality,
-                   String maritalStatus,
-                   String urlWebSite,
-                   String email,
-                   String currentJob,
-                   Address address) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.birthday = birthday;
-        this.sex = sex;
-        this.nationality = nationality;
-        this.maritalStatus = maritalStatus;
-        this.urlWebSite = urlWebSite;
-        this.email = email;
-        this.currentJob = currentJob;
-        this.address = address;
-    }
 
     public long getId() {
         return id;

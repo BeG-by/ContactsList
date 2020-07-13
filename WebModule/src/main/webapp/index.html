@@ -5,22 +5,42 @@
     <title>Main</title>
 </head>
 <body>
-<header>Contacts list</header>
-<table id="contacts-table" border="1">
-    <tr>
-        <td>First name</td>
-        <td>Last name</td>
-        <td>Middle name</td>
-        <td>Date of birth</td>
-        <td>Country</td>
-        <td>City</td>
-        <td>Street</td>
-        <td>Index</td>
-        <td>Current job</td>
-    </tr>
-</table>
+<header>
+    <div>
+        <h1>Contacts list</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#">Create</a></li>
+            <li><a href="#">Update</a></li>
+            <li><button id = delete-btn>Delete</button></li>
+            <li><a href="#">Search</a></li>
+            <li><a href="#">Send email</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <table id="contacts-table" border="1">
+        <tr>
+            <th>V</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Middle name</th>
+            <th>Date of birth</th>
+            <th>Country</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>Index</th>
+            <th>Current job</th>
+        </tr>
+    </table>
+</main>
 <footer>footer</footer>
 
-<script src="js/getData.js"></script>
+<script src="js/sendRequest.js"></script>
+<script src="js/getAllContacts.js"></script>
+<script src="js/deleteContacts.js"></script>
+<script src="js/contactsFormApp.js"></script>
+
 </body>
 </html>

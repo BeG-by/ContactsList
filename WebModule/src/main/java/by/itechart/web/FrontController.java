@@ -27,6 +27,10 @@ public class FrontController extends HttpServlet {
         processRequest(req, resp);
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req, resp);
+    }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         logger.info(String.format("Request is processing... [url: %s , method: %s]", req.getRequestURI(), req.getMethod()));

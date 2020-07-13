@@ -14,7 +14,6 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>by.itechart.lab</groupId>
             <artifactId>LogicModule</artifactId>

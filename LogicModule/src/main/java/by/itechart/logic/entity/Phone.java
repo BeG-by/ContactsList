@@ -26,14 +26,6 @@ public class Phone implements Serializable {
         this.comment = comment;
     }
 
-    public Phone(long contactId, int countryCode, int operatorCode, long number, String type, String comment) {
-        this.contactId = contactId;
-        this.countryCode = countryCode;
-        this.operatorCode = operatorCode;
-        this.number = number;
-        this.type = type;
-        this.comment = comment;
-    }
 
     public long getId() {
         return id;

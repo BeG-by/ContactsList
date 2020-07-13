@@ -24,13 +24,6 @@ public class Address implements Serializable {
         this.index = index;
     }
 
-    public Address(long contactId, String country, String city, String street, int index) {
-        this.contactId = contactId;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.index = index;
-    }
 
     public long getId() {
         return id;

@@ -6,17 +6,16 @@ import by.itechart.logic.entity.Address;
 import by.itechart.logic.entity.Contact;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactDAOImpl implements ContactDAO {
 
-    private static final String FIND_ALL_QUERY = "SELECT * FROM contact c LEFT JOIN address a ON c.id = a.contact_id;";
+    private static final String FIND_ALL_CONTACTS_QUERY = "SELECT * FROM contact c LEFT JOIN address a ON c.id = a.contact_id;";
+    private static final String DELETE_ALL_CONTACTS_QUERY = "DELETE FROM contact WHERE id = ?;";
+    private static final String DELETE_ALL_ADDRESS_QUERY = "DELETE FROM address WHERE contact_id = ?;";
 
 
     private static Logger logger = Logger.getLogger(ContactDAOImpl.class);
@@ -29,7 +28,7 @@ public class ContactDAOImpl implements ContactDAO {
 
         try (final Connection connection = ConnectionFactory.createConnection()) {
             final Statement statement = connection.createStatement();
-            final ResultSet resultSet = statement.executeQuery(FIND_ALL_QUERY);
+            final ResultSet resultSet = statement.executeQuery(FIND_ALL_CONTACTS_QUERY);
 
             while (resultSet.next()) {
 
@@ -63,6 +62,36 @@ public class ContactDAOImpl implements ContactDAO {
         }
 
         return contacts;
+    }
+
+    @Override
+    public long save() {
+        return 0;
+    }
+
+    @Override
+    public void deleteAll(List<Long> idList) {
+
+        try (Connection connection = ConnectionFactory.createConnection()) {
+
+            final PreparedStatement contactStatement = connection.prepareStatement(DELETE_ALL_CONTACTS_QUERY);
+            final PreparedStatement addressStatement = connection.prepareStatement(DELETE_ALL_ADDRESS_QUERY);
+            connection.setAutoCommit(false);
+
+            for (Long id : idList) {
+                addressStatement.setLong(1, id);
+                addressStatement.executeUpdate();
+                contactStatement.setLong(1, id);
+                contactStatement.executeUpdate();
+            }
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            logger.error("SQL error [deleteAll]");
+            logger.error(e);
+        }
+
     }
 
     private static LocalDate convertToLocalDate(java.util.Date dateToConvert) {

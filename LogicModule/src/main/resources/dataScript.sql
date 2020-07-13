@@ -41,12 +41,9 @@ VALUES ('Ivan', 'Ivanov', 'Ivanovich', '1990-01-03', 'male', 'Belarus', 'single'
        ('Lexa', 'Lennon', 'Valerevich', '1988-01-04', 'male', 'Belarus', 'single', 'github.com', 'lexa@mail.ru',
         'Wargaming');
 
-INSERT INTO `contacts_list_db`.`address` (`id`, `country`, `city`, `street`, `index`, `contact_id`)
-VALUES ('1', 'Belarus', 'Minsk', 'Nemiga 20/42', '220040', '1');
-INSERT INTO `contacts_list_db`.`address` (`id`, `country`, `city`, `street`, `index`, `contact_id`)
-VALUES ('2', 'USA', 'New York', '114 Indian Summer St.', '10016', '2');
-INSERT INTO `contacts_list_db`.`address` (`id`, `country`, `city`, `street`, `index`, `contact_id`)
-VALUES ('3', 'Russia', 'Moscow', 'Lenina', '23234', '3');
-INSERT INTO `contacts_list_db`.`address` (`id`, `country`, `city`, `street`, `index`, `contact_id`)
-VALUES ('4', 'Belarus', 'Minsk', 'Temeryazeva 23/15', '22334', '4');
+INSERT INTO `contacts_list_db`.`address` ( `country`, `city`, `street`, `index`, `contact_id`) VALUES
+('Belarus', 'Minsk', 'Nemiga 20/42', '220040', '1'),
+( 'USA', 'New York', '114 Indian Summer St.', '10016', '2'),
+( 'Russia', 'Moscow', 'Lenina', '23234', '3'),
+( 'Belarus', 'Minsk', 'Temeryazeva 23/15', '22334', '4');
 

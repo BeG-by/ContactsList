@@ -1,5 +1,6 @@
 package by.itechart.logic.command;
 
+import by.itechart.logic.command.impl.DeleteAllContactsCommand;
 import by.itechart.logic.command.impl.FindAllContactsCommand;
 
 import java.util.HashMap;
@@ -11,6 +12,7 @@ public class CommandFactory {
 
     {
         commandMap.put("contacts/findAll", new FindAllContactsCommand());
+        commandMap.put("contacts/deleteAll", new DeleteAllContactsCommand());
     }
 
 
