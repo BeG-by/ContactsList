@@ -1,26 +1,8 @@
 "use strict";
 
-var xhr = new XMLHttpRequest();
+function sendRequest(url, type, body, callback, message) {
 
-function sendGetRequest(url, callback) {
-
-    xhr.open("GET", url);
-    xhr.responseType = "json";
-    xhr.setRequestHeader("Content-type", "application/json");
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
-            if (callback !== null) {
-                callback(xhr.response);
-            }
-        }
-    };
-
-    xhr.send();
-
-}
-
-function sendRequest(url, type, body, message) {
+    var xhr = new XMLHttpRequest();
 
     xhr.open(type, url);
     xhr.responseType = "json";
@@ -28,11 +10,39 @@ function sendRequest(url, type, body, message) {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
-            alert(message);
+
+            if (callback !== null) {
+                callback(xhr.response);
+            } else {
+                alert(message);
+            }
+
         }
     };
 
-    xhr.send(JSON.stringify(body));
+    if (body !== null) {
+        xhr.send(JSON.stringify(body));
+    } else {
+        xhr.send();
+    }
 }
+
+// function sendGetRequest(url, callback) {
+//
+//     xhr.open("GET", url);
+//     xhr.responseType = "json";
+//     xhr.setRequestHeader("Content-type", "application/json");
+//
+//     xhr.onreadystatechange = function () {
+//         if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
+//             if (callback !== null) {
+//                 callback(xhr.response);
+//             }
+//         }
+//     };
+//
+//     xhr.send();
+//
+// }
 
 

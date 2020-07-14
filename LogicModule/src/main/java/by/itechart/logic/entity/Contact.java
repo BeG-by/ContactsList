@@ -22,7 +22,7 @@ public class Contact implements Serializable {
     public Contact() {
     }
 
-    public Contact(long id,
+    public Contact(
                    String firstName,
                    String lastName,
                    String middleName,
@@ -35,7 +35,6 @@ public class Contact implements Serializable {
                    String currentJob,
                    Address address) {
 
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;

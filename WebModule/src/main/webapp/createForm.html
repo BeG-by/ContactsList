@@ -3,26 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Add contact</title>
+    <script src="js/sendRequest.js"></script>
 </head>
 <body>
 <header>
     <h1>Add contact</h1>
     <a href="index.html">Main</a>
+
 </header>
 <main>
-    <p><input type="text" placeholder="First name" maxlength="16" required>*</p>
-    <p><input type="text" placeholder="Last name" maxlength="16" required>*</p>
-    <p><input type="text" placeholder="Middle name" maxlength="16"></p>
-    <p><input type="date" placeholder="Date of birth"></p>
-    <p><input type="radio" name="sex" value="male">Male</p>
-    <p><input type="radio" name="sex" value="female">Female</p>
-    <p><input type="text" placeholder="Nationality" maxlength="16"></p>
-    <p><input type="email" placeholder="Email" maxlength="22"></p>
-    <p><input type="text" placeholder="Country" maxlength="16"></p>
-    <p><input type="text" placeholder="City" maxlength="16"></p>
-    <p><input type="text" placeholder="Street" maxlength="16"></p>
-    <p><input type="text" placeholder="Post index" maxlength="16"></p>
+    <div id="create-form">
+        <form name="contact-form">
+            <p><input type="text" name="firstName" placeholder="First name">*</p>
+            <p><input type="text" name="lastName" placeholder="Last name">*</p>
+            <p><input type="text" name="middleName" placeholder="Middle name"></p>
+            <p><input type="date" name="birthday" placeholder="Date of birth"></p>
+            <p>
+                <label for="male">
+                    Male<input type="radio" name="sex" value="male" id="male" checked>
+                </label>
+                <label for="female">
+                    Female<input type="radio" name="sex" value="female" id="female">
+                </label>
+            </p>
+            <p><input type="text" name="nationality" placeholder="Nationality"></p>
+            <p>
+                <label for="single">
+                    Single<input type="radio" name="maritalStatus" value="single" id="single" checked>
+                </label>
+                <label for="married">
+                    Married<input type="radio" name="maritalStatus" value="married" id="married">
+                </label>
+            </p>
+            <p><input type="text" name="urlWebSite" placeholder="Web site"></p>
+            <p><input type="email" name="email" placeholder="Email"></p>
+            <p><input type="text" name="currentJob" placeholder="CurrentJob"></p>
+        </form>
+        <form name="address-form">
+            <p><input type="text" name="country" placeholder="Country" maxlength="16"></p>
+            <p><input type="text" name="city" placeholder="City" maxlength="16"></p>
+            <p><input type="text" name="street" placeholder="Street" maxlength="16"></p>
+            <p><input type="text" name="postIndex" placeholder="Post index" maxlength="16"></p>
+        </form>
+        <button id="create-btn">Add contact</button>
+    </div>
+
 </main>
+
+<script src="js/createForm/createFormApp.js"></script>
 
 </body>
 </html>

@@ -19,18 +19,20 @@ public class SaveContactCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setCharacterEncoding("UTF-8");
-        resp.setStatus(resp.SC_OK);
         resp.setContentType("application/json");
-        Contact contact = new Contact.Builder()
-                .firstName("TEST")
-                .lastName("TEST")
-                .birthday(LocalDate.now())
-                .address(new Address("COUNTRY", "CITY", "STREET", 220022))
-                .build();
+
+        final String jsonContact = req.getReader().readLine();
+        final Gson gson = new Gson();
+        Contact contact = gson.fromJson(jsonContact, Contact.class);
 
         final long contactId = contactDAO.save(contact);
-        if (contactId != 1) {
-            resp.getWriter().write(new Gson().toJson(String.format("Contact with id %d has been created", contactId)));
+
+        if (contactId != -1) {
+            resp.setStatus(resp.SC_OK);
+            resp.getWriter().write(gson.toJson(String.format("Contact with %d has been created !", contactId)));
+        } else {
+            resp.setStatus(resp.SC_BAD_REQUEST);
+            resp.getWriter().write(gson.toJson("Incorrect data."));
         }
 
     }

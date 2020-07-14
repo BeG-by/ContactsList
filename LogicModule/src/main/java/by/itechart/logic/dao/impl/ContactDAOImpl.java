@@ -107,10 +107,15 @@ public class ContactDAOImpl implements ContactDAO {
             addressStatement.executeUpdate();
 
             connection.commit();
+            logger.info("Contact was created [id=" + contactId + "]");
 
         } catch (SQLException e) {
             e.printStackTrace();
             logger.error("SQL error [save] --- " + e);
+            return -1;
+        } catch (Exception e) {
+            // bug finder
+            e.printStackTrace();
         }
 
         return contactId;
@@ -133,11 +138,14 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
             connection.commit();
+            logger.info("Contacts were remove [listId=" + idList + "]");
+
 
         } catch (SQLException e) {
             e.printStackTrace();
             logger.error("SQL error [deleteAll] --- " + e);
         }
+
 
     }
 
