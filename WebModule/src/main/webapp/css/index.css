@@ -1,0 +1,13 @@
+.table-striped {
+    border: solid 1px #439BF9;
+}
+
+.table-striped > thead {
+    background-color: #439BF9;
+    color: #F7F7FA;
+}
+
+/* for rows
+/*.table-striped > tbody > tr:nth-child(2n+1) > td {*/
+/*    background-color: #5DA8F8;*/
+/*}*/

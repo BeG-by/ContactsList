@@ -1,4 +1,4 @@
-package by.itechart.logic.dao;
+package by.itechart.logic.dao.util;
 
 import org.apache.log4j.Logger;
 
@@ -43,7 +43,7 @@ public class ConnectionFactory {
             properties.load(in);
         } catch (IOException e) {
             logger.error("Database properties haven't been loaded");
-            logger.error(e);
+            e.printStackTrace();
         }
 
         url = properties.getProperty("jdbc.url");

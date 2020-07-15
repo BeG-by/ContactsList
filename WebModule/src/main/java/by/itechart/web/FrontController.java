@@ -1,10 +1,9 @@
 package by.itechart.web;
 
 import by.itechart.logic.command.Command;
-import by.itechart.logic.command.CommandFactory;
+import by.itechart.logic.command.util.CommandFactory;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +41,8 @@ public class FrontController extends HttpServlet {
 
         if (command != null) {
             command.execute(req, resp);
+            resp.setCharacterEncoding("UTF-8");
+            resp.setContentType("application/json");
             logger.info(String.format("Request [url: %s , method: %s] has been processed", req.getRequestURI(), req.getMethod()));
         } else {
             logger.error(String.format("Command didn't find [%s] ", commandKey));

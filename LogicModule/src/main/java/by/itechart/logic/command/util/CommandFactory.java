@@ -1,5 +1,6 @@
-package by.itechart.logic.command;
+package by.itechart.logic.command.util;
 
+import by.itechart.logic.command.Command;
 import by.itechart.logic.command.impl.DeleteAllContactsCommand;
 import by.itechart.logic.command.impl.FindAllContactsCommand;
 import by.itechart.logic.command.impl.SaveContactCommand;

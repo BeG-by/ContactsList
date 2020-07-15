@@ -1,6 +1,6 @@
 package by.itechart.logic.dao.impl;
 
-import by.itechart.logic.dao.ConnectionFactory;
+import by.itechart.logic.dao.util.ConnectionFactory;
 import by.itechart.logic.dao.ContactDAO;
 import by.itechart.logic.entity.Address;
 import by.itechart.logic.entity.Contact;
@@ -74,7 +74,7 @@ public class ContactDAOImpl implements ContactDAO {
 
         long contactId = -1;
 
-        try (Connection connection = ConnectionFactory.createConnection()) {
+        try (final Connection connection = ConnectionFactory.createConnection()) {
             final PreparedStatement contactStatement = connection.prepareStatement(SAVE_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS);
             final PreparedStatement addressStatement = connection.prepareStatement(SAVE_ADDRESS_QUERY);
 
@@ -107,7 +107,7 @@ public class ContactDAOImpl implements ContactDAO {
             addressStatement.executeUpdate();
 
             connection.commit();
-            logger.info("Contact was created [id=" + contactId + "]");
+            logger.info(String.format("Contact was created [id= %d]", contactId));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,7 +124,7 @@ public class ContactDAOImpl implements ContactDAO {
     @Override
     public void deleteAll(List<Long> idList) {
 
-        try (Connection connection = ConnectionFactory.createConnection()) {
+        try (final Connection connection = ConnectionFactory.createConnection()) {
 
             final PreparedStatement contactStatement = connection.prepareStatement(DELETE_ALL_CONTACTS_QUERY);
             final PreparedStatement addressStatement = connection.prepareStatement(DELETE_ALL_ADDRESS_QUERY);
@@ -138,7 +138,7 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
             connection.commit();
-            logger.info("Contacts were remove [listId=" + idList + "]");
+            logger.info(String.format("Contacts were remove [listId= %s]", idList));
 
 
         } catch (SQLException e) {

@@ -9,14 +9,14 @@ public class Phone implements Serializable {
     private long contactId;
     private int countryCode;
     private int operatorCode;
-    private long number;
+    private int number;
     private String type;
     private String comment;
 
     public Phone() {
     }
 
-    public Phone(long id, long contactId, int countryCode, int operatorCode, long number, String type, String comment) {
+    public Phone(long id, long contactId, int countryCode, int operatorCode, int number, String type, String comment) {
         this.id = id;
         this.contactId = contactId;
         this.countryCode = countryCode;
@@ -59,11 +59,11 @@ public class Phone implements Serializable {
         this.operatorCode = operatorCode;
     }
 
-    public long getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(long number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 

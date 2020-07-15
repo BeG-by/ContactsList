@@ -19,7 +19,7 @@ deleteBtn.addEventListener("click", function () {
 // --- create contacts table ---
 function getAllContacts(response) {
 
-    var table = document.querySelector("#contacts-table");
+    var table = document.getElementById("contacts-table");
     var jsonResponse = response;
 
     for (var jsonKey in jsonResponse) {

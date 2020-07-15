@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Add contact</title>
+    <link rel="stylesheet" href="css/phoneFormPopup.css" type="text/css">
     <script src="js/sendRequest.js"></script>
+    <script src="js/createForm/phoneFormPopup.js"></script>
 </head>
 <body>
 <header>
@@ -40,14 +42,27 @@
             <p><input type="text" name="currentJob" placeholder="CurrentJob"></p>
         </form>
         <form name="address-form">
-            <p><input type="text" name="country" placeholder="Country" maxlength="16"></p>
-            <p><input type="text" name="city" placeholder="City" maxlength="16"></p>
-            <p><input type="text" name="street" placeholder="Street" maxlength="16"></p>
-            <p><input type="text" name="postIndex" placeholder="Post index" maxlength="16"></p>
+            <p><input type="text" name="country" placeholder="Country"></p>
+            <p><input type="text" name="city" placeholder="City"></p>
+            <p><input type="text" name="street" placeholder="Street"></p>
+            <p><input type="number" name="postIndex" placeholder="Post index"></p>
         </form>
+
+        <div>
+            <table id="phone-table" border="1">
+                <thead>
+                <tr>
+                    <th>V</th>
+                    <th>Phone number</th>
+                    <th>Type</th>
+                    <th>Comment</th>
+                </tr>
+                </thead>
+            </table>
+            <p><button id="add-phone-btn">Add phone</button></p>
+        </div>
         <button id="create-btn">Add contact</button>
     </div>
-
 </main>
 
 <script src="js/createForm/createFormApp.js"></script>

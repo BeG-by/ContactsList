@@ -15,9 +15,7 @@ public class FindAllContactsCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setCharacterEncoding("UTF-8");
         resp.setStatus(resp.SC_OK);
-        resp.setContentType("application/json");
         resp.getWriter().write(new Gson().toJson(contactDAO.findAll()));
     }
 

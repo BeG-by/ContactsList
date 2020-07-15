@@ -5,9 +5,11 @@
     <title>Main</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/index.css" type="text/css">
     <script src="js/sendRequest.js"></script>
 </head>
 <body>
+
 <header>
     <div>
         <h1>Contacts list</h1>
@@ -26,24 +28,30 @@
         </ul>
     </nav>
 </header>
-<main>
-    <table id="contacts-table" class="table table-striped">
-        <thead>
-        <tr>
-            <th>V</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Middle name</th>
-            <th>Date of birth</th>
-            <th>Country</th>
-            <th>City</th>
-            <th>Street</th>
-            <th>Post index</th>
-            <th>Current job</th>
-        </tr>
-        </thead>
-    </table>
-</main>
+
+<div>
+    <div></div>
+    <main>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>V</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Middle name</th>
+                <th>Date of birth</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Street</th>
+                <th>Post index</th>
+                <th>Current job</th>
+            </tr>
+            </thead>
+            <tbody id="contacts-table"></tbody>
+        </table>
+    </main>
+    <div></div>
+</div>
 <footer>footer</footer>
 
 <script src="js/contactsForm/contactsFormApp.js"></script>

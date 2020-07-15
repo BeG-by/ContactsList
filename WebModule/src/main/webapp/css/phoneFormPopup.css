@@ -1,0 +1,40 @@
+.window-main {
+    display: flex;
+    background-color: rgb(42, 135, 241);
+    height: 250px;
+    width: 300px;
+    border: 1px solid rgb(245, 126, 126);
+    border-radius: 10px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    overflow: hidden;
+}
+
+
+.window-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.close-btn {
+    padding: 0;
+    margin-left: auto;
+    height: 15px;
+    width: 15px;
+    font-size: 10px;
+    font-weight: bold;
+    background-color: inherit;
+    color: black;
+    border: 2px solid black;
+    border-radius: 4px;
+    font-family: sans-serif;
+}
+
+.close-btn:hover {
+    background-color: black;
+    color: white;
+}

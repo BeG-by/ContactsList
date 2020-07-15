@@ -31,6 +31,22 @@ CREATE TABLE `contacts_list_db`.`address`
             ON UPDATE NO ACTION
 );
 
+CREATE TABLE `contacts_list_db`.`phone` (
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+  `contact_id` BIGINT(20) NULL,
+  `country_code` INT NULL,
+  `operator_code` INT NULL,
+  `number` INT NULL,
+  `type` VARCHAR(45) NULL,
+  `comment` VARCHAR(255) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `contact_id_idx` (`contact_id` ASC) VISIBLE,
+  CONSTRAINT `contact_phone_id`
+    FOREIGN KEY (`contact_id`)
+    REFERENCES `contacts_list_db`.`contact` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
 INSERT INTO `contacts_list_db`.`contact`(first_name, last_name, middle_name, birthday, sex, nationality, marital_status, url, email, job)
 VALUES ('Ivan', 'Ivanov', 'Ivanovich', '1990-01-03', 'male', 'Belarus', 'single', 'google.com', 'ivan@mail.ru',
         'iTechArt'),

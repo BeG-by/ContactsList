@@ -2,6 +2,7 @@ package by.itechart.logic.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 public class Contact implements Serializable {
@@ -18,36 +19,10 @@ public class Contact implements Serializable {
     private String email;
     private String currentJob;
     private Address address;
+    private List<Phone> phoneList;
 
     public Contact() {
     }
-
-    public Contact(
-                   String firstName,
-                   String lastName,
-                   String middleName,
-                   LocalDate birthday,
-                   String sex,
-                   String nationality,
-                   String maritalStatus,
-                   String urlWebSite,
-                   String email,
-                   String currentJob,
-                   Address address) {
-
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.birthday = birthday;
-        this.sex = sex;
-        this.nationality = nationality;
-        this.maritalStatus = maritalStatus;
-        this.urlWebSite = urlWebSite;
-        this.email = email;
-        this.currentJob = currentJob;
-        this.address = address;
-    }
-
 
     public long getId() {
         return id;
@@ -145,6 +120,14 @@ public class Contact implements Serializable {
         this.address = address;
     }
 
+    public List<Phone> getPhoneList() {
+        return phoneList;
+    }
+
+    public void setPhoneList(List<Phone> phoneList) {
+        this.phoneList = phoneList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -184,6 +167,7 @@ public class Contact implements Serializable {
                 ", email='" + email + '\'' +
                 ", currentJob='" + currentJob + '\'' +
                 ", address=" + address +
+                ", phoneList=" + phoneList +
                 '}';
     }
 
@@ -251,6 +235,11 @@ public class Contact implements Serializable {
 
         public Builder address(Address address) {
             contact.setAddress(address);
+            return this;
+        }
+
+        public Builder phoneList(List<Phone> phones){
+            contact.setPhoneList(phones);
             return this;
         }
 
