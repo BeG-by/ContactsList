@@ -1,6 +1,7 @@
 "use strict";
-var findAllUrl = "http://localhost:8080/contactsList/contacts/findAll";
-var deleteAllUrl = "http://localhost:8080/contactsList/contacts/deleteAll";
+var findAllUrl = "http://localhost:8080/contactsList/contact/findAll";
+var deleteAllUrl = "http://localhost:8080/contactsList/contact/deleteAll";
+var updateUrl = "#";
 
 sendRequest(findAllUrl, "GET", null, getAllContacts, null);
 
@@ -45,9 +46,7 @@ function getAllContacts(response) {
         var tableContact = {
             id: document.createElement("td"),
             checkbox: document.createElement("td"),
-            firstName: document.createElement("td"),
-            lastName: document.createElement("td"),
-            middleName: document.createElement("td"),
+            fullName: document.createElement("td"),
             birthday: document.createElement("td"),
             country: document.createElement("td"),
             city: document.createElement("td"),
@@ -62,9 +61,12 @@ function getAllContacts(response) {
 
         tableContact.id.style.display = "none";
         tableContact.checkbox.append(checkbox);
-        tableContact.firstName.textContent = contact["firstName"];
-        tableContact.lastName.textContent = contact["lastName"];
-        tableContact.middleName.textContent = contact["middleName"];
+
+        var linkUpdate = document.createElement("a");
+        linkUpdate.setAttribute("href", updateUrl);
+        linkUpdate.textContent = contact["firstName"] + " " + contact["lastName"] + " " + contact["middleName"];
+        tableContact.fullName.append(linkUpdate);
+
         tableContact.birthday.textContent = birthdayToString;
         tableContact.country.textContent = address["country"];
         tableContact.city.textContent = address["city"];
@@ -75,6 +77,7 @@ function getAllContacts(response) {
         for (var propertyTdKey in tableContact) {
             tr.append(tableContact[propertyTdKey]);
         }
+
 
         table.append(tr);
 

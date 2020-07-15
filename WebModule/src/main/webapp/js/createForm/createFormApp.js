@@ -1,6 +1,6 @@
 "use strict";
 
-var saveUrl = "http://localhost:8080/contactsList/contacts/save";
+var saveUrl = "http://localhost:8080/contactsList/contact/save";
 
 document.getElementById("create-btn").addEventListener("click", function () {
     sendRequest(saveUrl, "POST", getFormContactData(), null, "Contact has been added !");
@@ -16,7 +16,6 @@ function getFormContactData() {
     var contactForm = document.forms.namedItem("contact-form");
     var addressForm = document.forms.namedItem("address-form");
     var phonesTr = document.querySelectorAll(".phone-number");
-    console.log(phonesTr);
 
     var contact = {};
     var address = {};
@@ -67,7 +66,6 @@ function getFormContactData() {
 
     }
 
-    console.log(contact);
     return contact;
 
 }

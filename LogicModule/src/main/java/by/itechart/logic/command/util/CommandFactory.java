@@ -13,9 +13,9 @@ public class CommandFactory {
     private Map<String, Command> commandMap = new HashMap<>();
 
     {
-        commandMap.put("contacts/findAll", new FindAllContactsCommand());
-        commandMap.put("contacts/deleteAll", new DeleteAllContactsCommand());
-        commandMap.put("contacts/save", new SaveContactCommand());
+        commandMap.put("contact/findAll", new FindAllContactsCommand());
+        commandMap.put("contact/deleteAll", new DeleteAllContactsCommand());
+        commandMap.put("contact/save", new SaveContactCommand());
     }
 
 

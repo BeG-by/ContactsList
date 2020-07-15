@@ -9,36 +9,36 @@
     <script src="js/sendRequest.js"></script>
 </head>
 <body>
-
-<header>
-    <div>
-        <h1>Contacts list</h1>
-    </div>
-    <nav>
-        <ul>
-            <li>
-                <a href="createForm.html">Create</a>
-            </li>
-            <li><a href="#">Update</a></li>
-            <li>
-                <a href="index.html" id=delete-btn>Delete</a>
-            </li>
-            <li><a href="#">Search</a></li>
-            <li><a href="#">Send email</a></li>
-        </ul>
-    </nav>
-</header>
-
-<div>
-    <div></div>
+<div class="main-container">
+    <aside></aside>
     <main>
+        <header>
+            <div id="logo">
+                <h2>Contacts list</h2>
+            </div>
+            <nav>
+                <ul id="menu-list">
+                    <li>
+                        <a href="createForm.html"><button>Create</button></a>
+                    </li>
+                    <li><a href="#"><button>Update</button></a></li>
+                    <li>
+                        <a href="index.html"><button id="delete-btn">Delete</button></a>
+                    </li>
+                    <li>
+                        <a href="#"><button>Search</button></a>
+                    </li>
+                    <li>
+                        <a href="#"><button>Send email</button></a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>V</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Middle name</th>
+                <th>&#10003</th>
+                <th>Full name</th>
                 <th>Date of birth</th>
                 <th>Country</th>
                 <th>City</th>
@@ -49,10 +49,10 @@
             </thead>
             <tbody id="contacts-table"></tbody>
         </table>
+        <footer>Created by Eugene B.</footer>
     </main>
-    <div></div>
+    <aside></aside>
 </div>
-<footer>footer</footer>
 
 <script src="js/contactsForm/contactsFormApp.js"></script>
 
