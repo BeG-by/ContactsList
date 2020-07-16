@@ -1,9 +1,9 @@
 "use strict";
-var findAllUrl = "http://localhost:8080/contactsList/contact/findAll";
-var deleteAllUrl = "http://localhost:8080/contactsList/contact/deleteAll";
+var findAllUrl = "http://localhost:8080/v1/contactsList/contacts/findAll";
+var deleteAllUrl = "http://localhost:8080/v1/contactsList/contacts/deleteAll";
 var updateUrl = "#";
 
-sendRequest(findAllUrl, "GET", null, getAllContacts, null);
+sendRequest(findAllUrl + "?page=1&pageLimit=10", "GET", null, createTableContacts, null);
 
 var deleteBtn = document.getElementById("delete-btn");
 
@@ -18,9 +18,11 @@ deleteBtn.addEventListener("click", function () {
 
 
 // --- create contacts table ---
-function getAllContacts(response) {
+function createTableContacts(response) {
 
-    var table = document.getElementById("contacts-table");
+    var tBody = document.createElement("tbody");
+    tBody.id = "contacts-table";
+
     var jsonResponse = response;
 
     for (var jsonKey in jsonResponse) {
@@ -79,7 +81,10 @@ function getAllContacts(response) {
         }
 
 
-        table.append(tr);
+        tBody.append(tr);
+        var table = document.getElementsByClassName("table")[0];
+        table.append(tBody);
+
 
     }
 

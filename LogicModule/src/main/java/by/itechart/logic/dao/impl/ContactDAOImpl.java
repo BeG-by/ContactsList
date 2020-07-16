@@ -13,26 +13,31 @@ import java.util.List;
 
 public class ContactDAOImpl implements ContactDAO {
 
-    private static final String FIND_ALL_CONTACTS_QUERY = "SELECT * FROM contact c LEFT JOIN address a ON c.id = a.contact_id;";
+    private static final String FIND_ALL_CONTACTS_QUERY = "SELECT * FROM contact c LEFT JOIN address a ON c.id = a.contact_id ORDER BY c.id LIMIT ? , ?;";
     private static final String DELETE_ALL_CONTACTS_QUERY = "DELETE FROM contact WHERE id = ?;";
     private static final String DELETE_ALL_ADDRESS_QUERY = "DELETE FROM address WHERE contact_id = ?;";
     private static final String SAVE_CONTACT_QUERY =
             "INSERT INTO contact (first_name, last_name, middle_name, birthday, sex, nationality, marital_status, url, email, job) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
     private static final String SAVE_ADDRESS_QUERY = "INSERT INTO address ( country, city, street, post_index, contact_id) VALUES (?,?,?,?,?)";
+    private static final String COUNT_CONTACTS_QUERY = "SELECT count(*) FROM contact";
 
 
     private static Logger logger = Logger.getLogger(ContactDAOImpl.class);
 
 
     @Override
-    public List<Contact> findAll() {
+    public List<Contact> findAll(int page, int pageLimit) {
 
         List<Contact> contacts = new ArrayList<>();
 
         try (final Connection connection = ConnectionFactory.createConnection()) {
-            final Statement statement = connection.createStatement();
-            final ResultSet resultSet = statement.executeQuery(FIND_ALL_CONTACTS_QUERY);
+
+            final PreparedStatement statement = connection.prepareStatement(FIND_ALL_CONTACTS_QUERY);
+            statement.setInt(1, (page - 1) * pageLimit);
+            statement.setInt(2, pageLimit);
+
+            final ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
 
@@ -110,8 +115,8 @@ public class ContactDAOImpl implements ContactDAO {
             logger.info(String.format("Contact was created [id= %d]", contactId));
 
         } catch (SQLException e) {
-            e.printStackTrace();
             logger.error("SQL error [save] --- " + e);
+            e.printStackTrace();
             return -1;
         } catch (Exception e) {
             // bug finder
@@ -142,11 +147,32 @@ public class ContactDAOImpl implements ContactDAO {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
             logger.error("SQL error [deleteAll] --- " + e);
+            e.printStackTrace();
         }
 
 
+    }
+
+    @Override
+    public long countAll() {
+
+        long count = 0;
+
+        try (final Connection connection = ConnectionFactory.createConnection()) {
+
+            final ResultSet resultSet = connection.createStatement().executeQuery(COUNT_CONTACTS_QUERY);
+
+            while (resultSet.next()){
+                count = resultSet.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            logger.error("SQL error [countAll] --- " + e);
+            e.printStackTrace();
+        }
+
+        return count;
     }
 
     private static LocalDate convertToLocalDate(java.util.Date dateToConvert) {

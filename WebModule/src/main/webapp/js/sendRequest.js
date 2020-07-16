@@ -7,6 +7,7 @@ function sendRequest(url, type, body, callback, message) {
     xhr.open(type, url);
     xhr.responseType = "json";
     xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Accept", "application/json");
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {

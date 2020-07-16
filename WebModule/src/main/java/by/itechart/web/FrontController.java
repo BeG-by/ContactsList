@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/contactsList/*")
+@WebServlet("/v1/contactsList/*")
 public class FrontController extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(FrontController.class);
-    private final static String ENTRY_POINT = "/contactsList/";
+    private final static String ENTRY_POINT = "/v1/contactsList/";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -42,7 +42,6 @@ public class FrontController extends HttpServlet {
         if (command != null) {
             command.execute(req, resp);
             resp.setCharacterEncoding("UTF-8");
-            resp.setContentType("application/json");
             logger.info(String.format("Request [url: %s , method: %s] has been processed", req.getRequestURI(), req.getMethod()));
         } else {
             logger.error(String.format("Command didn't find [%s] ", commandKey));

@@ -1,6 +1,6 @@
 "use strict";
 
-var saveUrl = "http://localhost:8080/contactsList/contact/save";
+var saveUrl = "http://localhost:8080/v1/contactsList/contacts/save";
 
 document.getElementById("create-btn").addEventListener("click", function () {
     sendRequest(saveUrl, "POST", getFormContactData(), null, "Contact has been added !");

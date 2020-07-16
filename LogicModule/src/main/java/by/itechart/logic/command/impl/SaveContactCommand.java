@@ -25,8 +25,6 @@ public class SaveContactCommand implements Command {
         final Gson gson = new Gson();
         Contact contact = gson.fromJson(jsonContact, Contact.class);
 
-        System.out.println(contact);
-
         final long contactId = contactDAO.save(contact);
 
 
@@ -42,13 +40,15 @@ public class SaveContactCommand implements Command {
                 }
             }
 
-            resp.setStatus(resp.SC_OK);
+            resp.setStatus(resp.SC_CREATED);
             resp.getWriter().write(gson.toJson(message));
 
         } else {
             resp.setStatus(resp.SC_BAD_REQUEST);
             resp.getWriter().write(gson.toJson("Incorrect data."));
         }
+
+        resp.setContentType("application/json");
 
     }
 }

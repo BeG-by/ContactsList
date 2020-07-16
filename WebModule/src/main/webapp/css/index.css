@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap');
-
 html, body {
     height: 100%;
     margin: 0;
@@ -20,12 +18,8 @@ html, body {
 
 #contacts-table {
     font-size: 15px;
+    font-weight: 400;
 }
-
-/* for rows
-/*.table-striped > tbody > tr:nth-child(2n+1) > td {*/
-/*    background-color: #5DA8F8;*/
-/*}*/
 
 .main-container {
     display: flex;
@@ -33,15 +27,16 @@ html, body {
 }
 
 main {
-    flex-grow: 3;
-    flex-shrink: 1;
+    flex-shrink: 0;
+    flex-basis: 80%;
     position: relative;
 }
 
 aside {
-    flex-grow: 1;
-    flex-shrink: 3;
+    flex-shrink: 0;
     background-color: #e6e6e6;
+    flex-basis: 10%;
+
 }
 
 header {
@@ -53,7 +48,6 @@ header {
 }
 
 nav {
-    font-weight: 500;
     font-size: 16px;
     text-decoration: none;
 }
@@ -68,22 +62,30 @@ nav {
 
 #menu-list button {
     border: none;
+    outline: none;
     padding: 7px 15px;
     border-radius: 40px;
     margin: 5px 0 5px 0;
-    transition: all 0.3s ease 0s;
+    font-weight: 500;
+    transition: all 0.4s ease 0s;
 }
 
 #menu-list button:hover {
     background-color: black;
     color: #e6e6e6;
-    border-color: #e6e6e6;
+    border-radius: 15px;
+}
+
+#menu-list button:active {
+    background-color: black;
+    color: red;
 }
 
 #logo {
     color: #f7f7f7;
     margin: 10px 25% 10px 10px;
-    transition: all 0.3s ease 0s;
+    font-weight: 700;
+    transition: all 0.4s ease 0s;
 }
 
 #logo h2:hover {
@@ -95,6 +97,7 @@ footer {
     margin: 0 auto;
     width: 100%;
     text-align: center;
+    font-weight: 500;
     padding: 5px;
     position: absolute;
     bottom: 0;

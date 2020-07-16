@@ -6,10 +6,12 @@ import java.util.List;
 
 public interface ContactDAO {
 
-    List<Contact> findAll();
+    List<Contact> findAll(int page, int pageLimit);
 
     long save(Contact contact);
 
     void deleteAll(List<Long> idList);
+
+    long countAll();
 
 }
