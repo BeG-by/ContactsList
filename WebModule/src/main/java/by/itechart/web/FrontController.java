@@ -1,7 +1,7 @@
 package by.itechart.web;
 
 import by.itechart.logic.command.Command;
-import by.itechart.logic.command.util.CommandFactory;
+import by.itechart.logic.command.CommandFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.annotation.WebServlet;
@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/v1/contactsList/*")
+@WebServlet("/api/v1/contactsList/*")
 public class FrontController extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(FrontController.class);
-    private final static String ENTRY_POINT = "/v1/contactsList/";
+    private final static String ENTRY_POINT = "/api/v1/contactsList/";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

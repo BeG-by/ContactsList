@@ -1,4 +1,4 @@
-.window-main {
+.window-main-phone {
     display: flex;
     background-color: rgb(42, 135, 241);
     height: 250px;
@@ -15,7 +15,7 @@
 }
 
 
-.window-form {
+.window-form-phone {
     display: flex;
     flex-direction: column;
 }

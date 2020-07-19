@@ -1,7 +1,7 @@
 package by.itechart.logic.dao.impl;
 
 import by.itechart.logic.dao.PhoneDAO;
-import by.itechart.logic.dao.util.ConnectionFactory;
+import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.entity.Phone;
 import org.apache.log4j.Logger;
 
@@ -38,7 +38,7 @@ public class PhoneDAOImpl implements PhoneDAO {
 
             logger.info(String.format("Phones was created phoneList= [%s]", phoneList));
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("SQL error [save] --- " + e);
             return false;
         }

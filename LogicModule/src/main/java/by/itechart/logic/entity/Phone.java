@@ -105,6 +105,7 @@ public class Phone implements Serializable {
     public String toString() {
         return "Phone{" +
                 "id=" + id +
+                ", contactId=" + contactId +
                 ", countryCode=" + countryCode +
                 ", operatorCode=" + operatorCode +
                 ", number=" + number +

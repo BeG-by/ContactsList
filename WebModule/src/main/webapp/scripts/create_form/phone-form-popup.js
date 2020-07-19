@@ -2,8 +2,10 @@
 
 function showPhoneForm() {
 
+    //--- Phone data ---
+
     var windowForm = document.createElement("div");
-    windowForm.className = "window-form";
+    windowForm.className = "window-form-phone";
     var h1 = document.createElement("h1");
     h1.innerText = "Phone form";
     windowForm.append(h1);
@@ -12,58 +14,36 @@ function showPhoneForm() {
     phoneForm.setAttribute("name", "phone-form");
     windowForm.append(phoneForm);
 
-    var countryCode = document.createElement("input");
-    countryCode.setAttribute("type", "number");
-    countryCode.setAttribute("name", "countryCode");
-    countryCode.setAttribute("placeholder", "Country code");
+    var countryCode = createInput("number", "countryCode", "Country code");
     phoneForm.append(countryCode);
 
-    var operatorCode = document.createElement("input");
-    operatorCode.setAttribute("type", "number");
-    operatorCode.setAttribute("name", "operatorCode");
-    operatorCode.setAttribute("placeholder", "Operator code");
+    var operatorCode = createInput("number", "operatorCode", "Operator code");
     phoneForm.append(operatorCode);
 
-    var number = document.createElement("input");
-    number.setAttribute("type", "text");
-    number.setAttribute("name", "number");
-    number.setAttribute("placeholder", "Number");
+    var number = createInput("text", "number", "Number");
     phoneForm.append(number);
 
     var p = document.createElement("p");
 
-    var typeMobile = document.createElement("input");
-    typeMobile.setAttribute("type", "radio");
-    typeMobile.setAttribute("name", "type");
-    typeMobile.setAttribute("value", "mobile");
-    typeMobile.setAttribute("id", "mobile");
+    var typeMobile = createRadioInput("type", "mobile", "mobile");
     typeMobile.setAttribute("checked", "true");
 
-    var labelForMobile = document.createElement("label");
-    labelForMobile.innerText = "Mobile";
-    labelForMobile.setAttribute("for", "mobile");
+    var labelForMobile = createLabel("mobile" , "Mobile");
     labelForMobile.append(typeMobile);
     p.append(labelForMobile);
 
-    var typeHome = document.createElement("input");
-    typeHome.setAttribute("type", "radio");
-    typeHome.setAttribute("name", "type");
-    typeHome.setAttribute("value", "home");
-    typeHome.setAttribute("id", "home");
+    var typeHome = createRadioInput("type", "home" , "home");
 
-    var labelForHome = document.createElement("label");
-    labelForHome.innerText = "Home";
-    labelForHome.setAttribute("for", "home");
+    var labelForHome = createLabel("home" , "Home");
     labelForHome.append(typeHome);
     p.append(labelForHome);
 
     phoneForm.append(p);
 
-    var comment = document.createElement("input");
-    comment.setAttribute("type", "text");
-    comment.setAttribute("name", "comment");
-    comment.setAttribute("placeholder", "Comment");
+    var comment = createInput("text" , "comment" , "Comment");
     phoneForm.append(comment);
+
+    //--- Close button ---
 
     var closeBtn = document.createElement("button");
     closeBtn.textContent = "X";
@@ -75,6 +55,8 @@ function showPhoneForm() {
 
     var closeDiv = document.createElement("div");
     closeDiv.append(closeBtn);
+
+    // --- Save button ---
 
     var saveBtn = document.createElement("button");
     saveBtn.textContent = "Save";
@@ -111,14 +93,40 @@ function showPhoneForm() {
 
     });
 
+    // --- Show window ---
 
     var mainWindow = document.createElement("div");
     mainWindow.append(windowForm);
     mainWindow.append(closeDiv);
-    mainWindow.className = "window-main";
+    mainWindow.className = "window-main-phone";
     document.body.append(mainWindow);
 
 }
+
+function createInput(type, name, placeholder) {
+    var input = document.createElement("input");
+    input.setAttribute("type", type);
+    input.setAttribute("name", name);
+    input.setAttribute("placeholder", placeholder);
+    return input;
+}
+
+function createRadioInput(name, value, id) {
+    var input = document.createElement("input");
+    input.setAttribute("type", "radio");
+    input.setAttribute("name", name);
+    input.setAttribute("value", value);
+    input.setAttribute("id", id);
+    return input;
+}
+
+function createLabel(id, text) {
+    var label = document.createElement("label");
+    label.innerText = text;
+    label.setAttribute("for", id);
+    return label;
+}
+
 
 function getDataFromPhoneForm() {
     var phoneForm = document.forms.namedItem("phone-form");

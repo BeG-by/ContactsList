@@ -19,6 +19,7 @@ public class Contact implements Serializable {
     private String email;
     private String currentJob;
     private Address address;
+    private String imgPath;
     private List<Phone> phoneList;
 
     public Contact() {
@@ -118,6 +119,14 @@ public class Contact implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     public List<Phone> getPhoneList() {
@@ -238,7 +247,12 @@ public class Contact implements Serializable {
             return this;
         }
 
-        public Builder phoneList(List<Phone> phones){
+        public Builder imgPath(String path) {
+            contact.setImgPath(path);
+            return this;
+        }
+
+        public Builder phoneList(List<Phone> phones) {
             contact.setPhoneList(phones);
             return this;
         }

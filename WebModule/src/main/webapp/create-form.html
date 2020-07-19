@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Add contact</title>
-    <link rel="stylesheet" href="css/phoneFormPopup.css" type="text/css">
-    <script src="js/sendRequest.js"></script>
-    <script src="js/createForm/phoneFormPopup.js"></script>
+    <link rel="stylesheet" href="styles/create-form.css" type="text/css">
+    <link rel="stylesheet" href="styles/phone-form-popup.css" type="text/css">
+    <link rel="stylesheet" href="styles/attachment-form-popup.css" type="text/css">
 </head>
 <body>
 <header>
@@ -14,6 +14,10 @@
 
 </header>
 <main>
+    <div id="avatar-div">
+        <img src="images/avatar-default.jpg" alt="avatar" id="avatar">
+        <input type="file" id="upload-img" accept="image/*">
+    </div>
     <div id="create-form">
         <form name="contact-form">
             <p><input type="text" name="firstName" placeholder="First name">*</p>
@@ -59,13 +63,37 @@
                 </tr>
                 </thead>
             </table>
-            <p><button id="add-phone-btn">Add phone</button></p>
+            <p>
+                <button id="add-phone-btn">Add phone</button>
+            </p>
+        </div>
+        <div>
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>V</th>
+                    <th>File name</th>
+                    <th>Date</th>
+                    <th>Comment</th>
+                </tr>
+                </thead>
+                <tbody id="attachment-body"></tbody>
+            </table>
+            <p>
+                <button id="add-attachment-btn">Add attachment</button>
+            </p>
+
         </div>
         <button id="create-btn">Add contact</button>
     </div>
 </main>
 
-<script src="js/createForm/createFormApp.js"></script>
+<script src="scripts/requests.js"></script>
+<script src="scripts/create_form/upload-avatar.js"></script>
+<script src="scripts/create_form/phone-form-popup.js"></script>
+<script src="scripts/create_form/attachment-form-popup.js"></script>
+<script src="scripts/create_form/contact-data.js"></script>
+<script src="scripts/create_form/create-form-app.js"></script>
 
 </body>
 </html>

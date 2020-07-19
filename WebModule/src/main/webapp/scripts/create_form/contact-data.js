@@ -1,17 +1,8 @@
 "use strict";
 
-var saveUrl = "http://localhost:8080/v1/contactsList/contacts/save";
-
-document.getElementById("create-btn").addEventListener("click", function () {
-    sendRequest(saveUrl, "POST", getFormContactData(), null, "Contact has been added !");
-});
-
-document.getElementById("add-phone-btn").addEventListener("click", function () {
-    showPhoneForm();
-});
-
-
 function getFormContactData() {
+
+    //--- contact, address ---
 
     var contactForm = document.forms.namedItem("contact-form");
     var addressForm = document.forms.namedItem("address-form");
@@ -66,10 +57,11 @@ function getFormContactData() {
 
     }
 
+    //--- attachment ---
+
+    var attachmentBody = document.getElementById("add-attachment-btn");
+
+
     return contact;
 
 }
-
-
-
-

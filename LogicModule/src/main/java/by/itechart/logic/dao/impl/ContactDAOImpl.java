@@ -1,6 +1,6 @@
 package by.itechart.logic.dao.impl;
 
-import by.itechart.logic.dao.util.ConnectionFactory;
+import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.dao.ContactDAO;
 import by.itechart.logic.entity.Address;
 import by.itechart.logic.entity.Contact;
@@ -31,41 +31,42 @@ public class ContactDAOImpl implements ContactDAO {
 
         List<Contact> contacts = new ArrayList<>();
 
-        try (final Connection connection = ConnectionFactory.createConnection()) {
+        try (final Connection connection = ConnectionFactory.createConnection();
+             final PreparedStatement statement = connection.prepareStatement(FIND_ALL_CONTACTS_QUERY)) {
 
-            final PreparedStatement statement = connection.prepareStatement(FIND_ALL_CONTACTS_QUERY);
             statement.setInt(1, (page - 1) * pageLimit);
             statement.setInt(2, pageLimit);
 
-            final ResultSet resultSet = statement.executeQuery();
+            try (final ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
+                while (resultSet.next()) {
 
-                Contact contact = new Contact.Builder()
-                        .id(resultSet.getLong(1))
-                        .firstName(resultSet.getString(2))
-                        .lastName(resultSet.getString(3))
-                        .middleName(resultSet.getString(4))
-                        .birthday(convertToLocalDate(resultSet.getDate(5)))
-                        .sex(resultSet.getString(6))
-                        .nationality(resultSet.getString(7))
-                        .maritalStatus(resultSet.getString(8))
-                        .urlWebSite(resultSet.getString(9))
-                        .email(resultSet.getString(10))
-                        .currentJob(resultSet.getString(11))
-                        .address(new Address(
-                                resultSet.getLong(12),
-                                resultSet.getLong(17),
-                                resultSet.getString(13),
-                                resultSet.getString(14),
-                                resultSet.getString(15),
-                                resultSet.getInt(16)))
-                        .build();
+                    Contact contact = new Contact.Builder()
+                            .id(resultSet.getLong(1))
+                            .firstName(resultSet.getString(2))
+                            .lastName(resultSet.getString(3))
+                            .middleName(resultSet.getString(4))
+                            .birthday(convertToLocalDate(resultSet.getDate(5)))
+                            .sex(resultSet.getString(6))
+                            .nationality(resultSet.getString(7))
+                            .maritalStatus(resultSet.getString(8))
+                            .urlWebSite(resultSet.getString(9))
+                            .email(resultSet.getString(10))
+                            .currentJob(resultSet.getString(11))
+                            .address(new Address(
+                                    resultSet.getLong(12),
+                                    resultSet.getLong(17),
+                                    resultSet.getString(13),
+                                    resultSet.getString(14),
+                                    resultSet.getString(15),
+                                    resultSet.getInt(16)))
+                            .build();
 
-                contacts.add(contact);
+                    contacts.add(contact);
+                }
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             logger.error("SQL error [findAll] --- " + e);
         }
@@ -79,9 +80,10 @@ public class ContactDAOImpl implements ContactDAO {
 
         long contactId = -1;
 
-        try (final Connection connection = ConnectionFactory.createConnection()) {
-            final PreparedStatement contactStatement = connection.prepareStatement(SAVE_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS);
-            final PreparedStatement addressStatement = connection.prepareStatement(SAVE_ADDRESS_QUERY);
+
+        try (final Connection connection = ConnectionFactory.createConnection();
+             final PreparedStatement contactStatement = connection.prepareStatement(SAVE_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS);
+             final PreparedStatement addressStatement = connection.prepareStatement(SAVE_ADDRESS_QUERY)) {
 
             connection.setAutoCommit(false);
             contactStatement.setString(1, contact.getFirstName());
@@ -96,9 +98,10 @@ public class ContactDAOImpl implements ContactDAO {
             contactStatement.setString(10, contact.getCurrentJob());
             contactStatement.executeUpdate();
 
-            ResultSet generatedKeys = contactStatement.getGeneratedKeys();
-            while (generatedKeys.next()) {
-                contactId = generatedKeys.getLong(1);
+            try (final ResultSet generatedKeys = contactStatement.getGeneratedKeys()) {
+                while (generatedKeys.next()) {
+                    contactId = generatedKeys.getLong(1);
+                }
             }
 
             Address address = contact.getAddress();
@@ -114,13 +117,10 @@ public class ContactDAOImpl implements ContactDAO {
             connection.commit();
             logger.info(String.format("Contact was created [id= %d]", contactId));
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("SQL error [save] --- " + e);
             e.printStackTrace();
             return -1;
-        } catch (Exception e) {
-            // bug finder
-            e.printStackTrace();
         }
 
         return contactId;
@@ -129,10 +129,10 @@ public class ContactDAOImpl implements ContactDAO {
     @Override
     public void deleteAll(List<Long> idList) {
 
-        try (final Connection connection = ConnectionFactory.createConnection()) {
+        try (final Connection connection = ConnectionFactory.createConnection();
+             final PreparedStatement contactStatement = connection.prepareStatement(DELETE_ALL_CONTACTS_QUERY);
+             final PreparedStatement addressStatement = connection.prepareStatement(DELETE_ALL_ADDRESS_QUERY)) {
 
-            final PreparedStatement contactStatement = connection.prepareStatement(DELETE_ALL_CONTACTS_QUERY);
-            final PreparedStatement addressStatement = connection.prepareStatement(DELETE_ALL_ADDRESS_QUERY);
             connection.setAutoCommit(false);
 
             for (Long id : idList) {
@@ -146,7 +146,7 @@ public class ContactDAOImpl implements ContactDAO {
             logger.info(String.format("Contacts were remove [listId= %s]", idList));
 
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("SQL error [deleteAll] --- " + e);
             e.printStackTrace();
         }
@@ -159,15 +159,14 @@ public class ContactDAOImpl implements ContactDAO {
 
         long count = 0;
 
-        try (final Connection connection = ConnectionFactory.createConnection()) {
+        try (final Connection connection = ConnectionFactory.createConnection();
+             final ResultSet resultSet = connection.createStatement().executeQuery(COUNT_CONTACTS_QUERY)) {
 
-            final ResultSet resultSet = connection.createStatement().executeQuery(COUNT_CONTACTS_QUERY);
-
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 count = resultSet.getLong(1);
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("SQL error [countAll] --- " + e);
             e.printStackTrace();
         }

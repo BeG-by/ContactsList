@@ -18,12 +18,20 @@ public class DeleteAllContactsCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
+
         final Gson gson = new Gson();
         final long[] listId = gson.fromJson(req.getReader().readLine(), long[].class);
-        contactDAO.deleteAll(Arrays.stream(listId).boxed().collect(Collectors.toList()));
-        resp.getWriter().write(gson.toJson("Contacts have been deleted"));
 
-        resp.setStatus(resp.SC_OK);
+        if (listId.length != 0) {
+            contactDAO.deleteAll(Arrays.stream(listId).boxed().collect(Collectors.toList()));
+            resp.getWriter().write(gson.toJson("Contacts have been deleted"));
+            resp.setStatus(resp.SC_OK);
+
+        } else {
+            resp.setStatus(resp.SC_BAD_REQUEST);
+            resp.getWriter().write(gson.toJson("Contacts list is empty"));
+        }
+
         resp.setContentType("application/json");
 
     }
