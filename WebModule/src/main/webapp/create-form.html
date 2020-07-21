@@ -14,7 +14,7 @@
 <body>
 <div class="main-container">
     <aside></aside>
-    <main>
+    <div class="content-container">
         <header>
             <div id="logo">
                 <h2>Create contact form</h2>
@@ -32,7 +32,7 @@
                 </ul>
             </nav>
         </header>
-        <div class="create-form">
+        <main>
             <div class="data-form">
                 <div id="avatar-div">
                     <img src="images/avatar-default.jpg" alt="avatar" id="avatar">
@@ -41,17 +41,17 @@
                 <div id="contact-data">
                     <div class="data-container" id="first-container">
                         <div class="form-group">
-                            <label for="first-name">First name</label>
+                            <label for="firstName">First name*</label>
                             <p>
-                                <input type="text" name="firstName" id="first-name" aria-describedby="firstNameHelp">
-                                <small id="firstNameHelp" class="form-text text-muted">Required field</small>
+                                <input type="text" name="firstName" id="firstName" aria-describedby="firstNameHelp">
+<!--                                <small id="firstNameHelp" class="form-text text-muted">Required field</small>-->
                             </p>
                         </div>
                         <div class="form-group">
-                            <label for="last-name">Last name</label>
+                            <label for="lastName">Last name*</label>
                             <p>
-                                <input type="text" name="lastName" id="last-name" aria-describedby="lastNameHelp">
-                                <small id="lastNameHelp" class="form-text text-muted">Required field</small>
+                                <input type="text" name="lastName" id="lastName" aria-describedby="lastNameHelp">
+<!--                                <small id="lastNameHelp" class="form-text text-muted">Required field</small>-->
                             </p>
                         </div>
                         <div class="form-group">
@@ -61,7 +61,7 @@
                             </p>
                         </div>
                         <div class="form-group">
-                            <label>Day of birth</label>
+                            <label>Day of birth*</label>
                             <div class="date-form">
                                 <div>
                                     <input type="text" name="day" id="day" placeholder="--" aria-describedby="dayHelp"
@@ -166,7 +166,7 @@
                         <div class="form-group">
                             <label for="postIndex">Post index</label>
                             <p>
-                                <input type="text" name="postIndex" id="postIndex">
+                                <input type="number" name="postIndex" id="postIndex">
                             </p>
                         </div>
                     </div>
@@ -211,9 +211,9 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </main>
         <footer>Created by Eugene B.</footer>
-    </main>
+    </div>
     <aside></aside>
 </div>
 

@@ -6,7 +6,7 @@ aside {
     flex-basis: 15%;
 }
 
-.create-form {
+main {
     margin-top: 5px;
 }
 
@@ -51,7 +51,7 @@ aside {
     font-family: 'Montserrat', sans-serif;
 }
 
-.tables-phone-att button:hover
+.tables-phone-att button:hover,
 .tables-phone-att button:active,
 .tables-phone-att button:focus {
     background-color: #F4BD11;

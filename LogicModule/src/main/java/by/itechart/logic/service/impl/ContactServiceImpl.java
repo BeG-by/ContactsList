@@ -98,16 +98,16 @@ public class ContactServiceImpl implements ContactService {
                     logger.info("Image has been saved on the disk " + imgPath);
                 }
 
-                if (!attachments.isEmpty()) {
-                    contact.setAttachmentList(new ArrayList<>());
-                    int countOfComments = 0;
-                    for (FileItem item : attachments) {
-                        final String attPath = saveFile(item, directoryPathContact, ATTACHMENT_FIELD_NAME);
-                        final Attachment attachment = new Attachment(attPath, LocalDate.now(), comments[countOfComments]);
-                        contact.getAttachmentList().add(attachment);
-                        logger.info("Attachment has been saved on the disk " + attPath);
-                    }
+                contact.setAttachmentList(new ArrayList<>());
+                int countOfComments = 0;
+                for (FileItem item : attachments) {
+                    final String attPath = saveFile(item, directoryPathContact, ATTACHMENT_FIELD_NAME);
+                    final Attachment attachment = new Attachment(attPath, LocalDate.now(), comments[countOfComments]);
+                    contact.getAttachmentList().add(attachment);
+                    logger.info("Attachment has been saved on the disk " + attPath);
+                    countOfComments++;
                 }
+
 
                 logger.info("Multipart request has been parsed " + contact);
                 return contact;
