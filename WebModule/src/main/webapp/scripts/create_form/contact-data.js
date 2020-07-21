@@ -1,41 +1,39 @@
 "use strict";
 
+//--- Contact, address ---
+
 function getFormContactData() {
 
-    //--- contact, address ---
-
-    var contactForm = document.forms.namedItem("contact-form");
-    var addressForm = document.forms.namedItem("address-form");
+    var contactData = document.getElementById("contact-data");
+    var inputs = contactData.querySelectorAll("input");
     var phonesTr = document.querySelectorAll(".phone-number");
 
     var contact = {};
+    var birthday = {};
     var address = {};
     var phonesArr = [];
 
-    for (var i = 0; i < contactForm.length; i++) {
-        var formElement = contactForm[i];
+    for (var i = 0; i < inputs.length; i++) {
+        var formElement = inputs[i];
         if (formElement.type === "radio" && !formElement.checked) {
             continue;
         }
 
-        if (formElement.name === "birthday") {
-            var arr = formElement.value.split("-");
-            contact["birthday"] = {
-                year: arr[0],
-                month: arr[1],
-                day: arr[2]
-            };
+        if (formElement.name === "day" || formElement.name === "month" || formElement.name === "year") {
+            birthday[formElement.name] = formElement.value;
+            continue;
+        }
 
+        if (formElement.name === "country" || formElement.name === "city" || formElement.name === "street" || formElement.name === "postIndex") {
+            address[formElement.name] = formElement.value;
             continue;
         }
 
         contact[formElement.name] = formElement.value;
     }
 
-    for (var i = 0; i < addressForm.length; i++) {
-        address[addressForm[i].name] = addressForm[i].value;
-    }
 
+    contact["birthday"] = birthday;
     contact["address"] = address;
 
     if (phonesTr !== undefined) {
@@ -57,11 +55,24 @@ function getFormContactData() {
 
     }
 
-    //--- attachment ---
-
-    var attachmentBody = document.getElementById("add-attachment-btn");
-
+    console.log(contact);
 
     return contact;
+
+}
+
+// --- Comments for attachments ---
+
+function getCommentsAttachment() {
+
+    var comments = document.querySelectorAll(".comment-att");
+
+    var arrComments = [];
+
+    for (var i = 0; i < comments.length; i++) {
+        arrComments.push(comments[i].textContent);
+    }
+
+    return arrComments;
 
 }

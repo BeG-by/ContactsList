@@ -8,16 +8,15 @@ public class Attachment implements Serializable {
 
     private long id;
     private long contactId;
-    private String fileName;
+    private String filePath;
     private LocalDate dateOfLoad;
     private String comment;
 
     public Attachment() {
     }
 
-    public Attachment(long contactId, String fileName, LocalDate dateOfLoad, String comment) {
-        this.contactId = contactId;
-        this.fileName = fileName;
+    public Attachment(String filePath, LocalDate dateOfLoad, String comment) {
+        this.filePath = filePath;
         this.dateOfLoad = dateOfLoad;
         this.comment = comment;
     }
@@ -38,12 +37,12 @@ public class Attachment implements Serializable {
         this.contactId = contactId;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     public LocalDate getDateOfLoad() {
@@ -62,6 +61,7 @@ public class Attachment implements Serializable {
         this.comment = comment;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,14 +69,14 @@ public class Attachment implements Serializable {
         Attachment that = (Attachment) o;
         return id == that.id &&
                 contactId == that.contactId &&
-                Objects.equals(fileName, that.fileName) &&
+                Objects.equals(filePath, that.filePath) &&
                 Objects.equals(dateOfLoad, that.dateOfLoad) &&
                 Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contactId, fileName, dateOfLoad, comment);
+        return Objects.hash(id, contactId, filePath, dateOfLoad, comment);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Attachment implements Serializable {
         return "Attachment{" +
                 "id=" + id +
                 ", contactId=" + contactId +
-                ", fileName='" + fileName + '\'' +
+                ", filePath='" + filePath + '\'' +
                 ", dateOfLoad=" + dateOfLoad +
                 ", comment='" + comment + '\'' +
                 '}';

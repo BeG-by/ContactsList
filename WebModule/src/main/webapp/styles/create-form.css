@@ -1,14 +1,78 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', sans-serif;
+main {
+    flex-basis: 70%;
+}
+
+aside {
+    flex-basis: 15%;
+}
+
+.create-form {
+    margin-top: 5px;
 }
 
 #avatar {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
 }
 
 #upload-img {
     display: none;
+}
+
+.data-form {
+    display: flex;
+    font-size: 14px;
+    justify-content: space-between;
+    border-width: 1px;
+}
+
+#avatar-div {
+    flex-basis: 10%;
+}
+
+
+#contact-data {
+    display: flex;
+    justify-content: space-evenly;
+    flex-basis: 90%;
+}
+
+
+.tables-phone-att {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.tables-phone-att button {
+    background-color: #439BF9;
+    border-width: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.tables-phone-att button:hover
+.tables-phone-att button:active,
+.tables-phone-att button:focus {
+    background-color: #F4BD11;
+}
+
+
+.phone-container {
+    flex-basis: 47%;
+}
+
+.att-container {
+    flex-basis: 47%;
+}
+
+.date-form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sex-radio, .maritalStatus-radio {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
 }

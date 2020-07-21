@@ -23,21 +23,21 @@ function createTableContactBody(rowCounts) {
                 var checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.disabled = true;
-                td.append(checkbox);
+                td.appendChild(checkbox);
             }
 
             if (j === 1) {
                 var linkUpdate = document.createElement("a");
                 linkUpdate.setAttribute("href", updateUrl);
-                td.append(linkUpdate);
+                td.appendChild(linkUpdate);
             }
 
-            tr.append(td);
+            tr.appendChild(td);
 
         }
 
         trBodyArr.push(tr);
-        tBody.append(tr);
+        tBody.appendChild(tr);
 
     }
 
@@ -46,6 +46,7 @@ function createTableContactBody(rowCounts) {
 function fillTableContacts(response) {
 
     var jsonResponse = response;
+    console.log(jsonResponse);
 
     var count = 0;
 
@@ -111,9 +112,10 @@ function setEmptyValues() {
             }
         }
     }
+
 }
 
-function deleteContacts() {
+function getCheckedCheckbox() {
 
     var checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
     var deleteList = [];

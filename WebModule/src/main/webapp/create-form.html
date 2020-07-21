@@ -3,90 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <title>Add contact</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/index.css" type="text/css">
     <link rel="stylesheet" href="styles/create-form.css" type="text/css">
     <link rel="stylesheet" href="styles/phone-form-popup.css" type="text/css">
     <link rel="stylesheet" href="styles/attachment-form-popup.css" type="text/css">
 </head>
 <body>
-<header>
-    <h1>Add contact</h1>
-    <a href="index.html">Main</a>
+<div class="main-container">
+    <aside></aside>
+    <main>
+        <header>
+            <div id="logo">
+                <h2>Create contact form</h2>
+            </div>
+            <nav>
+                <ul id="menu-list">
+                    <li>
+                        <button id="create-btn">Save contact</button>
+                    </li>
+                    <li>
+                        <a href="index.html">
+                            <button>Return to list</button>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <div class="create-form">
+            <div class="data-form">
+                <div id="avatar-div">
+                    <img src="images/avatar-default.jpg" alt="avatar" id="avatar">
+                    <input type="file" id="upload-img" accept="image/*">
+                </div>
+                <div id="contact-data">
+                    <div class="data-container" id="first-container">
+                        <div class="form-group">
+                            <label for="first-name">First name</label>
+                            <p>
+                                <input type="text" name="firstName" id="first-name" aria-describedby="firstNameHelp">
+                                <small id="firstNameHelp" class="form-text text-muted">Required field</small>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last name</label>
+                            <p>
+                                <input type="text" name="lastName" id="last-name" aria-describedby="lastNameHelp">
+                                <small id="lastNameHelp" class="form-text text-muted">Required field</small>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="middleName">Middle name</label>
+                            <p>
+                                <input type="text" name="middleName" id="middleName">
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Day of birth</label>
+                            <div class="date-form">
+                                <div>
+                                    <input type="text" name="day" id="day" placeholder="--" aria-describedby="dayHelp"
+                                           size="1">
+                                    <small id="dayHelp" class="form-text text-muted">day</small>
+                                </div>
+                                <div>
+                                    <input type="text" name="month" id="month" placeholder="--"
+                                           aria-describedby="monthHelp"
+                                           size="1">
+                                    <small id="monthHelp" class="form-text text-muted">month</small>
+                                </div>
+                                <div>
+                                    <input type="text" name="year" id="year" placeholder="----"
+                                           aria-describedby="yearHelp"
+                                           size="3">
+                                    <small id="yearHelp" class="form-text text-muted">year</small>
+                                </div>
+                            </div>
+                        </div>
 
-</header>
-<main>
-    <div id="avatar-div">
-        <img src="images/avatar-default.jpg" alt="avatar" id="avatar">
-        <input type="file" id="upload-img" accept="image/*">
-    </div>
-    <div id="create-form">
-        <form name="contact-form">
-            <p><input type="text" name="firstName" placeholder="First name">*</p>
-            <p><input type="text" name="lastName" placeholder="Last name">*</p>
-            <p><input type="text" name="middleName" placeholder="Middle name"></p>
-            <p><input type="date" name="birthday" placeholder="Date of birth"></p>
-            <p>
-                <label for="male">
-                    Male<input type="radio" name="sex" value="male" id="male" checked>
-                </label>
-                <label for="female">
-                    Female<input type="radio" name="sex" value="female" id="female">
-                </label>
-            </p>
-            <p><input type="text" name="nationality" placeholder="Nationality"></p>
-            <p>
-                <label for="single">
-                    Single<input type="radio" name="maritalStatus" value="single" id="single" checked>
-                </label>
-                <label for="married">
-                    Married<input type="radio" name="maritalStatus" value="married" id="married">
-                </label>
-            </p>
-            <p><input type="text" name="urlWebSite" placeholder="Web site"></p>
-            <p><input type="email" name="email" placeholder="Email"></p>
-            <p><input type="text" name="currentJob" placeholder="CurrentJob"></p>
-        </form>
-        <form name="address-form">
-            <p><input type="text" name="country" placeholder="Country"></p>
-            <p><input type="text" name="city" placeholder="City"></p>
-            <p><input type="text" name="street" placeholder="Street"></p>
-            <p><input type="number" name="postIndex" placeholder="Post index"></p>
-        </form>
+                        <div class="form-check sex-radio">
+                            <div>
+                                <input class="form-check-input" type="radio" name="sex" id="male" value="male" checked>
+                                <label class="form-check-label" for="male">
+                                    Male
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" name="sex" id="female" value="female">
+                                <label class="form-check-label" for="female">
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="data-container" id="second-container">
+                        <div class="form-group">
+                            <label for="nationality">Nationality</label>
+                            <p>
+                                <input type="text" name="nationality" id="nationality">
+                            </p>
+                        </div>
+                        <div class="form-check maritalStatus-radio">
+                            <div>
+                                <input class="form-check-input" type="radio" name="maritalStatus" id="single"
+                                       value="single" checked>
+                                <label class="form-check-label" for="single">
+                                    Single
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input" type="radio" name="maritalStatus" id="married"
+                                       value="married">
+                                <label class="form-check-label" for="married">
+                                    Married
+                                </label>
+                            </div>
+                        </div>
 
-        <div>
-            <table id="phone-table" border="1">
-                <thead>
-                <tr>
-                    <th>V</th>
-                    <th>Phone number</th>
-                    <th>Type</th>
-                    <th>Comment</th>
-                </tr>
-                </thead>
-            </table>
-            <p>
-                <button id="add-phone-btn">Add phone</button>
-            </p>
+                        <div class="form-group">
+                            <label for="urlWebSite">Web site</label>
+                            <p>
+                                <input type="text" name="urlWebSite" id="urlWebSite">
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <p>
+                                <input type="email" name="email" id="email">
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="currentJob">Job</label>
+                            <p>
+                                <input type="text" name="currentJob" id="currentJob">
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="data-container" id="third-container">
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <p>
+                                <input type="text" name="country" id="country">
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <p>
+                                <input type="text" name="city" id="city">
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="street">Street</label>
+                            <p>
+                                <input type="text" name="street" id="street">
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="postIndex">Post index</label>
+                            <p>
+                                <input type="text" name="postIndex" id="postIndex">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tables-phone-att">
+                <div class="phone-container">
+                    <p>
+                        <button id="add-phone-btn" class="btn btn-primary">Add</button>
+                        <button id="delete-phone-btn" class="btn btn-primary">Delete</button>
+                        <button id="update-phone-btn" class="btn btn-primary">Update</button>
+                    </p>
+                    <table id="phone-table" class="table table-sm">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>&#10003</th>
+                            <th>Phone number</th>
+                            <th>Type</th>
+                            <th>Comment</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="att-container">
+                    <p>
+                        <button id="add-att-btn" class="btn btn-primary">Add</button>
+                        <button id="delete-att-btn" class="btn btn-primary">Delete</button>
+                        <button id="update-att-btn" class="btn btn-primary">Update</button>
+                    </p>
+                    <table class="table table-sm">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>&#10003</th>
+                            <th>File name</th>
+                            <th>Date</th>
+                            <th>Comment</th>
+                        </tr>
+                        </thead>
+                        <tbody id="attachment-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div>
-            <table border="1">
-                <thead>
-                <tr>
-                    <th>V</th>
-                    <th>File name</th>
-                    <th>Date</th>
-                    <th>Comment</th>
-                </tr>
-                </thead>
-                <tbody id="attachment-body"></tbody>
-            </table>
-            <p>
-                <button id="add-attachment-btn">Add attachment</button>
-            </p>
-
-        </div>
-        <button id="create-btn">Add contact</button>
-    </div>
-</main>
+        <footer>Created by Eugene B.</footer>
+    </main>
+    <aside></aside>
+</div>
 
 <script src="scripts/requests.js"></script>
 <script src="scripts/create_form/upload-avatar.js"></script>

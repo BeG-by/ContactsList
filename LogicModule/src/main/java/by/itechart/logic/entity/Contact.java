@@ -19,8 +19,9 @@ public class Contact implements Serializable {
     private String email;
     private String currentJob;
     private Address address;
-    private String imgPath;
+    private String directoryPath;
     private List<Phone> phoneList;
+    private List<Attachment> attachmentList;
 
     public Contact() {
     }
@@ -121,12 +122,12 @@ public class Contact implements Serializable {
         this.address = address;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public String getDirectoryPath() {
+        return directoryPath;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
     }
 
     public List<Phone> getPhoneList() {
@@ -135,6 +136,14 @@ public class Contact implements Serializable {
 
     public void setPhoneList(List<Phone> phoneList) {
         this.phoneList = phoneList;
+    }
+
+    public List<Attachment> getAttachmentList() {
+        return attachmentList;
+    }
+
+    public void setAttachmentList(List<Attachment> attachmentList) {
+        this.attachmentList = attachmentList;
     }
 
     @Override
@@ -158,7 +167,7 @@ public class Contact implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, middleName, birthday, sex, nationality, maritalStatus, urlWebSite, email, currentJob, address);
+        return Objects.hash(id, firstName, lastName, middleName, birthday, sex, nationality, maritalStatus, urlWebSite, email, currentJob, address, directoryPath, phoneList, attachmentList);
     }
 
     @Override
@@ -176,7 +185,9 @@ public class Contact implements Serializable {
                 ", email='" + email + '\'' +
                 ", currentJob='" + currentJob + '\'' +
                 ", address=" + address +
+                ", directoryPath='" + directoryPath + '\'' +
                 ", phoneList=" + phoneList +
+                ", attachmentList=" + attachmentList +
                 '}';
     }
 
@@ -247,13 +258,18 @@ public class Contact implements Serializable {
             return this;
         }
 
-        public Builder imgPath(String path) {
-            contact.setImgPath(path);
+        public Builder directoryPath(String path) {
+            contact.setDirectoryPath(path);
             return this;
         }
 
         public Builder phoneList(List<Phone> phones) {
             contact.setPhoneList(phones);
+            return this;
+        }
+
+        public Builder attachmentList(List<Attachment> attachments) {
+            contact.setAttachmentList(attachments);
             return this;
         }
 
