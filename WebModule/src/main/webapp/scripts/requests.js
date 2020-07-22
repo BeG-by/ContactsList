@@ -73,9 +73,7 @@ function sendMultipartRequest(type, url, json, avatar, attachments, comments) {
         formData.append("attachment" + i, attachments[i]);
     }
 
-    console.log(comments);
     formData.append("comments", JSON.stringify(comments));
-
 
     xhr.send(formData);
 

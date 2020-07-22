@@ -1,40 +1,90 @@
 .window-main-phone {
-    display: flex;
-    background-color: rgb(42, 135, 241);
-    height: 250px;
-    width: 300px;
-    border: 1px solid rgb(245, 126, 126);
-    border-radius: 10px;
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(109, 150, 240, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
     overflow: hidden;
+
 }
 
 
 .window-form-phone {
-    display: flex;
-    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    height: auto;
+    width: 25%;
+    border: 1px solid #439BF9;
+    /*border-top-right-radius: 30px;*/
+    /*border-top-left-radius: 30px;*/
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    overflow: hidden;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex; /*IE*/
+    flex-direction: column; /*IE*/
 }
 
-.close-btn {
-    padding: 0;
-    margin-left: auto;
-    height: 15px;
-    width: 15px;
-    font-size: 10px;
-    font-weight: bold;
-    background-color: inherit;
-    color: black;
-    border: 2px solid black;
-    border-radius: 4px;
-    font-family: sans-serif;
+.phone-form {
+    width: 70%;
+    margin: 1rem auto;
+}
+
+.window-form-phone header {
+    color: white;
+}
+
+.window-form-phone main {
+    padding: 5px;
+}
+
+.window-form-phone input[type=text] {
+    width: 70%;
+}
+
+.window-form-phone textarea {
+    resize: none;
+    margin: auto;
+    width: 90%;
+}
+
+.window-form-phone .form-check {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#mobile-form-div {
+    margin-right: 20px;
+}
+
+#home-form-div {
+    margin-left: 20px;
+}
+
+.window-form-phone button {
+    background-color: #439BF9;
+    border-width: 0;
+    font-family: 'Montserrat', sans-serif;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.save-btn:hover {
+    background-color: #28a745;
 }
 
 .close-btn:hover {
-    background-color: black;
-    color: white;
+    background-color: #dc3545;
 }

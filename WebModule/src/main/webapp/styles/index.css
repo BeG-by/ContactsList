@@ -27,9 +27,9 @@ html, body {
 }
 
 .content-container {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    /*flex-grow: 1;*/
+    display: flex; /*IE*/
+    flex-direction: column; /*IE*/
     min-height: 100%;
     flex-basis: 80%;
     /*flex-shrink: 0;*/
@@ -108,7 +108,7 @@ nav {
 }
 
 footer {
-    flex-grow: 0;
+    flex-grow: 0; /*IE*/
     margin: 0 auto;
     width: 100%;
     text-align: center;

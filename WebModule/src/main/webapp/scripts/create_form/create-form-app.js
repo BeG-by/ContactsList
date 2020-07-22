@@ -11,9 +11,26 @@ document.getElementById("create-btn").addEventListener("click", function () {
 
 });
 
-document.getElementById("add-phone-btn").addEventListener("click", showPhoneForm);
+document.getElementById("add-phone-btn").addEventListener("click", function () {
+    createPhoneForm(null);
+});
+
+document.getElementById("delete-phone-btn").addEventListener("click", deletePhoneRow);
+
+document.getElementById("update-phone-btn").addEventListener("click", function () {
+    var phoneData = getDataForUpdatePhone();
+    if (phoneData != null) {
+        createPhoneForm(phoneData);
+    }
+});
+
 
 document.getElementById("add-att-btn").addEventListener("click", showAttachmentForm);
+
+document.getElementById("day").addEventListener("input", replaceLetters);
+document.getElementById("month").addEventListener("input", replaceLetters);
+document.getElementById("year").addEventListener("input", replaceLetters);
+document.getElementById("postIndex").addEventListener("input", replaceLetters);
 
 
 

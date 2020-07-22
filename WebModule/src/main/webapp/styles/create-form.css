@@ -10,9 +10,20 @@ main {
     margin-top: 5px;
 }
 
+h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
 #avatar {
     width: 300px;
     height: 300px;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+}
+
+#avatar-div {
+    margin-left: 5px;
 }
 
 #upload-img {
@@ -30,11 +41,15 @@ main {
     flex-basis: 10%;
 }
 
+.information-div {
+    flex-basis: 80%;
+}
+
 
 #contact-data {
     display: flex;
     justify-content: space-evenly;
-    flex-basis: 90%;
+    font-weight: 500;
 }
 
 

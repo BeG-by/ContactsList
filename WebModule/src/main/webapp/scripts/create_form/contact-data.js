@@ -65,7 +65,7 @@ function getFormContactData() {
 
     var regExpEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (!regExpEmail.test(email)) {
+    if (email !== "" && !regExpEmail.test(email)) {
         alert("Incorrect email !");
         return false;
     }
@@ -100,9 +100,11 @@ function getFormContactData() {
 
     var postIndex = document.getElementById("postIndex").value;
 
-    if (!matchStrict(/\d{0,10}/ , postIndex)) {
-        alert("Index length should be less than 10 !")
+    if (!matchStrict(/\d{0,10}/, postIndex)) {
+        alert("Index length should be less than 10 !");
         return false;
+    } else if (postIndex === "") {
+        postIndex = -1;
     }
 
     contact["firstName"] = firstName;
@@ -127,26 +129,20 @@ function getFormContactData() {
 
     var phonesTr = document.querySelectorAll(".phone-number");
 
-    if (phonesTr !== undefined) {
+    for (var i = 0; i < phonesTr.length; i++) {
+        var tr = phonesTr[i];
+        var phone = {};
+        var number = tr.children[1].textContent.split(" ");
+        phone["countryCode"] = number[0];
+        phone["operatorCode"] = number[1];
+        phone["number"] = number[2];
+        phone["type"] = tr.children[2].textContent;
+        phone["comment"] = tr.children[3].textContent;
 
-        for (var i = 0; i < phonesTr.length; i++) {
-            var tr = phonesTr[i];
-            var phone = {};
-            var number = tr.children[1].textContent.split(" ");
-            phone["countryCode"] = number[0];
-            phone["operatorCode"] = number[1];
-            phone["number"] = number[2];
-            phone["type"] = tr.children[2].textContent;
-            phone["comment"] = tr.children[3].textContent;
-
-            phonesArr.push(phone);
-        }
-
-        contact["phoneList"] = phonesArr;
-
+        phonesArr.push(phone);
     }
 
-    console.log(contact);
+    contact["phoneList"] = phonesArr;
 
     return contact;
 
