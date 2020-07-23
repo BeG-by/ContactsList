@@ -19,17 +19,14 @@
     background-color: white;
     height: auto;
     width: 25%;
-    border: 1px solid #439BF9;
-    /*border-top-right-radius: 30px;*/
-    /*border-top-left-radius: 30px;*/
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
+    border: 1px solid #007bff;
+    border-radius: 30px;
     position: absolute;
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    overflow: hidden;
+    overflow: auto;
     font-weight: 500;
     font-size: 16px;
     display: flex; /*IE*/
@@ -43,6 +40,7 @@
 
 .window-form-phone header {
     color: white;
+    background-color: #007bff;
 }
 
 .window-form-phone main {
@@ -74,7 +72,7 @@
 }
 
 .window-form-phone button {
-    background-color: #439BF9;
+    background-color: #007bff;
     border-width: 0;
     font-family: 'Montserrat', sans-serif;
     margin-right: 5px;

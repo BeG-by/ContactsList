@@ -32,4 +32,3 @@ uploadInput.addEventListener("change", function () {
     }
 
 });
-

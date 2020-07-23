@@ -55,6 +55,7 @@ header {
     background-color: #439BF9;
     border-top-right-radius: 30px;
     border-top-left-radius: 30px;
+    border-width: 0;
 }
 
 nav {

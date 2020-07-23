@@ -1,5 +1,7 @@
 "use strict";
 
+// --- Get and validate data from inputs ---
+
 function getDataFromPhoneForm() {
 
     var phone = {};
@@ -25,8 +27,8 @@ function getDataFromPhoneForm() {
     var checkBox = document.getElementById("mobile-form").checked ? "mobile" : "home";
 
     var comment = document.getElementById("comment-form");
-    if (comment.value.length > 60) {
-        alert("Max length of comment is 60 symbols !");
+    if (comment.value.length > 45) {
+        alert("Max length of comment is 45 symbols !");
         return false;
     }
 
@@ -39,6 +41,8 @@ function getDataFromPhoneForm() {
     return phone;
 
 }
+
+// --- Get checked checkboxes and delete them ---
 
 function deletePhoneRow() {
 
@@ -63,6 +67,8 @@ function deletePhoneRow() {
     }
 
 }
+
+// --- Get phone data from the table ---
 
 function getDataForUpdatePhone() {
 
@@ -108,6 +114,4 @@ function getDataForUpdatePhone() {
         return phone;
 
     }
-
 }
-

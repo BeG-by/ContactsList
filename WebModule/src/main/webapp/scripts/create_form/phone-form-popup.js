@@ -1,6 +1,8 @@
 "use strict";
 
-var idCheckBoxRow = 0;
+var formPhonePhoneClassName = "phone-form shadow p-3 mb-5 bg-white rounded";
+var saveBtnPhoneClassName = "btn btn-success save-btn";
+var cancelBtnPhoneClassName = "btn btn-danger close-btn";
 
 function createPhoneForm(phoneDTO) {
 
@@ -10,16 +12,16 @@ function createPhoneForm(phoneDTO) {
     windowForm.className = "window-form-phone";
 
     var headerPhone = document.createElement("header");
-    var h1 = document.createElement("h2");
-    h1.innerText = "Contact phone";
-    headerPhone.appendChild(h1);
+    var h2 = document.createElement("h2");
+    h2.innerText = "Contact phone";
+    headerPhone.appendChild(h2);
     windowForm.appendChild(headerPhone);
 
     var mainContent = document.createElement("main");
     windowForm.appendChild(mainContent);
 
     var phoneForm = document.createElement("div");
-    phoneForm.className = "phone-form shadow p-3 mb-5 bg-white rounded";
+    phoneForm.className = formPhonePhoneClassName;
     mainContent.appendChild(phoneForm);
 
     var countryCode = createInput("text", "countryCode", "countryCode-form", "Country code");
@@ -48,14 +50,14 @@ function createPhoneForm(phoneDTO) {
 
     var saveBtn = document.createElement("button");
     saveBtn.textContent = "Save";
-    saveBtn.className = "btn btn-success save-btn";
+    saveBtn.className = saveBtnPhoneClassName;
     phoneForm.appendChild(saveBtn);
 
     //--- Close button ---
 
     var closeBtn = document.createElement("button");
     closeBtn.textContent = "Cancel";
-    closeBtn.className = "btn btn-danger close-btn";
+    closeBtn.className = cancelBtnPhoneClassName;
     phoneForm.appendChild(closeBtn);
 
     closeBtn.addEventListener("click", function () {
@@ -72,7 +74,7 @@ function createPhoneForm(phoneDTO) {
     document.body.appendChild(mainWindow);
 
     if (phoneDTO !== null) {
-        fillInput(phoneDTO);
+        fillPhoneInputs(phoneDTO);
     }
 
     saveBtn.addEventListener("click", function (e) {
@@ -84,11 +86,7 @@ function createPhoneForm(phoneDTO) {
             return;
         }
 
-        if (phoneDTO === null) {
-            createUpdatePhoneRow(phone, null);
-        } else {
-            createUpdatePhoneRow(phone, phoneDTO["id"]);
-        }
+        phoneDTO === null ? createPhoneRow(phone) : updatePhoneRow(phone, phoneDTO["id"]);
 
         mainWindow.parentNode.removeChild(mainWindow);
 
@@ -96,128 +94,56 @@ function createPhoneForm(phoneDTO) {
 
 }
 
-function createUpdatePhoneRow(phone, id) {
+
+// --- Insert phone row into the table ---
+
+function createPhoneRow(phone) {
 
     var phoneTable = document.getElementById("phone-body");
-    var tr;
+    var tr = document.createElement("tr");
 
-    if (id === null) {
+    tr.className = "phone-number";
+    tr.id = idPhoneTableRow.toString() + "tr-phone";
+    idPhoneTableRow++;
+    phoneTable.appendChild(tr);
 
-        tr = document.createElement("tr");
-        tr.className = "phone-number";
-        tr.id = idCheckBoxRow.toString() + "tr";
-        idCheckBoxRow++;
-        phoneTable.appendChild(tr);
+    var checkBox = document.createElement("input");
+    checkBox.type = "checkbox";
+    checkBox.className = "checkbox-phone";
+    tr.appendChild(checkBox);
 
-        var checkBox = document.createElement("input");
-        checkBox.type = "checkbox";
-        checkBox.className = "checkbox-phone";
-        tr.appendChild(checkBox);
+    var phoneNumber = document.createElement("td");
+    phoneNumber.innerText = phone["countryCode"] + " " + phone["operatorCode"] + " " + phone["number"];
+    tr.appendChild(phoneNumber);
 
-        var phoneNumber = document.createElement("td");
-        phoneNumber.innerText = phone["countryCode"] + " " + phone["operatorCode"] + " " + phone["number"];
-        tr.appendChild(phoneNumber);
+    var type = document.createElement("td");
+    type.innerText = phone["type"];
+    tr.appendChild(type);
 
-        var type = document.createElement("td");
-        type.innerText = phone["type"];
-        tr.appendChild(type);
-
-        var comment = document.createElement("td");
-        comment.innerText = phone["comment"];
-        tr.appendChild(comment);
-
-
-    } else {
-
-        tr = document.getElementById(id);
-
-        tr.children[0].checked = false;
-        tr.children[1].textContent = phone["countryCode"] + " " + phone["operatorCode"] + " " + phone["number"];
-        tr.children[2].textContent = phone["type"];
-        tr.children[3].textContent = phone["comment"]
-
-    }
-
+    var comment = document.createElement("td");
+    comment.innerText = phone["comment"];
+    tr.appendChild(comment);
 
 }
 
 
-function createInput(type, name, id, textLabel) {
+/// --- Update phone row in the table ---
 
-    var div = document.createElement("div");
-    div.className = "form-group";
-    var label = document.createElement("label");
-    label.for = id;
-    label.innerText = textLabel;
+function updatePhoneRow(phone, id) {
 
-    div.appendChild(label);
+    var tr = document.getElementById(id);
 
-    var p = document.createElement("p");
-    var input = document.createElement("input");
-    input.type = type;
-    input.name = name;
-    input.id = id;
-    input.addEventListener("input", replaceLetters);
+    tr.children[0].checked = false;
+    tr.children[1].textContent = phone["countryCode"] + " " + phone["operatorCode"] + " " + phone["number"];
+    tr.children[2].textContent = phone["type"];
+    tr.children[3].textContent = phone["comment"]
 
-    p.appendChild(input);
-    div.appendChild(p);
-
-    return div;
-}
-
-function createRadioInput(name, value, labelText, isChecked) {
-
-    var div = document.createElement("div");
-    div.id = value + "-div";
-
-    var input = document.createElement("input");
-    input.type = "radio";
-    input.name = name;
-    input.id = value;
-    input.value = value;
-    input.className = "form-check-input";
-    input.checked = isChecked;
-
-    var label = createLabel(value, labelText);
-    label.className = "form-check-label";
-
-    div.appendChild(input);
-    div.appendChild(label);
-
-    return div;
-}
-
-function createTextArea(name, textLabel) {
-
-    var div = document.createElement("div");
-    var textArea = document.createElement("textarea");
-    textArea.name = name;
-    textArea.id = name;
-    textArea.cols = 30;
-    textArea.rows = 2;
-
-    var p = document.createElement("p");
-    var label = createLabel(name, textLabel);
-
-    p.appendChild(textArea);
-    div.appendChild(label);
-    div.appendChild(p);
-    return div;
-}
-
-function createLabel(id, text) {
-    var label = document.createElement("label");
-    label.innerText = text;
-    label.setAttribute("for", id);
-    return label;
-}
-
-function replaceLetters() {
-    this.value = this.value.replace(/\D/, "");
 }
 
 
-function fillInput(phone) {
+// -- Fill inputs value for update ---
+
+function fillPhoneInputs(phone) {
 
     var country = document.getElementById("countryCode-form");
     var operator = document.getElementById("operatorCode-form");

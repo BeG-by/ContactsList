@@ -163,24 +163,3 @@ function getFormContactData() {
 // console.log(number1.getMonth());
 // console.log(number1.getDay());
 // console.log(number1.getDate());
-
-function matchStrict(regExp, str) {
-    var match = str.match(regExp);
-    return match && str === match[0];
-}
-
-// --- Comments for attachments ---
-
-function getCommentsAttachment() {
-
-    var comments = document.querySelectorAll(".comment-att");
-
-    var arrComments = [];
-
-    for (var i = 0; i < comments.length; i++) {
-        arrComments.push(comments[i].textContent);
-    }
-
-    return arrComments;
-
-}
