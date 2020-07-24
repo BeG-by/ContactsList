@@ -8,15 +8,15 @@ public class Attachment implements Serializable {
 
     private long id;
     private long contactId;
-    private String filePath;
+    private String fileName;
     private LocalDate dateOfLoad;
     private String comment;
 
     public Attachment() {
     }
 
-    public Attachment(String filePath, LocalDate dateOfLoad, String comment) {
-        this.filePath = filePath;
+    public Attachment(String fileName, LocalDate dateOfLoad, String comment) {
+        this.fileName = fileName;
         this.dateOfLoad = dateOfLoad;
         this.comment = comment;
     }
@@ -37,12 +37,12 @@ public class Attachment implements Serializable {
         this.contactId = contactId;
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public LocalDate getDateOfLoad() {
@@ -69,14 +69,14 @@ public class Attachment implements Serializable {
         Attachment that = (Attachment) o;
         return id == that.id &&
                 contactId == that.contactId &&
-                Objects.equals(filePath, that.filePath) &&
+                Objects.equals(fileName, that.fileName) &&
                 Objects.equals(dateOfLoad, that.dateOfLoad) &&
                 Objects.equals(comment, that.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, contactId, filePath, dateOfLoad, comment);
+        return Objects.hash(id, contactId, fileName, dateOfLoad, comment);
     }
 
     @Override
@@ -84,10 +84,9 @@ public class Attachment implements Serializable {
         return "Attachment{" +
                 "id=" + id +
                 ", contactId=" + contactId +
-                ", filePath='" + filePath + '\'' +
+                ", fileName='" + fileName + '\'' +
                 ", dateOfLoad=" + dateOfLoad +
                 ", comment='" + comment + '\'' +
                 '}';
     }
-
 }

@@ -32,6 +32,16 @@ public class FrontController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        System.out.println("REQ:" + req.getCharacterEncoding());
+        System.out.println("RESP:" + resp.getCharacterEncoding());
+
+
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
+        System.out.println("REQ after:" + req.getCharacterEncoding());
+        System.out.println("RESP after:" + resp.getCharacterEncoding());
+
         logger.info(String.format("Request is processing... [url: %s , method: %s]", req.getRequestURI(), req.getMethod()));
 
         final String requestURI = req.getRequestURI();
@@ -41,7 +51,6 @@ public class FrontController extends HttpServlet {
 
         if (command != null) {
             command.execute(req, resp);
-            resp.setCharacterEncoding("UTF-8");
             logger.info(String.format("Request [url: %s , method: %s] has been processed", req.getRequestURI(), req.getMethod()));
         } else {
             logger.error(String.format("Command didn't find [%s] ", commandKey));

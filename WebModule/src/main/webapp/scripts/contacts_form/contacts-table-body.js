@@ -46,7 +46,6 @@ function createTableContactBody(rowCounts) {
 function fillTableContacts(response) {
 
     var jsonResponse = response;
-    console.log(jsonResponse);
 
     var count = 0;
 

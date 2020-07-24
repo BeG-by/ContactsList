@@ -5,16 +5,20 @@ document.getElementById("create-btn").addEventListener("click", function () {
 
     if (validateContact !== false) {
 
-        var attachments = [];
+        var fileAttachmentsList = [];
 
-        for (var property in attachmentsForRequest){
-            attachments.push(attachmentsForRequest[property]);
+        for (var property in attachmentsForRequest) {
+            fileAttachmentsList.push(attachmentsForRequest[property]);
         }
 
-        sendMultipartRequest("POST", saveUrl, validateContact, requestAvatar, attachments, getCommentsAttachment());
+        validateContact["attachmentList"] = getAttachmentsForRequest();
+
+        sendMultipartRequest("POST", saveUrl, validateContact, requestAvatar, fileAttachmentsList);
+
     }
 
 });
+
 
 document.getElementById("add-phone-btn").addEventListener("click", function () {
     createPhoneForm(null);
@@ -40,7 +44,7 @@ document.getElementById("delete-att-btn").addEventListener("click", deleteAttach
 document.getElementById("update-att-btn").addEventListener("click", function () {
     var attachmentData = getDataForUpdateAttachment();
 
-    if(attachmentData !== null){
+    if (attachmentData !== null) {
         createAttachmentForm(attachmentData);
     }
 });
@@ -52,4 +56,3 @@ document.getElementById("day").addEventListener("input", replaceLetters);
 document.getElementById("month").addEventListener("input", replaceLetters);
 document.getElementById("year").addEventListener("input", replaceLetters);
 document.getElementById("postIndex").addEventListener("input", replaceLetters);
-

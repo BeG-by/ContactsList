@@ -50,18 +50,20 @@ function sendRequestWithBody(url, type, body, async, message) {
 
     };
 
-    xhr.send(JSON.stringify(body));
+    xhr.send(JSON.stringify(["Тест", "Второй" , "Third"]));
 
 }
 
 
-function sendMultipartRequest(type, url, json, avatar, attachments, comments) {
+function sendMultipartRequest(type, url, json, avatar, attachments) {
 
     var xhr = new XMLHttpRequest();
     var formData = new FormData();
 
     xhr.open(type, url);
     xhr.responseType = "json";
+
+    // xhr.setRequestHeader("Content-type" , "multipart/form-data; charset=utf-8");
 
     formData.append("jsonContact", JSON.stringify(json));
 
@@ -73,10 +75,15 @@ function sendMultipartRequest(type, url, json, avatar, attachments, comments) {
         formData.append("attachment" + i, attachments[i]);
     }
 
-    formData.append("comments", JSON.stringify(comments));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
+                alert("Contact has been saved !");
+        } else if (xhr.readyState === 4 && xhr.status >= 400) {
+            alert("Error: " + xhr.status);
+        }
+
+    };
 
     xhr.send(formData);
 
 }
-
-

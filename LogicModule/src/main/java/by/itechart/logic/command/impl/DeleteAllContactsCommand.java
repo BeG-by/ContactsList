@@ -18,7 +18,6 @@ public class DeleteAllContactsCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-
         final Gson gson = new Gson();
         final long[] listId = gson.fromJson(req.getReader().readLine(), long[].class);
 

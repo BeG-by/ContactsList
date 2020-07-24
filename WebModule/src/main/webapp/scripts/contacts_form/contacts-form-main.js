@@ -29,26 +29,32 @@ function createPagination(contactsCountResponse) {
     var countOfPages = Math.ceil(contactsCountResponse / pageLimit) + 1;
 
     var paginationDiv = document.getElementById("pagination-div");
-    var paginationButtons = document.createElement("div");
+    var paginationList = document.createElement("ul");
+    paginationList.className = "pagination pagination-sm";
 
-    if (countOfPages < 10) {
+    // if (countOfPages < 10) {
 
         for (var i = 1; i < countOfPages; i++) {
-            var button = document.createElement("button");
+            var li = document.createElement("li");
+            li.className = "page-item";
 
-            button.textContent = i.toString();
+            var a = document.createElement("a");
+            a.className = "page-link";
+            a.textContent = i.toString();
+            li.appendChild(a);
 
-            button.addEventListener("click", function () {
+            a.addEventListener("click", function (e) {
+                e.preventDefault();
                 setEmptyValues();
                 sendRequest(findAllUrl + "?page=" + this.textContent + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
             });
 
-            paginationButtons.appendChild(button);
+            paginationList.appendChild(li);
 
         }
 
-        paginationDiv.appendChild(paginationButtons);
+        paginationDiv.appendChild(paginationList);
 
-    }
+    // }
 
 }

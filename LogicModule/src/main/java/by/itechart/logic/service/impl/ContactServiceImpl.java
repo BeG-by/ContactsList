@@ -3,8 +3,9 @@ package by.itechart.logic.service.impl;
 import by.itechart.logic.dao.ContactDAO;
 import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.dao.impl.ContactDAOImpl;
-import by.itechart.logic.entity.Attachment;
+import by.itechart.logic.dto.ContactDTO;
 import by.itechart.logic.entity.Contact;
+import by.itechart.logic.exception.DaoException;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.ContactService;
 import by.itechart.logic.util.NameGeneratorUtil;
@@ -20,7 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDate;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -35,7 +37,6 @@ public class ContactServiceImpl implements ContactService {
     private static final String JSON_CONTACT_FIELD_NAME = "jsonContact";
     private static final String AVATAR_FIELD_NAME = "avatar";
     private static final String ATTACHMENT_FIELD_NAME = "attachment";
-    private static final String COMMENT_FIELD_NAME = "comment";
 
     private static final String PROPERTIES_PATH = "/diskPath.properties";
     private static String directoryPath;
@@ -60,15 +61,16 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact parseMultipartRequest(HttpServletRequest req) throws ServiceException {
+    public ContactDTO parseMultipartRequest(HttpServletRequest req) throws ServiceException {
 
         try {
+
+            System.out.println("IN PARSE: " + req.getCharacterEncoding());
             List<FileItem> items = createServletFileUpload(req).parseRequest(req);
 
             Contact contact = null;
             FileItem avatar = null;
             List<FileItem> attachments = new ArrayList<>();
-            String[] comments = null;
 
             for (FileItem item : items) {
                 if (item != null) {
@@ -81,47 +83,62 @@ public class ContactServiceImpl implements ContactService {
                         avatar = item;
                     } else if (fieldName.startsWith(ATTACHMENT_FIELD_NAME)) {
                         attachments.add(item);
-                    } else if (fieldName.startsWith(COMMENT_FIELD_NAME)) {
-                        comments = gson.fromJson(item.getString(), String[].class);
                     }
-
                 }
             }
 
-            if (contact != null) {
-
-                final String directoryPathContact = createDirectory();
-                contact.setDirectoryPath(directoryPathContact);
-
-                if (avatar != null) {
-                    final String imgPath = saveFile(avatar, directoryPathContact, AVATAR_FIELD_NAME);
-                    logger.info("Image has been saved on the disk " + imgPath);
-                }
-
-                contact.setAttachmentList(new ArrayList<>());
-                int countOfComments = 0;
-                for (FileItem item : attachments) {
-                    final String attPath = saveFile(item, directoryPathContact, ATTACHMENT_FIELD_NAME);
-                    final Attachment attachment = new Attachment(attPath, LocalDate.now(), comments[countOfComments]);
-                    contact.getAttachmentList().add(attachment);
-                    logger.info("Attachment has been saved on the disk " + attPath);
-                    countOfComments++;
-                }
-
-
-                logger.info("Multipart request has been parsed " + contact);
-                return contact;
-
-            } else {
-                throw new Exception();
+            if (contact != null && avatar != null) {
+                contact.setImageName(avatar.getName());
             }
+
+            return new ContactDTO(contact, avatar, attachments);
 
         } catch (Exception e) {
-            logger.error("Parse multipart request failed !\n" + e.getMessage());
-            throw new ServiceException(e);
+            logger.error("Parse multipart request failed ! " + e.getMessage());
+            throw new ServiceException("Incorrect contact data !", e);
+        }
+    }
+
+    @Override
+    public long saveContact(ContactDTO contactDTO) throws ServiceException {
+
+        try (final Connection connection = ConnectionFactory.createConnection()) {
+            connection.setAutoCommit(false);
+            contactDAO.save(contactDTO.getContact(), connection);
+
+        } catch (SQLException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
 
+        return 0;
     }
+
+
+//            if (contact != null) {
+//
+//                final String directoryPathContact = createDirectory();
+//                contact.setDirectoryName(directoryPathContact);
+//
+//                if (avatar != null) {
+//                    final String imgPath = saveFile(avatar, directoryPathContact, AVATAR_FIELD_NAME);
+//                    logger.info("Image has been saved on the disk " + imgPath);
+//                }
+//
+//                int countOfComments = 0;
+//                for (FileItem item : attachments) {
+//                    final String attPath = saveFile(item, directoryPathContact, ATTACHMENT_FIELD_NAME);
+//                    logger.info("Attachment has been saved on the disk " + attPath);
+//                    countOfComments++;
+//                }
+//
+//
+//                logger.info("Multipart request has been parsed " + contact);
+//                return contact;
+//
+//            } else {
+//                throw new Exception();
+//            }
+
 
     private ServletFileUpload createServletFileUpload(HttpServletRequest req) {
         DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();

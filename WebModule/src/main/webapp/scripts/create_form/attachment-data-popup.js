@@ -1,18 +1,33 @@
 "use strict";
 
-// --- Comments for request ---
+// --- Attachments for request ---
 
-function getCommentsAttachment() {
+function getAttachmentsForRequest() {
 
-    var comments = document.querySelectorAll(".comment-att");
+    var items = document.querySelectorAll("#attachment-body tr");
 
-    var arrComments = [];
+    var attachmentsList = [];
 
-    for (var i = 0; i < comments.length; i++) {
-        arrComments.push(comments[i].textContent);
+    for (var i = 0; i < items.length; i++) {
+
+        var date = items[i].children[2].textContent.split("-");
+
+        var attachment = {
+            "id": i,
+            "contactId": -1,
+            "fileName": items[i].children[1].textContent,
+            "dateOfLoad": {
+                "day": date[0],
+                "month": date [1],
+                "year": date [2]
+            },
+            "comment": items[i].children[3].textContent
+        };
+
+        attachmentsList.push(attachment);
     }
 
-    return arrComments;
+    return attachmentsList;
 
 }
 

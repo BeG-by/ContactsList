@@ -4,6 +4,7 @@ import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.dao.ContactDAO;
 import by.itechart.logic.entity.Address;
 import by.itechart.logic.entity.Contact;
+import by.itechart.logic.exception.DaoException;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -13,13 +14,33 @@ import java.util.List;
 
 public class ContactDAOImpl implements ContactDAO {
 
+    private static final String ID_COL = "id";
+    private static final String FIRST_NAME_COL = "first_name";
+    private static final String LAST_NAME_COL = "last_name";
+    private static final String MIDDLE_NAME_COL = "middle_name";
+    private static final String BIRTHDAY_COL = "birthday";
+    private static final String SEX_COL = "sex";
+    private static final String NATIONALITY_COL = "nationality";
+    private static final String MARITAL_STATUS_COL = "marital_status";
+    private static final String WEBSITE_URL_COL = "url";
+    private static final String EMAIL_COL = "email";
+    private static final String CURRENT_JOB_COL = "job";
+    private static final String IMAGE_NAME_COL = "image_name";
+
+    private static final String COUNTRY_COL = "country";
+    private static final String CITY_COL = "city";
+    private static final String STREET_COL = "street";
+    private static final String POST_INDEX_COL = "post_index";
+    private static final String CONTACT_ID_COL = "contact_id";
+
+
     private static final String FIND_ALL_CONTACTS_QUERY = "SELECT * FROM contact c LEFT JOIN address a ON c.id = a.contact_id ORDER BY c.id LIMIT ? , ?;";
     private static final String DELETE_ALL_CONTACTS_QUERY = "DELETE FROM contact WHERE id = ?;";
     private static final String DELETE_ALL_ADDRESS_QUERY = "DELETE FROM address WHERE contact_id = ?;";
     private static final String SAVE_CONTACT_QUERY =
             "INSERT INTO contact (first_name, last_name, middle_name, birthday, sex, nationality, marital_status, url, email, job) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-    private static final String SAVE_ADDRESS_QUERY = "INSERT INTO address ( country, city, street, post_index, contact_id) VALUES (?,?,?,?,?)";
+    private static final String SAVE_ADDRESS_QUERY = "INSERT INTO address (country, city, street, post_index, contact_id) VALUES (?,?,?,?,?)";
     private static final String COUNT_CONTACTS_QUERY = "SELECT count(*) FROM contact";
 
 
@@ -42,24 +63,24 @@ public class ContactDAOImpl implements ContactDAO {
                 while (resultSet.next()) {
 
                     Contact contact = new Contact.Builder()
-                            .id(resultSet.getLong(1))
-                            .firstName(resultSet.getString(2))
-                            .lastName(resultSet.getString(3))
-                            .middleName(resultSet.getString(4))
-                            .birthday(convertToLocalDate(resultSet.getDate(5)))
-                            .sex(resultSet.getString(6))
-                            .nationality(resultSet.getString(7))
-                            .maritalStatus(resultSet.getString(8))
-                            .urlWebSite(resultSet.getString(9))
-                            .email(resultSet.getString(10))
-                            .currentJob(resultSet.getString(11))
+                            .id(resultSet.getLong(ID_COL))
+                            .firstName(resultSet.getString(FIRST_NAME_COL))
+                            .lastName(resultSet.getString(LAST_NAME_COL))
+                            .middleName(resultSet.getString(MIDDLE_NAME_COL))
+                            .birthday(convertToLocalDate(resultSet.getDate(BIRTHDAY_COL)))
+                            .sex(resultSet.getString(SEX_COL))
+                            .nationality(resultSet.getString(NATIONALITY_COL))
+                            .maritalStatus(resultSet.getString(MARITAL_STATUS_COL))
+                            .urlWebSite(resultSet.getString(WEBSITE_URL_COL))
+                            .email(resultSet.getString(EMAIL_COL))
+                            .currentJob(resultSet.getString(CURRENT_JOB_COL))
                             .address(new Address(
-                                    resultSet.getLong(12),
-                                    resultSet.getLong(17),
-                                    resultSet.getString(13),
-                                    resultSet.getString(14),
-                                    resultSet.getString(15),
-                                    resultSet.getInt(16)))
+                                    resultSet.getLong(ID_COL),
+                                    resultSet.getLong(CONTACT_ID_COL),
+                                    resultSet.getString(COUNTRY_COL),
+                                    resultSet.getString(CITY_COL),
+                                    resultSet.getString(STREET_COL),
+                                    resultSet.getInt(POST_INDEX_COL)))
                             .build();
 
                     contacts.add(contact);
@@ -74,18 +95,15 @@ public class ContactDAOImpl implements ContactDAO {
         return contacts;
     }
 
-    //need Date validation (NullPointerException)
+
     @Override
-    public long save(Contact contact) {
+    public long save(Contact contact, Connection connection) throws DaoException {
 
         long contactId = -1;
 
-
-        try (final Connection connection = ConnectionFactory.createConnection();
-             final PreparedStatement contactStatement = connection.prepareStatement(SAVE_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS);
+        try (final PreparedStatement contactStatement = connection.prepareStatement(SAVE_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS);
              final PreparedStatement addressStatement = connection.prepareStatement(SAVE_ADDRESS_QUERY)) {
 
-            connection.setAutoCommit(false);
             contactStatement.setString(1, contact.getFirstName());
             contactStatement.setString(2, contact.getLastName());
             contactStatement.setString(3, contact.getMiddleName());
@@ -114,13 +132,10 @@ public class ContactDAOImpl implements ContactDAO {
 
             addressStatement.executeUpdate();
 
-            connection.commit();
             logger.info(String.format("Contact was created [id= %d]", contactId));
 
         } catch (Exception e) {
-            logger.error("SQL error [save] --- " + e);
-            e.printStackTrace();
-            return -1;
+            throw new DaoException("SQL error [save] --- " , e);
         }
 
         return contactId;
