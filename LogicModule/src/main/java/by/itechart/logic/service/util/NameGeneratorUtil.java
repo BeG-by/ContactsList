@@ -1,4 +1,4 @@
-package by.itechart.logic.util;
+package by.itechart.logic.service.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -7,7 +7,7 @@ import java.util.Random;
 public class NameGeneratorUtil {
 
     private static Random random = new Random();
-    private static final int NAME_LENGTH = 12;
+    private static final int NAME_LENGTH = 9;
     private static char[] letters = new char[26];
 
     public static final String DELIMITER = "_d_e_l_";

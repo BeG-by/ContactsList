@@ -10,7 +10,7 @@ public class Address implements Serializable {
     private String country;
     private String city;
     private String street;
-    private int postIndex;
+    private Integer postIndex;
 
     public Address() {
     }
@@ -64,7 +64,7 @@ public class Address implements Serializable {
         this.street = street;
     }
 
-    public int getPostIndex() {
+    public Integer getPostIndex() {
         return postIndex;
     }
 
@@ -78,7 +78,7 @@ public class Address implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
         return id == address.id &&
-                postIndex == address.postIndex &&
+                postIndex.equals(address.postIndex) &&
                 Objects.equals(country, address.country) &&
                 Objects.equals(city, address.city) &&
                 Objects.equals(street, address.street);
@@ -96,7 +96,7 @@ public class Address implements Serializable {
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
-                ", index=" + postIndex +
+                ", postIndex=" + postIndex +
                 '}';
     }
 

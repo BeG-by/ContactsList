@@ -1,4 +1,6 @@
+DROP SCHEMA IF EXISTS `contacts_list_db`;
 CREATE SCHEMA `contacts_list_db` DEFAULT CHARACTER SET utf8mb4;
+USE `contacts_list_db`;
 
 DROP TABLE IF EXISTS `contact`;
 
@@ -34,7 +36,7 @@ CREATE TABLE `contacts_list_db`.`address`
     `contact_id` BIGINT(20) UNSIGNED NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `contact_id_idx` (`contact_id` ASC) VISIBLE,
-    CONSTRAINT `contact_id`
+    CONSTRAINT `contact_address_id`
         FOREIGN KEY (`contact_id`)
             REFERENCES `contacts_list_db`.`contact` (`id`)
             ON DELETE CASCADE
@@ -61,7 +63,28 @@ CREATE TABLE `contacts_list_db`.`phone`
             REFERENCES `contacts_list_db`.`contact` (`id`)
             ON DELETE CASCADE
             ON UPDATE NO ACTION
-);
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+
+DROP TABLE IF EXISTS `attachment`;
+
+CREATE TABLE `contacts_list_db`.`attachment`
+(
+    `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `contact_id`   BIGINT(20) UNSIGNED NOT NULL,
+    `file_name`     VARCHAR(255)        NOT NULL,
+    `date_of_load` date                NOT NULL,
+    `comment`      VARCHAR(255)        NULL,
+    PRIMARY KEY (`id`),
+    INDEX `contact_id_idx` (`contact_id` ASC) VISIBLE,
+    CONSTRAINT `contact_attachment_id`
+        FOREIGN KEY (`contact_id`)
+            REFERENCES `contacts_list_db`.`contact` (`id`)
+            ON DELETE CASCADE
+            ON UPDATE NO ACTION
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
 
 
 
@@ -71,7 +94,7 @@ delimiter $$$
 CREATE PROCEDURE fillContacts()
 BEGIN
     DECLARE i int DEFAULT 0;
-    WHILE i <= 50
+    WHILE i <= 30
         DO
             INSERT INTO `contacts_list_db`.`contact`(first_name, last_name, middle_name, birthday, sex, nationality,
                                                      marital_status,
@@ -100,7 +123,7 @@ delimiter $$$
 CREATE PROCEDURE fillAddress()
 BEGIN
     DECLARE i int DEFAULT 1;
-    WHILE i <= 200
+    WHILE i <= 120
         DO
             INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
             VALUES ('Belarus', 'Minsk', 'Nemiga 20/42', '220040', i);

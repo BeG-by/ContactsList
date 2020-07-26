@@ -56,20 +56,27 @@ function fillTableContacts(response) {
         if (jsonResponse.hasOwnProperty(jsonKey)) {
             var contact = jsonResponse[jsonKey];
         }
+
+        console.log(contact);
         var address = contact["address"];
         var birthday = contact["birthday"];
-        var day = birthday["day"];
-        var month = birthday["month"];
 
-        if (day < 10) {
-            day = "0" + day;
+        var birthdayToString = "";
+
+        if (birthday !== undefined) {
+            var day = birthday["day"];
+            var month = birthday["month"];
+
+            if (day < 10) {
+                day = "0" + day;
+            }
+
+            if (month < 10) {
+                month = "0" + month;
+            }
+
+            birthdayToString = day + "." + month + "." + birthday["year"];
         }
-
-        if (month < 10) {
-            month = "0" + month;
-        }
-
-        var birthdayToString = day + "." + month + "." + birthday["year"];
 
         var tableContact = {
             checkbox: tr.children[0],
@@ -90,7 +97,12 @@ function fillTableContacts(response) {
         tableContact.country.textContent = address["country"];
         tableContact.city.textContent = address["city"];
         tableContact.street.textContent = address["street"];
-        tableContact.index.textContent = address["postIndex"];
+
+        if (address["postIndex"] !== 0) {
+            tableContact.index.textContent = address["postIndex"];
+        } else {
+            tableContact.index.textContent = "";
+        }
         tableContact.currentJob.textContent = contact["currentJob"];
 
     }

@@ -7,20 +7,20 @@ function getDataFromPhoneForm() {
     var phone = {};
 
     var country = document.getElementById("countryCode-form");
-    if (country.value.length === 0 || country.value.length > 5) {
-        alert("Country code should be 1-5 symbols !");
+    if (country.value.length === 0 || country.value.length > 8) {
+        alert("Country code should be 1-8 symbols !");
         return false;
     }
 
     var operator = document.getElementById("operatorCode-form");
-    if (operator.value.length === 0 || operator.value.length > 5) {
-        alert("Operator code should be 1-5 symbols !");
+    if (operator.value.length === 0 || operator.value.length > 8) {
+        alert("Operator code should be 1-8 symbols !");
         return false;
     }
 
     var number = document.getElementById("number-form");
-    if (number.value.length < 5 || number.value.length > 16) {
-        alert("Phone number should be 5-16 symbols !");
+    if (number.value.length < 4 || number.value.length > 16) {
+        alert("Phone number should be 4-16 symbols !");
         return false;
     }
 

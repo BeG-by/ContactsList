@@ -16,10 +16,20 @@ function getFormContactData() {
         return false;
     }
 
+    if (!matchStrict(/[A-Za-zА-Яа-я]+/, firstName)) {
+        alert("First name must have only English or Russian letters !");
+        return false;
+    }
+
     var lastName = document.getElementById("lastName").value;
 
     if (lastName.length < 1 || lastName.length > 16) {
         alert("Last name length should be 1-16 symbols !");
+        return false;
+    }
+
+    if (!matchStrict(/[A-Za-zА-Яа-я]+/, lastName)) {
+        alert("Last name must have only English or Russian letters !");
         return false;
     }
 
@@ -30,25 +40,44 @@ function getFormContactData() {
         return false;
     }
 
+    if (!matchStrict(/[A-Za-zА-Яа-я]*/, middleName)) {
+        alert("Middle name must have only English or Russian letters !");
+        return false;
+    }
+
     var day = document.getElementById("day").value;
-
-    if (!matchStrict(/^0[1-9]|[12][0-9]|3[01]/, day)) {
-        alert("Incorrect day !");
-        return false;
-    }
-
     var month = document.getElementById("month").value;
-
-    if (!matchStrict(/0[1-9]|1[0-2]/, month)) {
-        alert("Incorrect month !");
-        return false;
-    }
-
     var year = document.getElementById("year").value;
 
-    if (!matchStrict(/[12]\d{3}/, year)) {
-        alert("Incorrect year !");
-        return false;
+    if (day !== "" || month !== "" || year !== "") {
+
+        if (!matchStrict(/0[1-9]|[12][0-9]|3[01]/, day)) {
+            alert("Incorrect day !");
+            return false;
+        }
+
+        if (!matchStrict(/0[1-9]|1[0-2]/, month)) {
+            alert("Incorrect month !");
+            return false;
+        }
+
+
+        if (!matchStrict(/[12]\d{3}/, year)) {
+            alert("Incorrect year !");
+            return false;
+        }
+
+        var today = new Date();
+
+        if (year < 1900 || year > today.getFullYear()) {
+            alert("Your birthday can't be in " + year);
+            return false;
+        }
+
+    } else {
+        day = 1;
+        month = 11;
+        year = 1111;
     }
 
     var sex = document.getElementById("male").checked ? "male" : "female";
@@ -59,8 +88,20 @@ function getFormContactData() {
         return false;
     }
 
+    if (!matchStrict(/[A-Za-zА-Яа-я]*/, nationality)) {
+        alert("Nationality must have only English or Russian letters !");
+        return false;
+    }
+
     var maritalStatus = document.getElementById("single").checked ? "single" : "married";
+
     var webSiteUrl = document.getElementById("urlWebSite").value;
+
+    if (webSiteUrl.length > 200) {
+        alert("URL length should be less than 200 !");
+        return false;
+    }
+
     var email = document.getElementById("email").value;
 
     var regExpEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -72,7 +113,7 @@ function getFormContactData() {
 
     var currentJob = document.getElementById("currentJob").value;
 
-    if (currentJob.length > 16) {
+    if (currentJob.length > 100) {
         alert("Job name length should be less than 16 !");
         return false;
     }
@@ -84,16 +125,26 @@ function getFormContactData() {
         return false;
     }
 
+    if (!matchStrict(/[A-Za-zА-Яа-я]*/, country)) {
+        alert("Country must have only English or Russian letters !");
+        return false;
+    }
+
     var city = document.getElementById("city").value;
 
     if (city.length > 16) {
-        alert("Country length should be less than 16 !");
+        alert("City length should be less than 16 !");
+        return false;
+    }
+
+    if (!matchStrict(/[A-Za-zА-Яа-я]*/, city)) {
+        alert("City must have only English or Russian letters !");
         return false;
     }
 
     var street = document.getElementById("street").value;
 
-    if (street.length > 16) {
+    if (street.length > 24) {
         alert("Street length should be less than 16 !");
         return false;
     }
@@ -104,7 +155,7 @@ function getFormContactData() {
         alert("Index length should be less than 10 !");
         return false;
     } else if (postIndex === "") {
-        postIndex = -1;
+        postIndex = null;
     }
 
     contact["firstName"] = firstName;

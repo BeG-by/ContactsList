@@ -1,4 +1,4 @@
-package by.itechart.web;
+package by.itechart.web.controller;
 
 import by.itechart.logic.command.Command;
 import by.itechart.logic.command.CommandFactory;
@@ -32,15 +32,9 @@ public class FrontController extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        System.out.println("REQ:" + req.getCharacterEncoding());
-        System.out.println("RESP:" + resp.getCharacterEncoding());
-
 
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
-
-        System.out.println("REQ after:" + req.getCharacterEncoding());
-        System.out.println("RESP after:" + resp.getCharacterEncoding());
 
         logger.info(String.format("Request is processing... [url: %s , method: %s]", req.getRequestURI(), req.getMethod()));
 

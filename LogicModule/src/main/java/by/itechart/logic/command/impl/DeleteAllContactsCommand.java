@@ -1,8 +1,9 @@
 package by.itechart.logic.command.impl;
 
 import by.itechart.logic.command.Command;
-import by.itechart.logic.dao.ContactDAO;
-import by.itechart.logic.dao.impl.ContactDAOImpl;
+import by.itechart.logic.exception.ServiceException;
+import by.itechart.logic.service.ContactService;
+import by.itechart.logic.service.impl.ContactServiceImpl;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class DeleteAllContactsCommand implements Command {
 
-    private ContactDAO contactDAO = new ContactDAOImpl();
+    private ContactService contactService = new ContactServiceImpl();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -22,13 +23,19 @@ public class DeleteAllContactsCommand implements Command {
         final long[] listId = gson.fromJson(req.getReader().readLine(), long[].class);
 
         if (listId.length != 0) {
-            contactDAO.deleteAll(Arrays.stream(listId).boxed().collect(Collectors.toList()));
-            resp.getWriter().write(gson.toJson("Contacts have been deleted"));
-            resp.setStatus(resp.SC_OK);
+
+            try {
+                contactService.deleteAllById(Arrays.stream(listId).boxed().collect(Collectors.toList()));
+                resp.getWriter().write(gson.toJson("Contacts have been deleted"));
+                resp.setStatus(resp.SC_OK);
+            } catch (ServiceException e) {
+                resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+            }
 
         } else {
             resp.setStatus(resp.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Contacts list is empty"));
+            resp.getWriter().write(gson.toJson("Contacts list is empty !"));
         }
 
         resp.setContentType("application/json");

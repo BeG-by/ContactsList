@@ -2,7 +2,7 @@
 
 var currentLoadedFile = null;
 
-var maxSize = 500000;
+var maxSize = 12000000;
 
 var formDivAttClassName = "att-form shadow p-3 mb-5 bg-white rounded";
 var saveBtnAttClassName = "btn btn-success save-btn";
@@ -56,7 +56,12 @@ function createAttachmentForm(attachmentDTO) {
         if (file !== undefined) {
 
             if (file.size > maxSizeOfImg) {
-                alert("File is to large ! Max size is :" + maxSize / 1000 + "Kb");
+                alert("File is to large ! Max size is :" + maxSize / 1200000 + "MB");
+                return;
+            }
+
+            if (file.name.length > 100) {
+                alert("File name length should be less than 100");
                 return;
             }
 

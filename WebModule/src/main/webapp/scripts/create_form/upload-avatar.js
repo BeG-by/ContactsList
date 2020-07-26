@@ -1,7 +1,7 @@
 "use strict";
 
 var requestAvatar = null;
-var maxSizeOfImg = 500000;
+var maxSizeOfImg = 12000000;
 
 var avatarImg = document.getElementById("avatar");
 var uploadInput = document.getElementById("upload-img");
@@ -16,8 +16,13 @@ uploadInput.addEventListener("change", function () {
 
     if (file !== undefined && file.type.match("image.*")) {
 
-        if(file.size > maxSizeOfImg){
-            alert("File is to large ! Max size is :" + maxSizeOfImg/1000 + "Kb");
+        if (file.size > maxSizeOfImg) {
+            alert("File is to large ! Max size is :" + maxSizeOfImg / 1000000 + "MB");
+            return;
+        }
+
+        if (file.name.length > 100) {
+            alert("Image name length should be less than 100");
             return;
         }
 

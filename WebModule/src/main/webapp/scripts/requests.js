@@ -18,7 +18,7 @@ function sendRequest(url, type, callback, message) {
             }
 
         } else if (xhr.readyState === 4 && xhr.status >= 400) {
-            alert("Error: " + xhr.status);
+            alert("Error: " + xhr.status + " " + xhr.response);
         }
     };
 
@@ -45,12 +45,12 @@ function sendRequestWithBody(url, type, body, async, message) {
             }
 
         } else if (xhr.readyState === 4 && xhr.status >= 400) {
-            alert("Error: " + xhr.status);
+            alert("Error: " + xhr.status + " " + xhr.response);
         }
 
     };
 
-    xhr.send(JSON.stringify(["Тест", "Второй" , "Third"]));
+    xhr.send(JSON.stringify(body));
 
 }
 
@@ -62,8 +62,6 @@ function sendMultipartRequest(type, url, json, avatar, attachments) {
 
     xhr.open(type, url);
     xhr.responseType = "json";
-
-    // xhr.setRequestHeader("Content-type" , "multipart/form-data; charset=utf-8");
 
     formData.append("jsonContact", JSON.stringify(json));
 
@@ -77,9 +75,9 @@ function sendMultipartRequest(type, url, json, avatar, attachments) {
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
-                alert("Contact has been saved !");
+            alert("Contact has been saved !");
         } else if (xhr.readyState === 4 && xhr.status >= 400) {
-            alert("Error: " + xhr.status);
+            alert("Error: " + xhr.status + " " + xhr.response);
         }
 
     };

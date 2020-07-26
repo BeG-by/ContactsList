@@ -34,13 +34,24 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String CONTACT_ID_COL = "contact_id";
 
 
-    private static final String FIND_ALL_CONTACTS_QUERY = "SELECT * FROM contact c LEFT JOIN address a ON c.id = a.contact_id ORDER BY c.id LIMIT ? , ?;";
-    private static final String DELETE_ALL_CONTACTS_QUERY = "DELETE FROM contact WHERE id = ?;";
-    private static final String DELETE_ALL_ADDRESS_QUERY = "DELETE FROM address WHERE contact_id = ?;";
-    private static final String SAVE_CONTACT_QUERY =
-            "INSERT INTO contact (first_name, last_name, middle_name, birthday, sex, nationality, marital_status, url, email, job) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    private static final String FIND_ALL_CONTACTS_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s ORDER BY c.id LIMIT ? , ?;",
+            ID_COL, CONTACT_ID_COL);
 
-    private static final String SAVE_ADDRESS_QUERY = "INSERT INTO address (country, city, street, post_index, contact_id) VALUES (?,?,?,?,?)";
+    private static final String SAVE_CONTACT_QUERY = String.format("INSERT INTO contact (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (?,?,?,?,?,?,?,?,?,?,?);",
+            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL, EMAIL_COL, CURRENT_JOB_COL, IMAGE_NAME_COL);
+
+    private static final String SAVE_ADDRESS_QUERY = String.format("INSERT INTO address (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?);",
+            COUNTRY_COL, CITY_COL, STREET_COL, POST_INDEX_COL, CONTACT_ID_COL);
+
+    private static final String UPDATE_CONTACT_QUERY = String.format("UPDATE contact SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?;",
+            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL, EMAIL_COL, CURRENT_JOB_COL, IMAGE_NAME_COL, ID_COL);
+
+    private static final String UPDATE_ADDRESS_QUERY = String.format("UPDATE address SET %s=?, %s=?, %s=?, %s=? WHERE %s=?;",
+            COUNTRY_COL, CITY_COL, STREET_COL, POST_INDEX_COL, CONTACT_ID_COL);
+
+    private static final String DELETE_ALL_CONTACTS_QUERY = String.format("DELETE FROM contact WHERE %s = ?;", ID_COL);
+    private static final String DELETE_ALL_ADDRESS_QUERY = String.format("DELETE FROM address WHERE %s = ?;", CONTACT_ID_COL);
+
     private static final String COUNT_CONTACTS_QUERY = "SELECT count(*) FROM contact";
 
 
@@ -48,7 +59,7 @@ public class ContactDAOImpl implements ContactDAO {
 
 
     @Override
-    public List<Contact> findAll(int page, int pageLimit) {
+    public List<Contact> findAllWithLimit(int page, int pageLimit) throws DaoException {
 
         List<Contact> contacts = new ArrayList<>();
 
@@ -88,8 +99,8 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            logger.error("SQL error [findAll] --- " + e);
+            logger.error("Finding contact has been failed --- ", e);
+            throw new DaoException();
         }
 
         return contacts;
@@ -107,13 +118,20 @@ public class ContactDAOImpl implements ContactDAO {
             contactStatement.setString(1, contact.getFirstName());
             contactStatement.setString(2, contact.getLastName());
             contactStatement.setString(3, contact.getMiddleName());
-            contactStatement.setDate(4, Date.valueOf(contact.getBirthday()));
+
+            if (contact.getBirthday() != null) {
+                contactStatement.setDate(4, Date.valueOf(contact.getBirthday()));
+            } else {
+                contactStatement.setNull(4, Types.DATE);
+            }
+
             contactStatement.setString(5, contact.getSex());
             contactStatement.setString(6, contact.getNationality());
             contactStatement.setString(7, contact.getMaritalStatus());
             contactStatement.setString(8, contact.getUrlWebSite());
             contactStatement.setString(9, contact.getEmail());
             contactStatement.setString(10, contact.getCurrentJob());
+            contactStatement.setString(11, contact.getImageName());
             contactStatement.executeUpdate();
 
             try (final ResultSet generatedKeys = contactStatement.getGeneratedKeys()) {
@@ -127,22 +145,67 @@ public class ContactDAOImpl implements ContactDAO {
             addressStatement.setString(1, address.getCountry());
             addressStatement.setString(2, address.getCity());
             addressStatement.setString(3, address.getStreet());
-            addressStatement.setInt(4, address.getPostIndex());
+            addressStatement.setObject(4, address.getPostIndex(), Types.INTEGER);
             addressStatement.setLong(5, contactId);
 
             addressStatement.executeUpdate();
 
-            logger.info(String.format("Contact was created [id= %d]", contactId));
+            logger.info(String.format("Contact was saved [id= %d]", contactId));
 
         } catch (Exception e) {
-            throw new DaoException("SQL error [save] --- " , e);
+            logger.error("Saving contact has been failed --- ", e);
+            throw new DaoException("Incorrect contact data !");
         }
 
         return contactId;
     }
 
     @Override
-    public void deleteAll(List<Long> idList) {
+    public void update(Contact contact, Connection connection) throws DaoException {
+
+        try (final PreparedStatement contactStatement = connection.prepareStatement(UPDATE_CONTACT_QUERY);
+             final PreparedStatement addressStatement = connection.prepareStatement(UPDATE_ADDRESS_QUERY)) {
+
+            contactStatement.setString(1, contact.getFirstName());
+            contactStatement.setString(2, contact.getLastName());
+            contactStatement.setString(3, contact.getMiddleName());
+
+            if (contact.getBirthday() != null) {
+                contactStatement.setDate(4, Date.valueOf(contact.getBirthday()));
+            } else {
+                contactStatement.setNull(4, Types.DATE);
+            }
+
+            contactStatement.setString(5, contact.getSex());
+            contactStatement.setString(6, contact.getNationality());
+            contactStatement.setString(7, contact.getMaritalStatus());
+            contactStatement.setString(8, contact.getUrlWebSite());
+            contactStatement.setString(9, contact.getEmail());
+            contactStatement.setString(10, contact.getCurrentJob());
+            contactStatement.setString(11, contact.getImageName());
+            contactStatement.setLong(12, contact.getId());
+            contactStatement.executeUpdate();
+
+            Address address = contact.getAddress();
+
+            addressStatement.setString(1, address.getCountry());
+            addressStatement.setString(2, address.getCity());
+            addressStatement.setString(3, address.getStreet());
+            addressStatement.setObject(4, address.getPostIndex(), Types.INTEGER);
+            addressStatement.setLong(5, contact.getId());
+
+            addressStatement.executeUpdate();
+
+            logger.info(String.format("Contact was updated %s ", contact));
+
+        } catch (Exception e) {
+            logger.error("Updating contact has been failed --- ", e);
+            throw new DaoException("Incorrect contact data !");
+        }
+    }
+
+    @Override
+    public void deleteAllById(List<Long> idList) throws DaoException {
 
         try (final Connection connection = ConnectionFactory.createConnection();
              final PreparedStatement contactStatement = connection.prepareStatement(DELETE_ALL_CONTACTS_QUERY);
@@ -158,19 +221,19 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
             connection.commit();
-            logger.info(String.format("Contacts were remove [listId= %s]", idList));
+            logger.info(String.format("Contacts were removed [listId= %s]", idList));
 
 
         } catch (Exception e) {
-            logger.error("SQL error [deleteAll] --- " + e);
-            e.printStackTrace();
+            logger.error("Removing contacts has been failed --- ", e);
+            throw new DaoException();
         }
 
 
     }
 
     @Override
-    public long countAll() {
+    public long countAll() throws DaoException {
 
         long count = 0;
 
@@ -182,15 +245,18 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
         } catch (Exception e) {
-            logger.error("SQL error [countAll] --- " + e);
-            e.printStackTrace();
+            logger.error("Counting contacts has been failed --- ", e);
+            throw new DaoException();
         }
 
         return count;
     }
 
     private static LocalDate convertToLocalDate(java.util.Date dateToConvert) {
-        return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
+        if(dateToConvert != null){
+            return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
+        }
+        return null;
     }
 
 }

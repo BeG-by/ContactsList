@@ -8,12 +8,14 @@ import java.util.List;
 
 public interface ContactDAO {
 
-    List<Contact> findAll(int page, int pageLimit);
+    List<Contact> findAllWithLimit(int page, int pageLimit) throws DaoException;
 
-    long save(Contact contact , Connection connection) throws DaoException;
+    long save(Contact contact, Connection connection) throws DaoException;
 
-    void deleteAll(List<Long> idList);
+    void update(Contact contact, Connection connection) throws DaoException;
 
-    long countAll();
+    void deleteAllById(List<Long> idList) throws DaoException;
+
+    long countAll() throws DaoException;
 
 }

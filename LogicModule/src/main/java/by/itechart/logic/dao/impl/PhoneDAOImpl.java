@@ -1,28 +1,34 @@
 package by.itechart.logic.dao.impl;
 
 import by.itechart.logic.dao.PhoneDAO;
-import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.entity.Phone;
+import by.itechart.logic.exception.DaoException;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 public class PhoneDAOImpl implements PhoneDAO {
 
-    private static final String SAVE_PHONE_QUERY = "INSERT INTO phone (contact_id, country_code, operator_code, number, type, comment) VALUES (?,?,?,?,?,?)";
+    private static final String CONTACT_ID_COL = "contact_id";
+    private static final String COUNTRY_CODE_COL = "country_code";
+    private static final String OPERATOR_CODE_COL = "operator_code";
+    private static final String NUMBER_COL = "number";
+    private static final String TYPE_COL = "type";
+    private static final String COMMENT_COL = "comment";
+
+    private static final String SAVE_PHONE_QUERY = String.format("INSERT INTO phone (%s,%s,%s,%s,%s,%s) VALUES (?,?,?,?,?,?);",
+            CONTACT_ID_COL, COUNTRY_CODE_COL, OPERATOR_CODE_COL, NUMBER_COL, TYPE_COL, COMMENT_COL);
+
+    private static final String DELETE_PHONE_LIST_QUERY = String.format("DELETE FROM phone WHERE %s=?;", CONTACT_ID_COL);
 
     private static final Logger logger = Logger.getLogger(PhoneDAOImpl.class);
 
     @Override
-    public boolean save(List<Phone> phoneList) {
+    public void save(List<Phone> phoneList, Connection connection) throws DaoException {
 
-        try (final Connection connection = ConnectionFactory.createConnection()) {
-            final PreparedStatement preparedStatement = connection.prepareStatement(SAVE_PHONE_QUERY);
-
-            connection.setAutoCommit(false);
+        try (final PreparedStatement preparedStatement = connection.prepareStatement(SAVE_PHONE_QUERY)) {
 
             for (Phone phone : phoneList) {
                 preparedStatement.setLong(1, phone.getContactId());
@@ -34,15 +40,30 @@ public class PhoneDAOImpl implements PhoneDAO {
                 preparedStatement.executeUpdate();
             }
 
-            connection.commit();
-
-            logger.info(String.format("Phones was created phoneList= [%s]", phoneList));
+            logger.info(String.format("Phones were saved, phoneList= [%s]", phoneList));
 
         } catch (Exception e) {
-            logger.error("SQL error [save] --- " + e);
-            return false;
+            logger.error("Saving phone list has been failed --- ", e);
+            throw new DaoException("Incorrect phone list data !", e);
         }
 
-        return true;
     }
+
+    @Override
+    public void deleteAll(long contactId, Connection connection) throws DaoException {
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PHONE_LIST_QUERY)) {
+
+            preparedStatement.setLong(1, contactId);
+            preparedStatement.executeUpdate();
+
+            logger.info(String.format("Phones for contact with id [%s] were removed", contactId));
+
+        } catch (Exception e) {
+            logger.error("Deleting phone list has been failed --- ", e);
+            throw new DaoException("Incorrect phone list data !", e);
+        }
+
+    }
+
 }

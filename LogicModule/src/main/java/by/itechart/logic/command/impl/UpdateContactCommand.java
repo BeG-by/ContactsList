@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class SaveContactCommand implements Command {
+public class UpdateContactCommand implements Command {
 
     private ContactService contactService = new ContactServiceImpl();
     private ContactValidator contactValidator = new ContactValidator();
@@ -26,9 +26,9 @@ public class SaveContactCommand implements Command {
             final List<String> errorList = contactValidator.validateContact(contactDTO);
 
             if (errorList.isEmpty()) {
-                contactService.saveOne(contactDTO);
+                contactService.updateOne(contactDTO);
                 resp.setStatus(resp.SC_OK);
-                resp.getWriter().write(new Gson().toJson("Contact has been saved"));
+                resp.getWriter().write(new Gson().toJson("Contact has been updated"));
 
             } else {
                 resp.setStatus(resp.SC_BAD_REQUEST);
