@@ -51,7 +51,6 @@ function createAttachmentForm(attachmentDTO) {
 
     inputFile.addEventListener("change", function () {
         var file = this.files[0];
-        var reader = new FileReader();
 
         if (file !== undefined) {
 
@@ -65,14 +64,9 @@ function createAttachmentForm(attachmentDTO) {
                 return;
             }
 
-            reader.readAsDataURL(file);
-        }
+            currentLoadedFile = file;
+            loadAttachmentBtn.textContent = currentLoadedFile.name;
 
-        reader.onload = function () {
-            if (reader.result !== undefined) {
-                currentLoadedFile = file;
-                loadAttachmentBtn.textContent = currentLoadedFile.name;
-            }
         }
 
     });

@@ -5,14 +5,16 @@ import by.itechart.logic.entity.Attachment;
 import by.itechart.logic.exception.DaoException;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.Types;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AttachmentDAOImpl implements AttachmentDAO {
 
+    private Connection connection;
+
+    private static final String ID_COL = "id";
     private static final String CONTACT_ID_COL = "contact_id";
     private static final String FILE_NAME_COL = "file_name";
     private static final String LOAD_DATE_COL = "date_of_load";
@@ -23,11 +25,19 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 
     private static final String DELETE_ATTACHMENT_LIST_QUERY = String.format("DELETE FROM attachment WHERE %s=?;", CONTACT_ID_COL);
 
+    private static final String FIND_BY_CONTACT_ID_QUERY = String.format("SELECT * FROM attachment WHERE %s=?;", CONTACT_ID_COL);
+
     private static final Logger logger = Logger.getLogger(AttachmentDAOImpl.class);
 
+    public AttachmentDAOImpl() {
+    }
+
+    public AttachmentDAOImpl(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
-    public void save(List<Attachment> attachments, Connection connection) throws DaoException {
+    public void save(List<Attachment> attachments) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(ATTACHMENTS_SAVE_QUERY)) {
 
@@ -55,11 +65,11 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     }
 
     @Override
-    public void deleteAll(long contactId, Connection connection) throws DaoException {
+    public void deleteAll(long contactId) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(DELETE_ATTACHMENT_LIST_QUERY)) {
 
-            statement.setLong(1 , contactId);
+            statement.setLong(1, contactId);
             statement.executeUpdate();
 
             logger.info(String.format("Attachments for contact with id [%s] were removed", contactId));
@@ -69,4 +79,45 @@ public class AttachmentDAOImpl implements AttachmentDAO {
             throw new DaoException("Incorrect attachments data !");
         }
     }
+
+    @Override
+    public List<Attachment> findByContactId(long contactId) throws DaoException {
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_BY_CONTACT_ID_QUERY)) {
+
+            statement.setLong(1, contactId);
+
+            List<Attachment> attachmentList = new ArrayList<>();
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    final long id = resultSet.getLong(ID_COL);
+                    final String fileName = resultSet.getString(FILE_NAME_COL);
+                    final LocalDate date = convertToLocalDate(resultSet.getDate(LOAD_DATE_COL));
+                    final String comment = resultSet.getString(COMMENT_COL);
+
+                    attachmentList.add(new Attachment(id, contactId, fileName, date, comment));
+                }
+            }
+
+            return attachmentList;
+
+        } catch (Exception e) {
+            logger.error("Finding attachment list has been failed --- ", e);
+            throw new DaoException("Incorrect attachment list data !", e);
+        }
+    }
+
+    private static LocalDate convertToLocalDate(java.util.Date dateToConvert) {
+        if (dateToConvert != null) {
+            return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
+        }
+        return null;
+    }
+
+
 }
+
+
+

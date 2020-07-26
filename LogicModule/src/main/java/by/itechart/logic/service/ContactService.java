@@ -21,4 +21,6 @@ public interface ContactService {
 
     long countAll() throws ServiceException;
 
+    Contact findById(long id) throws ServiceException;
+
 }

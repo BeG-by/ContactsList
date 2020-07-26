@@ -1,6 +1,7 @@
 package by.itechart.logic.service.util;
 
 import by.itechart.logic.dao.connection.ConnectionFactory;
+import by.itechart.logic.exception.LoadPropertiesException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -38,7 +39,7 @@ public class FileManagerUtil {
             directoryPath = properties.getProperty("directory.path");
 
         } catch (IOException e) {
-            logger.error("Database properties haven't been loaded !\n" + e.getMessage());
+            logger.error("Database properties haven't been loaded !" + e);
         }
     }
 
@@ -56,7 +57,12 @@ public class FileManagerUtil {
         return path;
     }
 
-    public static String createDirectory(String firstName, String lastName, long contactId) throws IOException {
+    public static String createDirectory(String firstName, String lastName, long contactId) throws IOException, LoadPropertiesException {
+
+        if (directoryPath == null) {
+            throw new LoadPropertiesException();
+        }
+
         final String directoryName = String.format("%d_%s_%s", contactId, firstName, lastName);
         final String pathToDirectory = directoryPath + File.separator + directoryName;
         Files.createDirectory(Paths.get(pathToDirectory));
@@ -64,7 +70,11 @@ public class FileManagerUtil {
         return pathToDirectory;
     }
 
-    public static String findDirectoryPath(long contactId) throws IOException {
+    public static String findDirectoryPath(long contactId) throws IOException, LoadPropertiesException {
+
+        if (directoryPath == null) {
+            throw new LoadPropertiesException();
+        }
 
         try (DirectoryStream<Path> directory = Files.newDirectoryStream(Paths.get(directoryPath))) {
             for (Path path : directory) {

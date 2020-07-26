@@ -15,7 +15,9 @@ public class Attachment implements Serializable {
     public Attachment() {
     }
 
-    public Attachment(String fileName, LocalDate dateOfLoad, String comment) {
+    public Attachment(long id, long contactId, String fileName, LocalDate dateOfLoad, String comment) {
+        this.id = id;
+        this.contactId = contactId;
         this.fileName = fileName;
         this.dateOfLoad = dateOfLoad;
         this.comment = comment;

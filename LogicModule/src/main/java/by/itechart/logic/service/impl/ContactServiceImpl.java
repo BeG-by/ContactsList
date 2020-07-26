@@ -3,7 +3,6 @@ package by.itechart.logic.service.impl;
 import by.itechart.logic.dao.AttachmentDAO;
 import by.itechart.logic.dao.ContactDAO;
 import by.itechart.logic.dao.PhoneDAO;
-import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.dao.impl.AttachmentDAOImpl;
 import by.itechart.logic.dao.impl.ContactDAOImpl;
 import by.itechart.logic.dao.impl.PhoneDAOImpl;
@@ -11,7 +10,6 @@ import by.itechart.logic.dto.ContactDTO;
 import by.itechart.logic.entity.Attachment;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.entity.Phone;
-import by.itechart.logic.exception.DaoException;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.ContactService;
 import by.itechart.logic.service.util.FileManagerUtil;
@@ -29,9 +27,11 @@ import java.util.List;
 
 public class ContactServiceImpl implements ContactService {
 
-    private final ContactDAO contactDAO = new ContactDAOImpl();
-    private final PhoneDAO phoneDAO = new PhoneDAOImpl();
-    private final AttachmentDAO attachmentDAO = new AttachmentDAOImpl();
+    private Connection connection;
+
+    private ContactDAO contactDAO;
+    private PhoneDAO phoneDAO;
+    private AttachmentDAO attachmentDAO;
 
     private final Gson gson = new Gson();
     private static final Logger logger = Logger.getLogger(ContactServiceImpl.class);
@@ -40,6 +40,15 @@ public class ContactServiceImpl implements ContactService {
     private static final String AVATAR_FIELD_NAME = "avatar";
     private static final String ATTACHMENT_FIELD_NAME = "attachment";
 
+    public ContactServiceImpl() {
+    }
+
+    public ContactServiceImpl(Connection connection) {
+        this.connection = connection;
+        contactDAO = new ContactDAOImpl(connection);
+        phoneDAO = new PhoneDAOImpl(connection);
+        attachmentDAO = new AttachmentDAOImpl(connection);
+    }
 
     @Override
     public ContactDTO parseMultipartRequest(HttpServletRequest req) throws ServiceException {
@@ -83,9 +92,9 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<Contact> findAllWithLimit(int page, int pageLimit) throws ServiceException {
 
-        try {
+        try (Connection con = connection) {
             return contactDAO.findAllWithLimit(page, pageLimit);
-        } catch (DaoException e) {
+        } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }
     }
@@ -96,21 +105,21 @@ public class ContactServiceImpl implements ContactService {
         final FileItem avatar = contactDTO.getAvatar();
         final List<FileItem> attachments = contactDTO.getAttachments();
 
-        try (final Connection connection = ConnectionFactory.createConnection()) {
+        try (Connection con = connection) {
 
             try {
                 connection.setAutoCommit(false);
 
                 final Contact contact = contactDTO.getContact();
-                final long contactId = contactDAO.save(contact, connection);
+                final long contactId = contactDAO.save(contact);
 
                 final List<Phone> phoneList = contact.getPhoneList();
                 phoneList.forEach(e -> e.setContactId(contactId));
-                phoneDAO.save(phoneList, connection);
+                phoneDAO.save(phoneList);
 
                 final List<Attachment> attachmentList = contact.getAttachmentList();
                 attachmentList.forEach(e -> e.setContactId(contactId));
-                attachmentDAO.save(attachmentList, connection);
+                attachmentDAO.save(attachmentList);
 
                 final String directory = FileManagerUtil.createDirectory(contact.getFirstName(), contact.getLastName(), contactId);
 
@@ -140,6 +149,7 @@ public class ContactServiceImpl implements ContactService {
 
         } catch (SQLException e) {
             logger.error("Connection failed !", e);
+            throw new ServiceException(e.getMessage());
         }
 
     }
@@ -150,24 +160,24 @@ public class ContactServiceImpl implements ContactService {
         final FileItem avatar = contactDTO.getAvatar();
         final List<FileItem> attachments = contactDTO.getAttachments();
 
-        try (final Connection connection = ConnectionFactory.createConnection()) {
+        try (Connection con = connection) {
 
             try {
                 connection.setAutoCommit(false);
 
                 final Contact contact = contactDTO.getContact();
                 final long contactId = contact.getId();
-                contactDAO.update(contact, connection);
+                contactDAO.update(contact);
 
-                phoneDAO.deleteAll(contactId, connection);
+                phoneDAO.deleteAll(contactId);
                 final List<Phone> phoneList = contact.getPhoneList();
                 phoneList.forEach(e -> e.setContactId(contactId));
-                phoneDAO.save(phoneList, connection);
+                phoneDAO.save(phoneList);
 
-                attachmentDAO.deleteAll(contactId, connection);
+                attachmentDAO.deleteAll(contactId);
                 final List<Attachment> attachmentList = contact.getAttachmentList();
                 attachmentList.forEach(e -> e.setContactId(contactId));
-                attachmentDAO.save(attachmentList, connection);
+                attachmentDAO.save(attachmentList);
 
                 String directory = FileManagerUtil.findDirectoryPath(contactId);
 
@@ -203,6 +213,7 @@ public class ContactServiceImpl implements ContactService {
 
         } catch (SQLException e) {
             logger.error("Connection failed !", e);
+            throw new ServiceException(e.getMessage());
         }
 
     }
@@ -210,21 +221,72 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public void deleteAllById(List<Long> contactList) throws ServiceException {
 
-        try {
-            contactDAO.deleteAllById(contactList);
-        } catch (DaoException e) {
+        try (Connection con = connection) {
+
+            try {
+                con.setAutoCommit(false);
+                contactDAO.deleteAllById(contactList);
+                con.commit();
+                con.setAutoCommit(true);
+
+            } catch (Exception e) {
+                if (connection != null) {
+                    connection.rollback();
+                    connection.setAutoCommit(true);
+                }
+                throw new ServiceException(e.getMessage());
+            }
+
+        } catch (Exception e) {
+            logger.error(e);
             throw new ServiceException(e.getMessage());
         }
+
     }
 
     @Override
     public long countAll() throws ServiceException {
 
-        try {
+        try (Connection con = connection) {
             return contactDAO.countAll();
-        } catch (DaoException e) {
+        } catch (Exception e) {
+            logger.error(e);
             throw new ServiceException(e.getMessage());
         }
+    }
+
+    @Override
+    public Contact findById(long id) throws ServiceException {
+
+        try (Connection con = connection) {
+
+            try {
+                con.setAutoCommit(false);
+
+                final Contact contact = contactDAO.findById(id);
+                final List<Phone> phoneList = phoneDAO.findByContactId(id);
+                final List<Attachment> attachmentList = attachmentDAO.findByContactId(id);
+
+                contact.setPhoneList(phoneList);
+                contact.setAttachmentList(attachmentList);
+
+                con.commit();
+                con.setAutoCommit(true);
+                return contact;
+
+            } catch (Exception e) {
+                if (connection != null) {
+                    connection.rollback();
+                    connection.setAutoCommit(true);
+                }
+                throw new ServiceException(e.getMessage());
+            }
+
+        } catch (Exception e) {
+            logger.error(e);
+            throw new ServiceException(e.getMessage());
+        }
+
     }
 
 }

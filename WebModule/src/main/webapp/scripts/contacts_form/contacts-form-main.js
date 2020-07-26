@@ -10,15 +10,34 @@ createTableContactBody(pageLimit);
 sendRequest(findAllUrl + "?page=1&pageLimit=10", "GET", fillTableContacts);
 sendRequest(countAllUrl, "GET", createPagination);
 
+localStorage.removeItem("contactId");
 
 document.getElementById("delete-btn").addEventListener("click", function () {
     var idList = getCheckedCheckbox();
 
-    if (idList != null) {
+    if (idList.length > 0) {
         sendRequestWithBody(deleteAllUrl, "DELETE", idList, false, "Contacts have been deleted");
     } else {
         alert("You should choose the contacts !");
     }
+});
+
+document.getElementById("update-btn").addEventListener("click", function (e) {
+
+    var idList = getCheckedCheckbox();
+
+    if (idList.length === 1) {
+        localStorage.setItem("contactId", idList[0]);
+        this.click();
+
+    } else if (idList.length === 0) {
+        e.preventDefault();
+        alert("You should choose the contacts !");
+    } else if (idList.length > 1) {
+        e.preventDefault();
+        alert("You should choose one contact !");
+    }
+
 });
 
 
@@ -34,26 +53,26 @@ function createPagination(contactsCountResponse) {
 
     // if (countOfPages < 10) {
 
-        for (var i = 1; i < countOfPages; i++) {
-            var li = document.createElement("li");
-            li.className = "page-item";
+    for (var i = 1; i < countOfPages; i++) {
+        var li = document.createElement("li");
+        li.className = "page-item";
 
-            var a = document.createElement("a");
-            a.className = "page-link";
-            a.textContent = i.toString();
-            li.appendChild(a);
+        var a = document.createElement("a");
+        a.className = "page-link";
+        a.textContent = i.toString();
+        li.appendChild(a);
 
-            a.addEventListener("click", function (e) {
-                e.preventDefault();
-                setEmptyValues();
-                sendRequest(findAllUrl + "?page=" + this.textContent + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
-            });
+        a.addEventListener("click", function (e) {
+            e.preventDefault();
+            setEmptyValues();
+            sendRequest(findAllUrl + "?page=" + this.textContent + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
+        });
 
-            paginationList.appendChild(li);
+        paginationList.appendChild(li);
 
-        }
+    }
 
-        paginationDiv.appendChild(paginationList);
+    paginationDiv.appendChild(paginationList);
 
     // }
 

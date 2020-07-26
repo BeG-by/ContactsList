@@ -98,6 +98,8 @@ function fillTableContacts(response) {
         tableContact.city.textContent = address["city"];
         tableContact.street.textContent = address["street"];
 
+        tr.id = contact["id"];
+
         if (address["postIndex"] !== 0) {
             tableContact.index.textContent = address["postIndex"];
         } else {
@@ -129,16 +131,12 @@ function setEmptyValues() {
 function getCheckedCheckbox() {
 
     var checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
-    var deleteList = [];
+    var list = [];
 
     for (var i = 0; i < checkboxes.length; i++) {
-        deleteList.push(checkboxes[i].value);
+        list.push(checkboxes[i].value);
     }
 
-    if (deleteList.length === 0) {
-        return null;
-    } else {
-        return deleteList;
-    }
+    return list;
 
 }
