@@ -16,8 +16,8 @@ function getFormContactData() {
         return false;
     }
 
-    if (!matchStrict(/[A-Za-zА-Яа-я]+/, firstName)) {
-        alert("First name must have only English or Russian letters !");
+    if (!matchStrict(/[A-Za-zА-Яа-я\s-]+/, firstName)) {
+        alert("First name must have only English or Russian letters, hyphen or space !");
         return false;
     }
 
@@ -28,8 +28,8 @@ function getFormContactData() {
         return false;
     }
 
-    if (!matchStrict(/[A-Za-zА-Яа-я]+/, lastName)) {
-        alert("Last name must have only English or Russian letters !");
+    if (!matchStrict(/[A-Za-zА-Яа-я\s-]+/, lastName)) {
+        alert("Last name must have only English or Russian letters, hyphen or space !");
         return false;
     }
 
@@ -40,8 +40,8 @@ function getFormContactData() {
         return false;
     }
 
-    if (!matchStrict(/[A-Za-zА-Яа-я]*/, middleName)) {
-        alert("Middle name must have only English or Russian letters !");
+    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, middleName)) {
+        alert("Middle name must have only English or Russian letters, hyphen or space !");
         return false;
     }
 
@@ -88,8 +88,8 @@ function getFormContactData() {
         return false;
     }
 
-    if (!matchStrict(/[A-Za-zА-Яа-я]*/, nationality)) {
-        alert("Nationality must have only English or Russian letters !");
+    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, nationality)) {
+        alert("Nationality must have only English or Russian letters, hyphen or space !");
         return false;
     }
 
@@ -106,7 +106,7 @@ function getFormContactData() {
 
     var regExpEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (email !== "" && !regExpEmail.test(email)) {
+    if (!regExpEmail.test(email)) {
         alert("Incorrect email !");
         return false;
     }
@@ -125,8 +125,8 @@ function getFormContactData() {
         return false;
     }
 
-    if (!matchStrict(/[A-Za-zА-Яа-я]*/, country)) {
-        alert("Country must have only English or Russian letters !");
+    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, country)) {
+        alert("Country must have only English or Russian letters, hyphen or space !");
         return false;
     }
 
@@ -137,8 +137,8 @@ function getFormContactData() {
         return false;
     }
 
-    if (!matchStrict(/[A-Za-zА-Яа-я]*/, city)) {
-        alert("City must have only English or Russian letters !");
+    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, city)) {
+        alert("City must have only English or Russian letters, hyphen or space !");
         return false;
     }
 
@@ -176,7 +176,9 @@ function getFormContactData() {
     address["street"] = street;
     address["postIndex"] = postIndex;
     contact["address"] = address;
-
+    if (requestAvatar != null) {
+        contact["imageName"] = requestAvatar.name;
+    }
 
     var phonesTr = document.querySelectorAll(".phone-number");
 

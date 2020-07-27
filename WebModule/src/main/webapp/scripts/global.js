@@ -1,10 +1,9 @@
 "use strict";
 
 var attachmentsForRequest = {}; // --- Arr Files to request ---
-
-var idAttachmentTableRow = 0; // --- Id for attachment table ---
-
-var idPhoneTableRow = 0; // --- Id for phone table ---
+var requestAvatar = null; //-- Avatar for request
+var idAttachmentTableRow = -1; // --- Id for attachment table ---
+var idPhoneTableRow = -1000; // --- Id for phone table ---
 
 var saveUrl = "http://localhost:8080/api/v1/contactsList/contacts/save";
 

@@ -62,9 +62,11 @@ public class ContactDAOImpl implements ContactDAO {
 
     private static final String COUNT_CONTACTS_QUERY = "SELECT count(*) FROM contact";
 
-    private static final String FIND_CONTACT_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s WHERE c.%s=?",
+    private static final String FIND_BY_ID_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s WHERE c.%s=?;",
             ID_COL, CONTACT_ID_COL, ID_COL);
 
+    private static final String FIND_BY_EMAIL_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s WHERE c.%s=?;",
+            ID_COL, CONTACT_ID_COL, EMAIL_COL);
 
     private static Logger logger = Logger.getLogger(ContactDAOImpl.class);
 
@@ -82,28 +84,7 @@ public class ContactDAOImpl implements ContactDAO {
             try (final ResultSet resultSet = statement.executeQuery()) {
 
                 while (resultSet.next()) {
-
-                    Contact contact = new Contact.Builder()
-                            .id(resultSet.getLong(ID_COL))
-                            .firstName(resultSet.getString(FIRST_NAME_COL))
-                            .lastName(resultSet.getString(LAST_NAME_COL))
-                            .middleName(resultSet.getString(MIDDLE_NAME_COL))
-                            .birthday(convertToLocalDate(resultSet.getDate(BIRTHDAY_COL)))
-                            .sex(resultSet.getString(SEX_COL))
-                            .nationality(resultSet.getString(NATIONALITY_COL))
-                            .maritalStatus(resultSet.getString(MARITAL_STATUS_COL))
-                            .urlWebSite(resultSet.getString(WEBSITE_URL_COL))
-                            .email(resultSet.getString(EMAIL_COL))
-                            .currentJob(resultSet.getString(CURRENT_JOB_COL))
-                            .address(new Address(
-                                    resultSet.getLong(ID_COL),
-                                    resultSet.getLong(CONTACT_ID_COL),
-                                    resultSet.getString(COUNTRY_COL),
-                                    resultSet.getString(CITY_COL),
-                                    resultSet.getString(STREET_COL),
-                                    resultSet.getInt(POST_INDEX_COL)))
-                            .build();
-
+                    final Contact contact = buildContact(resultSet);
                     contacts.add(contact);
                 }
             }
@@ -125,23 +106,7 @@ public class ContactDAOImpl implements ContactDAO {
         try (final PreparedStatement contactStatement = connection.prepareStatement(SAVE_CONTACT_QUERY, Statement.RETURN_GENERATED_KEYS);
              final PreparedStatement addressStatement = connection.prepareStatement(SAVE_ADDRESS_QUERY)) {
 
-            contactStatement.setString(1, contact.getFirstName());
-            contactStatement.setString(2, contact.getLastName());
-            contactStatement.setString(3, contact.getMiddleName());
-
-            if (contact.getBirthday() != null) {
-                contactStatement.setDate(4, Date.valueOf(contact.getBirthday()));
-            } else {
-                contactStatement.setNull(4, Types.DATE);
-            }
-
-            contactStatement.setString(5, contact.getSex());
-            contactStatement.setString(6, contact.getNationality());
-            contactStatement.setString(7, contact.getMaritalStatus());
-            contactStatement.setString(8, contact.getUrlWebSite());
-            contactStatement.setString(9, contact.getEmail());
-            contactStatement.setString(10, contact.getCurrentJob());
-            contactStatement.setString(11, contact.getImageName());
+            buildContactStatement(contactStatement, contact);
             contactStatement.executeUpdate();
 
             try (final ResultSet generatedKeys = contactStatement.getGeneratedKeys()) {
@@ -151,13 +116,7 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
             Address address = contact.getAddress();
-
-            addressStatement.setString(1, address.getCountry());
-            addressStatement.setString(2, address.getCity());
-            addressStatement.setString(3, address.getStreet());
-            addressStatement.setObject(4, address.getPostIndex(), Types.INTEGER);
-            addressStatement.setLong(5, contactId);
-
+            buildAddressStatement(addressStatement, address, contactId);
             addressStatement.executeUpdate();
 
             logger.info(String.format("Contact was saved [id= %d]", contactId));
@@ -176,34 +135,12 @@ public class ContactDAOImpl implements ContactDAO {
         try (final PreparedStatement contactStatement = connection.prepareStatement(UPDATE_CONTACT_QUERY);
              final PreparedStatement addressStatement = connection.prepareStatement(UPDATE_ADDRESS_QUERY)) {
 
-            contactStatement.setString(1, contact.getFirstName());
-            contactStatement.setString(2, contact.getLastName());
-            contactStatement.setString(3, contact.getMiddleName());
-
-            if (contact.getBirthday() != null) {
-                contactStatement.setDate(4, Date.valueOf(contact.getBirthday()));
-            } else {
-                contactStatement.setNull(4, Types.DATE);
-            }
-
-            contactStatement.setString(5, contact.getSex());
-            contactStatement.setString(6, contact.getNationality());
-            contactStatement.setString(7, contact.getMaritalStatus());
-            contactStatement.setString(8, contact.getUrlWebSite());
-            contactStatement.setString(9, contact.getEmail());
-            contactStatement.setString(10, contact.getCurrentJob());
-            contactStatement.setString(11, contact.getImageName());
+            buildContactStatement(contactStatement, contact);
             contactStatement.setLong(12, contact.getId());
             contactStatement.executeUpdate();
 
             Address address = contact.getAddress();
-
-            addressStatement.setString(1, address.getCountry());
-            addressStatement.setString(2, address.getCity());
-            addressStatement.setString(3, address.getStreet());
-            addressStatement.setObject(4, address.getPostIndex(), Types.INTEGER);
-            addressStatement.setLong(5, contact.getId());
-
+            buildAddressStatement(addressStatement, address, contact.getId());
             addressStatement.executeUpdate();
 
             logger.info(String.format("Contact was updated %s ", contact));
@@ -261,7 +198,7 @@ public class ContactDAOImpl implements ContactDAO {
     @Override
     public Contact findById(long contactId) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_CONTACT_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_BY_ID_QUERY)) {
 
             statement.setLong(1, contactId);
 
@@ -270,27 +207,7 @@ public class ContactDAOImpl implements ContactDAO {
                 Contact contact = null;
 
                 while (resultSet.next()) {
-
-                    contact = new Contact.Builder()
-                            .id(resultSet.getLong(ID_COL))
-                            .firstName(resultSet.getString(FIRST_NAME_COL))
-                            .lastName(resultSet.getString(LAST_NAME_COL))
-                            .middleName(resultSet.getString(MIDDLE_NAME_COL))
-                            .birthday(convertToLocalDate(resultSet.getDate(BIRTHDAY_COL)))
-                            .sex(resultSet.getString(SEX_COL))
-                            .nationality(resultSet.getString(NATIONALITY_COL))
-                            .maritalStatus(resultSet.getString(MARITAL_STATUS_COL))
-                            .urlWebSite(resultSet.getString(WEBSITE_URL_COL))
-                            .email(resultSet.getString(EMAIL_COL))
-                            .currentJob(resultSet.getString(CURRENT_JOB_COL))
-                            .address(new Address(
-                                    resultSet.getLong(ID_COL),
-                                    resultSet.getLong(CONTACT_ID_COL),
-                                    resultSet.getString(COUNTRY_COL),
-                                    resultSet.getString(CITY_COL),
-                                    resultSet.getString(STREET_COL),
-                                    resultSet.getInt(POST_INDEX_COL)))
-                            .build();
+                    contact = buildContact(resultSet);
                 }
 
                 return contact;
@@ -299,12 +216,94 @@ public class ContactDAOImpl implements ContactDAO {
 
         } catch (Exception e) {
             logger.error("Finding contact has been failed --- ", e);
-            throw new DaoException();
+            throw new DaoException(e);
         }
 
     }
 
-    private static LocalDate convertToLocalDate(java.util.Date dateToConvert) {
+    @Override
+    public Contact findByEmail(String email) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_BY_EMAIL_QUERY)) {
+
+            statement.setString(1, email);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+
+                Contact contact = null;
+
+                while (resultSet.next()) {
+                    contact = buildContact(resultSet);
+                }
+
+                return contact;
+            }
+
+
+        } catch (Exception e) {
+            logger.error("Finding contact has been failed --- ", e);
+            throw new DaoException(e);
+        }
+    }
+
+    private Contact buildContact(ResultSet resultSet) throws SQLException {
+
+        return new Contact.Builder()
+                .id(resultSet.getLong(ID_COL))
+                .firstName(resultSet.getString(FIRST_NAME_COL))
+                .lastName(resultSet.getString(LAST_NAME_COL))
+                .middleName(resultSet.getString(MIDDLE_NAME_COL))
+                .birthday(convertToLocalDate(resultSet.getDate(BIRTHDAY_COL)))
+                .sex(resultSet.getString(SEX_COL))
+                .nationality(resultSet.getString(NATIONALITY_COL))
+                .maritalStatus(resultSet.getString(MARITAL_STATUS_COL))
+                .urlWebSite(resultSet.getString(WEBSITE_URL_COL))
+                .email(resultSet.getString(EMAIL_COL))
+                .currentJob(resultSet.getString(CURRENT_JOB_COL))
+                .address(new Address(
+                        resultSet.getLong(ID_COL),
+                        resultSet.getLong(CONTACT_ID_COL),
+                        resultSet.getString(COUNTRY_COL),
+                        resultSet.getString(CITY_COL),
+                        resultSet.getString(STREET_COL),
+                        resultSet.getInt(POST_INDEX_COL)))
+                .build();
+    }
+
+    private void buildContactStatement(PreparedStatement statement, Contact contact) throws SQLException {
+
+        statement.setString(1, contact.getFirstName());
+        statement.setString(2, contact.getLastName());
+        statement.setString(3, contact.getMiddleName());
+
+        if (contact.getBirthday() != null) {
+            statement.setDate(4, Date.valueOf(contact.getBirthday()));
+        } else {
+            statement.setNull(4, Types.DATE);
+        }
+
+        statement.setString(5, contact.getSex());
+        statement.setString(6, contact.getNationality());
+        statement.setString(7, contact.getMaritalStatus());
+        statement.setString(8, contact.getUrlWebSite());
+        statement.setString(9, contact.getEmail());
+        statement.setString(10, contact.getCurrentJob());
+        statement.setString(11, contact.getImageName());
+
+    }
+
+    private void buildAddressStatement(PreparedStatement statement, Address address, long contactId) throws SQLException {
+
+        statement.setString(1, address.getCountry());
+        statement.setString(2, address.getCity());
+        statement.setString(3, address.getStreet());
+        statement.setObject(4, address.getPostIndex(), Types.INTEGER);
+        statement.setLong(5, contactId);
+
+    }
+
+
+    private LocalDate convertToLocalDate(java.util.Date dateToConvert) {
         if (dateToConvert != null) {
             return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
         }

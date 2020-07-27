@@ -19,4 +19,6 @@ public interface ContactDAO {
 
     Contact findById(long contactId) throws DaoException;
 
+    Contact findByEmail(String email) throws DaoException;
+
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create</title>
+    <title>Contact</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap"
@@ -19,12 +19,16 @@
     <div class="content-container">
         <header>
             <div id="logo">
-                <h2>Create contact form</h2>
+                <h2 id="create-title">Create contact form</h2>
+                <h2 id="update-title" style="display:none">Update contact form</h2>
             </div>
             <nav>
                 <ul id="menu-list">
                     <li>
                         <button id="create-btn">Save contact</button>
+                    </li>
+                    <li>
+                        <button id="update-btn" style="display:none">Update contact</button>
                     </li>
                     <li>
                         <a href="index.html">
@@ -64,7 +68,7 @@
                                 </p>
                             </div>
                             <div class="form-group">
-                                <label>Day of birth*</label>
+                                <label>Day of birth</label>
                                 <div class="date-form">
                                     <div>
                                         <input type="text" name="day" id="day" placeholder="--"
@@ -136,7 +140,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email">Email*</label>
                                 <p>
                                     <input type="email" name="email" id="email">
                                 </p>
@@ -225,16 +229,16 @@
 </div>
 
 <script src="scripts/global.js"></script>
-<script src="scripts/create_form/update-form.js"></script>
 <script src="scripts/requests.js"></script>
+<script src="scripts/create_edit_form/update-form.js"></script>
 <script src="scripts/table-elements.js"></script>
-<script src="scripts/create_form/upload-avatar.js"></script>
-<script src="scripts/create_form/phone-data-popup.js"></script>
-<script src="scripts/create_form/phone-form-popup.js"></script>
-<script src="scripts/create_form/attachment-data-popup.js"></script>
-<script src="scripts/create_form/attachment-form-popup.js"></script>
-<script src="scripts/create_form/contact-data.js"></script>
-<script src="scripts/create_form/create-form-main.js"></script>
+<script src="scripts/create_edit_form/upload-avatar.js"></script>
+<script src="scripts/create_edit_form/phone-data-popup.js"></script>
+<script src="scripts/create_edit_form/phone-form-popup.js"></script>
+<script src="scripts/create_edit_form/attachment-data-popup.js"></script>
+<script src="scripts/create_edit_form/attachment-form-popup.js"></script>
+<script src="scripts/create_edit_form/contact-data.js"></script>
+<script src="scripts/create_edit_form/create-form-main.js"></script>
 
 </body>
 </html>

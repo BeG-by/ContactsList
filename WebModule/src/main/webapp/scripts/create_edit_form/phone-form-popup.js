@@ -97,14 +97,19 @@ function createPhoneForm(phoneDTO) {
 
 // --- Insert phone row into the table ---
 
-function createPhoneRow(phone) {
+function createPhoneRow(phone, id) {
 
     var phoneTable = document.getElementById("phone-body");
     var tr = document.createElement("tr");
 
     tr.className = "phone-number";
-    tr.id = idPhoneTableRow.toString() + "tr-phone";
-    idPhoneTableRow++;
+    if (id === undefined) {
+        tr.id = idPhoneTableRow.toString();
+        idPhoneTableRow--;
+    } else {
+        tr.id = id + "p";
+    }
+
     phoneTable.appendChild(tr);
 
     var checkBox = document.createElement("input");

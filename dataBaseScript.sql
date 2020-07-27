@@ -73,7 +73,7 @@ CREATE TABLE `contacts_list_db`.`attachment`
 (
     `id`           BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
     `contact_id`   BIGINT(20) UNSIGNED NOT NULL,
-    `file_name`     VARCHAR(255)        NOT NULL,
+    `file_name`    VARCHAR(255)        NOT NULL,
     `date_of_load` date                NOT NULL,
     `comment`      VARCHAR(255)        NULL,
     PRIMARY KEY (`id`),
@@ -94,20 +94,18 @@ delimiter $$$
 CREATE PROCEDURE fillContacts()
 BEGIN
     DECLARE i int DEFAULT 0;
-    WHILE i <= 30
+    WHILE i <= 15
         DO
             INSERT INTO `contacts_list_db`.`contact`(first_name, last_name, middle_name, birthday, sex, nationality,
                                                      marital_status,
-                                                     url, email, job, image_name)
+                                                     url, job, image_name)
             VALUES ('Ivan', 'Ivanov', 'Ivanovich', '1990-01-03', 'male', 'Belarus', 'single', 'google.com',
-                    'ivan@mail.ru',
                     'iTechArt', 'fileNameTest.png'),
-                   ('Jack', 'Klinton', 'Bobovich', '1993-02-01', 'male', 'USA', 'married', 'yandex.com', 'jack@mail.ru',
+                   ('Jack', 'Klinton', 'Bobovich', '1993-02-01', 'male', 'USA', 'married', 'yandex.com',
                     'iTechArt', 'fileNameTest.png'),
                    ('Marina', 'Vaika', 'Viktorovna', '1992-11-03', 'female', 'Russia', 'married', 'google.com',
-                    'marina@mail.ru', 'EPAM', 'fileNameTest.png'),
+                    'EPAM', 'fileNameTest.png'),
                    ('Lexa', 'Lennon', 'Valerevich', '1988-01-04', 'male', 'Belarus', 'single', 'github.com',
-                    'lexa@mail.ru',
                     'Wargaming', 'fileNameTest.png');
             SET i = i + 1;
         END WHILE;
@@ -123,7 +121,7 @@ delimiter $$$
 CREATE PROCEDURE fillAddress()
 BEGIN
     DECLARE i int DEFAULT 1;
-    WHILE i <= 120
+    WHILE i <= 60
         DO
             INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
             VALUES ('Belarus', 'Minsk', 'Nemiga 20/42', '220040', i);

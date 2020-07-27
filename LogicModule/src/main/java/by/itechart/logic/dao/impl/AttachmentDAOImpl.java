@@ -37,10 +37,11 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     }
 
     @Override
-    public void save(List<Attachment> attachments) throws DaoException {
+    public List<Long> save(List<Attachment> attachments) throws DaoException {
 
-        try (PreparedStatement statement = connection.prepareStatement(ATTACHMENTS_SAVE_QUERY)) {
+        List<Long> idList = new ArrayList<>();
 
+        try (PreparedStatement statement = connection.prepareStatement(ATTACHMENTS_SAVE_QUERY , Statement.RETURN_GENERATED_KEYS)) {
 
             for (Attachment attachment : attachments) {
                 statement.setLong(1, attachment.getContactId());
@@ -54,9 +55,16 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 
                 statement.setString(4, attachment.getComment());
                 statement.executeUpdate();
+
+                try (final ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    while (generatedKeys.next()) {
+                        idList.add(generatedKeys.getLong(1));
+                    }
+                }
             }
 
             logger.info(String.format("Attachments were saved, attachmentsList= [%s]", attachments));
+            return idList;
 
         } catch (Exception e) {
             logger.error("Saving attachments has been failed --- ", e);

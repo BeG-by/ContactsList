@@ -1,7 +1,8 @@
 package by.itechart.web.controller;
 
-import by.itechart.logic.command.Command;
-import by.itechart.logic.command.CommandFactory;
+
+import by.itechart.web.command.Command;
+import by.itechart.web.command.CommandFactory;
 import org.apache.log4j.Logger;
 
 import javax.servlet.annotation.WebServlet;

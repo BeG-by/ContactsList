@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AttachmentDAO {
 
-    void save(List<Attachment> attachments) throws DaoException;
+    List<Long> save(List<Attachment> attachments) throws DaoException;
 
     void deleteAll(long contactId) throws DaoException;
 

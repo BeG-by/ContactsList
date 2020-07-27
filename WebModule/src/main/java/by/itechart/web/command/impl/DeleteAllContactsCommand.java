@@ -1,10 +1,10 @@
-package by.itechart.logic.command.impl;
+package by.itechart.web.command.impl;
 
-import by.itechart.logic.command.Command;
 import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.ContactService;
 import by.itechart.logic.service.impl.ContactServiceImpl;
+import by.itechart.web.command.Command;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
@@ -16,12 +16,13 @@ import java.util.stream.Collectors;
 
 public class DeleteAllContactsCommand implements Command {
 
+    private final Gson gson = new Gson();
     private static final Logger logger = Logger.getLogger(UpdateContactCommand.class);
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        final Gson gson = new Gson();
+        resp.setContentType("application/json");
 
         ContactService contactService;
         try {
@@ -50,8 +51,6 @@ public class DeleteAllContactsCommand implements Command {
             resp.setStatus(resp.SC_BAD_REQUEST);
             resp.getWriter().write(gson.toJson("Contacts list is empty !"));
         }
-
-        resp.setContentType("application/json");
 
     }
 

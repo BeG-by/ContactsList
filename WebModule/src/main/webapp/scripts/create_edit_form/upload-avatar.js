@@ -1,6 +1,5 @@
 "use strict";
 
-var requestAvatar = null;
 var maxSizeOfImg = 12000000;
 
 var avatarImg = document.getElementById("avatar");

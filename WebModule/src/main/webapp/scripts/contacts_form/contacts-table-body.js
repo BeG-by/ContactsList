@@ -5,6 +5,8 @@ var classNameTd = "tdContact";
 var idContactsBody = "contacts-body";
 var countOfTd = 8;
 
+var updateUrl = "create-edit-form.html";
+
 var trBodyArr = [];
 
 function createTableContactBody(rowCounts) {
@@ -28,7 +30,7 @@ function createTableContactBody(rowCounts) {
 
             if (j === 1) {
                 var linkUpdate = document.createElement("a");
-                linkUpdate.setAttribute("href", updateUrl);
+                linkUpdate.setAttribute("href", "");
                 td.appendChild(linkUpdate);
             }
 
@@ -57,7 +59,6 @@ function fillTableContacts(response) {
             var contact = jsonResponse[jsonKey];
         }
 
-        console.log(contact);
         var address = contact["address"];
         var birthday = contact["birthday"];
 
@@ -93,6 +94,7 @@ function fillTableContacts(response) {
         tableContact.checkbox.children[0].value = contact["id"];
         tableContact.checkbox.children[0].disabled = false;
         tableContact.fullName.children[0].textContent = contact["firstName"] + " " + contact["lastName"] + " " + contact["middleName"];
+        tableContact.fullName.querySelector("a").href = updateUrl + "?id=" + contact["id"];
         tableContact.birthday.textContent = birthdayToString;
         tableContact.country.textContent = address["country"];
         tableContact.city.textContent = address["city"];

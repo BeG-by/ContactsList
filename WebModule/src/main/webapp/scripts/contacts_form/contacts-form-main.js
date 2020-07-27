@@ -2,7 +2,6 @@
 
 var findAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/findAll";
 var deleteAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/deleteAll";
-var updateUrl = "#";
 var countAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/countAll";
 var pageLimit = 10;
 
@@ -10,7 +9,6 @@ createTableContactBody(pageLimit);
 sendRequest(findAllUrl + "?page=1&pageLimit=10", "GET", fillTableContacts);
 sendRequest(countAllUrl, "GET", createPagination);
 
-localStorage.removeItem("contactId");
 
 document.getElementById("delete-btn").addEventListener("click", function () {
     var idList = getCheckedCheckbox();
@@ -27,7 +25,7 @@ document.getElementById("update-btn").addEventListener("click", function (e) {
     var idList = getCheckedCheckbox();
 
     if (idList.length === 1) {
-        localStorage.setItem("contactId", idList[0]);
+        this.parentNode.href = updateUrl + "?id=" + idList[0];
         this.click();
 
     } else if (idList.length === 0) {

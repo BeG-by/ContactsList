@@ -104,8 +104,6 @@ public class ContactValidator {
 
         if (imageName != null && !imageName.isEmpty() && imageName.length() > 100) {
             errorList.add("Image name length can't be more than 100");
-        } else {
-            contact.setImageName(null);
         }
 
         validateAddress(contact.getAddress());
@@ -136,10 +134,10 @@ public class ContactValidator {
             address.setCity(null);
         }
 
-        if (!street.isEmpty()) {
-            validateNonRequired(street, 24, "Street");
-        } else {
+        if (street.isEmpty()) {
             address.setStreet(null);
+        } else if (street.length() > 24) {
+            errorList.add("Street length can't be more than 24");
         }
 
         if (postIndex != null && Integer.toString(postIndex).length() > 10) {
@@ -224,23 +222,23 @@ public class ContactValidator {
     private void validateRequired(String property, int propertyLength, String propertyName) {
 
         if (property.isEmpty()) {
-            errorList.add(String.format("%s can't be empty !", propertyName));
+            errorList.add(String.format("%s can't be empty !\n", propertyName));
         } else if (property.length() > propertyLength) {
-            errorList.add(String.format("%s length can't be more than %d !", propertyName, propertyLength));
+            errorList.add(String.format("%s length can't be more than %d !\n", propertyName, propertyLength));
         }
 
-        if (!property.matches("[A-Za-zА-Яа-я]*")) {
-            errorList.add(String.format("%s must have only English or Russian letters !", property));
+        if (!property.matches("[A-Za-zА-Яа-я\\s-]*")) {
+            errorList.add(String.format("%s must have only English or Russian letters, hyphen or space !\n", propertyName));
         }
     }
 
     private void validateNonRequired(String property, int propertyLength, String propertyName) {
 
         if (property.length() > propertyLength) {
-            errorList.add(String.format("%s length can't be more than %d !", propertyName, propertyLength));
+            errorList.add(String.format("%s length can't be more than %d !\n", propertyName, propertyLength));
         }
-        if (!property.matches("[A-Za-zА-Яа-я]*")) {
-            errorList.add(String.format("%s must have only English or Russian letters !", property));
+        if (!property.matches("[A-Za-zА-Яа-я\\s-]*")) {
+            errorList.add(String.format("%s must have only English or Russian letters !\n", propertyName));
         }
 
     }
