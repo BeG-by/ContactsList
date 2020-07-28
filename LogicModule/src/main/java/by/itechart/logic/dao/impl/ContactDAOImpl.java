@@ -51,8 +51,9 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String SAVE_ADDRESS_QUERY = String.format("INSERT INTO address (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?);",
             COUNTRY_COL, CITY_COL, STREET_COL, POST_INDEX_COL, CONTACT_ID_COL);
 
-    private static final String UPDATE_CONTACT_QUERY = String.format("UPDATE contact SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?;",
-            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL, EMAIL_COL, CURRENT_JOB_COL, IMAGE_NAME_COL, ID_COL);
+    private static final String UPDATE_CONTACT_QUERY = String.format("UPDATE contact SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=IF(%s IS NOT NULL,%s,?) WHERE %s=?;",
+            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL,
+            EMAIL_COL, CURRENT_JOB_COL, IMAGE_NAME_COL, IMAGE_NAME_COL, IMAGE_NAME_COL, ID_COL);
 
     private static final String UPDATE_ADDRESS_QUERY = String.format("UPDATE address SET %s=?, %s=?, %s=?, %s=? WHERE %s=?;",
             COUNTRY_COL, CITY_COL, STREET_COL, POST_INDEX_COL, CONTACT_ID_COL);

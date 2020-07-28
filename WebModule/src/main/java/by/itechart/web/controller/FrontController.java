@@ -5,6 +5,7 @@ import by.itechart.web.command.Command;
 import by.itechart.web.command.CommandFactory;
 import org.apache.log4j.Logger;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,11 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         processRequest(req, resp);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        processRequest(req , resp);
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {

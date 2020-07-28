@@ -2,12 +2,12 @@
 
 var href = window.location.href;
 var url = new URL(href);
-var id = url.searchParams.get("id");
+var updateContactId = url.searchParams.get("id");
 
-var updateUrl = "http://localhost:8080/api/v1/contactsList/contacts/findById";
+var findByIdUrl = "http://localhost:8080/api/v1/contactsList/contacts/findById";
 
-if (id != null) {
-    sendRequest(updateUrl + "?contactId=" + id, "GET", fillContact);
+if (updateContactId != null) {
+    sendRequest(findByIdUrl + "?contactId=" + updateContactId, "GET", fillContact);
 }
 
 function fillContact(contact) {
@@ -15,27 +15,25 @@ function fillContact(contact) {
     loadImage(contact);
     switchDisplay();
 
-    var flag = true;
+    var address = contact["address"];
+    var birthday = contact["birthday"];
+
+    if(address["postIndex"] === 0){
+        address["postIndex"] = "";
+    }
+
+    if (birthday !== undefined) {
+
+        if (birthday["day"] < 10) {
+            birthday["day"] = "0" + birthday["day"];
+        }
+
+        if (birthday["month"] < 10) {
+            birthday["month"] = "0" + birthday["month"];
+        }
+    }
 
     for (var property in contact) {
-
-        var address = contact["address"];
-        var birthday = contact["birthday"];
-
-
-        if (birthday !== undefined && flag) {
-
-            if (birthday["day"] < 10) {
-                birthday["day"] = "0" + birthday["day"];
-            }
-
-            if (birthday["month"] < 10) {
-                birthday["month"] = "0" + birthday["month"];
-            }
-
-            flag = false;
-
-        }
 
         var inputs = document.querySelectorAll("input");
 
@@ -89,6 +87,7 @@ function fillContact(contact) {
     }
 
     fillPhones(contact);
+    fillAttachments(contact)
 
 }
 
@@ -112,10 +111,19 @@ function loadImage(contact) {
 function fillPhones(contact) {
 
     var phoneList = contact["phoneList"];
-    console.log(phoneList);
 
     for (var i = 0; i < phoneList.length; i++) {
-        createPhoneRow(phoneList[i], phoneList[i]["id"]);
+        createPhoneRow(phoneList[i], phoneList[i]["updateContactId"]);
+    }
+
+}
+
+function fillAttachments(contact) {
+
+    var attList = contact["attachmentList"];
+
+    for (var i = 0; i < attList.length; i++) {
+        createRowAttachment(attList[i]["comment"], attList[i]);
     }
 
 }

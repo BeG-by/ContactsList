@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MultipartParserUtil {
 
@@ -33,7 +32,7 @@ public class MultipartParserUtil {
 
             Contact contact = null;
             byte[] avatar = null;
-            List<byte[]> attachments = new ArrayList<>();
+            Map<Long, byte[]> attachments = new LinkedHashMap<>();
 
             for (FileItem item : items) {
                 if (item != null) {
@@ -45,7 +44,8 @@ public class MultipartParserUtil {
                     } else if (fieldName.startsWith(AVATAR_FIELD_NAME)) {
                         avatar = item.get();
                     } else if (fieldName.startsWith(ATTACHMENT_FIELD_NAME)) {
-                        attachments.add(item.get());
+                        final String id = fieldName.substring(fieldName.lastIndexOf(ATTACHMENT_FIELD_NAME) + ATTACHMENT_FIELD_NAME.length());
+                        attachments.put(Long.parseLong(id), item.get());
                     }
                 }
             }

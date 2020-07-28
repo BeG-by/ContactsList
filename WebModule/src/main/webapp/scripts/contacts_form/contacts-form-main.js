@@ -25,7 +25,7 @@ document.getElementById("update-btn").addEventListener("click", function (e) {
     var idList = getCheckedCheckbox();
 
     if (idList.length === 1) {
-        this.parentNode.href = updateUrl + "?id=" + idList[0];
+        this.parentNode.href = findByIdUrl + "?id=" + idList[0];
         this.click();
 
     } else if (idList.length === 0) {

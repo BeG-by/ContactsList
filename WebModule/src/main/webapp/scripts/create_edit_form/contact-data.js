@@ -158,6 +158,10 @@ function getFormContactData() {
         postIndex = null;
     }
 
+
+    if (updateContactId != null) {
+        contact["id"] = updateContactId;
+    }
     contact["firstName"] = firstName;
     contact["lastName"] = lastName;
     contact["middleName"] = middleName;

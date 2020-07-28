@@ -66,7 +66,7 @@ public class FileManagerUtil {
         return pathToDirectory;
     }
 
-    public static String findDPathToFile(long contactId, String name) throws IOException, LoadPropertiesException {
+    public static String findDirectory(long contactId) throws IOException, LoadPropertiesException {
 
         if (directoryPath == null) {
             throw new LoadPropertiesException();
@@ -75,18 +75,39 @@ public class FileManagerUtil {
         try (DirectoryStream<Path> directory = Files.newDirectoryStream(Paths.get(directoryPath))) {
             for (Path path : directory) {
                 if (path.getFileName().toString().equals(String.valueOf(contactId))) {
-                    try (DirectoryStream<Path> userDirectory = Files.newDirectoryStream(path)) {
-                        for (Path file : userDirectory) {
-                            if (file.getFileName().toString().startsWith(name)) {
-                                return file.toString();
-                            }
-                        }
-                    }
+                    return path.toString();
                 }
             }
         }
 
         return null;
+    }
+
+    public static String findPathToFile(long contactId, String fileNameId) throws IOException, LoadPropertiesException {
+
+        if (directoryPath == null) {
+            throw new LoadPropertiesException();
+        }
+
+        final String path = findDirectory(contactId);
+        if (path != null) {
+            try (DirectoryStream<Path> userDirectory = Files.newDirectoryStream(Paths.get(path))) {
+                for (Path file : userDirectory) {
+                    final String id = file.getFileName().toString().split("_")[0];
+                    if (id.equals(fileNameId)) {
+                        return file.toString();
+                    }
+                }
+            }
+        }
+
+
+        return null;
+    }
+
+
+    public static void deleteFile(String path) throws IOException {
+        FileUtils.forceDelete(new File(path));
     }
 
 
@@ -95,12 +116,13 @@ public class FileManagerUtil {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
+    public static void deleteDirectory(long contactId) throws IOException, LoadPropertiesException {
+        final String directory = findDirectory(contactId);
 
-    public static void cleanDirectory(String path) throws IOException {
-        if (path != null) {
-            FileUtils.cleanDirectory(new File(path));
-            logger.info(String.format("Directory %s has been cleaned", path));
+        if (directory != null) {
+            FileUtils.deleteDirectory(new File(directory));
         }
+
     }
 
 }

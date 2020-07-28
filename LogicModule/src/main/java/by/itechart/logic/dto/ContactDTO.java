@@ -2,22 +2,21 @@ package by.itechart.logic.dto;
 
 import by.itechart.logic.entity.Contact;
 
-
+import java.io.Serializable;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class ContactDTO {
+public class ContactDTO implements Serializable {
 
     private Contact contact;
     private byte[] avatar;
-    private List<byte[]> attachments;
+    private Map<Long, byte[]> attachments;
 
     public ContactDTO() {
     }
 
-    public ContactDTO(Contact contact, byte[] avatar, List<byte[]> attachments) {
+    public ContactDTO(Contact contact, byte[] avatar, Map<Long, byte[]> attachments) {
         this.contact = contact;
         this.avatar = avatar;
         this.attachments = attachments;
@@ -39,11 +38,11 @@ public class ContactDTO {
         this.avatar = avatar;
     }
 
-    public List<byte[]> getAttachments() {
+    public Map<Long, byte[]> getAttachments() {
         return attachments;
     }
 
-    public void setAttachments(List<byte[]> attachments) {
+    public void setAttachments(Map<Long, byte[]> attachments) {
         this.attachments = attachments;
     }
 
@@ -66,15 +65,10 @@ public class ContactDTO {
 
     @Override
     public String toString() {
-
-        final List<String> attachmentsToString = attachments.stream()
-                .map(Arrays::toString)
-                .collect(Collectors.toList());
-
         return "ContactDTO{" +
                 "contact=" + contact +
-                ", avatar=" + Arrays.toString(avatar) +
-                ", attachments=" + attachmentsToString +
+                ", avatar=" + avatar +
+                ", attachments=" + attachments +
                 '}';
     }
 

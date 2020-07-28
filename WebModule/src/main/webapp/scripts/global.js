@@ -6,6 +6,7 @@ var idAttachmentTableRow = -1; // --- Id for attachment table ---
 var idPhoneTableRow = -1000; // --- Id for phone table ---
 
 var saveUrl = "http://localhost:8080/api/v1/contactsList/contacts/save";
+var putUrl = "http://localhost:8080/api/v1/contactsList/contacts/update";
 
 
 function replaceLetters() {

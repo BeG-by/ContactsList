@@ -106,8 +106,12 @@ function createAttachmentForm(attachmentDTO) {
             createRowAttachment(commentText) :
             updateRowAttachment(commentText, attachmentDTO["id"]);
 
-        attachmentsForRequest[id] = currentLoadedFile;
+        if (currentLoadedFile !== false) {
+            attachmentsForRequest[id] = currentLoadedFile;
+        }
         currentLoadedFile = null;
+
+        console.log(attachmentsForRequest);
 
         mainWindow.parentNode.removeChild(mainWindow);
     });
@@ -134,20 +138,29 @@ function createAttachmentForm(attachmentDTO) {
 
 // --- Insert attachment row into the table ---
 
-function createRowAttachment(commentText, id) {
+function createRowAttachment(commentText, attachment) {
 
     var attachmentBody = document.getElementById("attachment-body");
 
     var tr = document.createElement("tr");
-    tr.id = idAttachmentTableRow + "-tr-att";
-    idAttachmentTableRow++;
+
+    if (attachment === undefined) {
+        tr.id = idAttachmentTableRow + "a";
+        idAttachmentTableRow--;
+    } else {
+        tr.id = attachment["id"] + "a";
+    }
 
     var checkBox = document.createElement("input");
     checkBox.type = "checkbox";
     tr.appendChild(checkBox);
 
     var fileNameTd = document.createElement("td");
-    fileNameTd.textContent = currentLoadedFile.name;
+    if (attachment === undefined) {
+        fileNameTd.textContent = currentLoadedFile.name;
+    } else {
+        fileNameTd.textContent = attachment["fileName"];
+    }
     tr.appendChild(fileNameTd);
 
     var dateTd = document.createElement("td");
@@ -175,7 +188,7 @@ function updateRowAttachment(commentText, id) {
     var tr = document.getElementById(id);
 
     tr.children[0].checked = false;
-    tr.children[1].textContent = currentLoadedFile.name;
+    tr.children[1].textContent = document.getElementById("load-att-btn").textContent
     var today = new Date();
     tr.children[2].textContent = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
     tr.children[3].textContent = commentText;
@@ -193,7 +206,13 @@ function fillAttachmentInputs(attachment) {
     var loadBtn = document.getElementById("load-att-btn");
 
     currentLoadedFile = attachment["file"];
+    if (currentLoadedFile !== undefined) {
+        loadBtn.textContent = currentLoadedFile.name;
+    } else {
+        loadBtn.textContent = attachment["fileName"];
+        currentLoadedFile = false;
+    }
+
     comment.textContent = attachment["comment"];
-    loadBtn.textContent = currentLoadedFile.name;
 
 }

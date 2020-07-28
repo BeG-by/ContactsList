@@ -5,16 +5,19 @@ document.getElementById("create-btn").addEventListener("click", function () {
 
     if (validateContact !== false) {
 
-        var fileAttachmentsList = [];
+        validateContact["attachmentList"] = getAttachmentsList();
+        sendMultipartRequest("POST", saveUrl, validateContact, requestAvatar, attachmentsForRequest , "Contact has been saved !");
 
-        for (var property in attachmentsForRequest) {
-            fileAttachmentsList.push(attachmentsForRequest[property]);
-        }
+    }
 
-        validateContact["attachmentList"] = getAttachmentsForRequest();
+});
 
-        sendMultipartRequest("POST", saveUrl, validateContact, requestAvatar, fileAttachmentsList);
+document.getElementById("update-btn").addEventListener("click", function () {
+    var validateContact = getFormContactData();
 
+    if (validateContact !== false) {
+        validateContact["attachmentList"] = getAttachmentsList();
+        sendMultipartRequest("PUT", putUrl, validateContact, requestAvatar, attachmentsForRequest, "Contact has been updated !");
     }
 
 });

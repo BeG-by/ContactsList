@@ -40,7 +40,7 @@ public class PhoneDAOImpl implements PhoneDAO {
     }
 
     @Override
-    public void save(List<Phone> phoneList) throws DaoException {
+    public void saveAll(List<Phone> phoneList) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(SAVE_PHONE_QUERY)) {
 
@@ -64,7 +64,7 @@ public class PhoneDAOImpl implements PhoneDAO {
     }
 
     @Override
-    public void deleteAll(long contactId) throws DaoException {
+    public void deleteAllByContactId(long contactId) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(DELETE_PHONE_LIST_QUERY)) {
 

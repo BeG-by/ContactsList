@@ -55,7 +55,7 @@ function sendRequestWithBody(url, type, body, async, message) {
 }
 
 
-function sendMultipartRequest(type, url, json, avatar, attachments) {
+function sendMultipartRequest(type, url, json, avatar, attachments, message) {
 
     var xhr = new XMLHttpRequest();
     var formData = new FormData();
@@ -69,13 +69,14 @@ function sendMultipartRequest(type, url, json, avatar, attachments) {
         formData.append("avatar", avatar);
     }
 
-    for (var i = 0; i < attachments.length; i++) {
-        formData.append("attachment" + i, attachments[i]);
+    for (var property in attachments) {
+        formData.append("attachment" + property.replace(/a/g, ""), attachments[property]);
     }
+
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
-            alert("Contact has been saved !");
+            alert(message);
         } else if (xhr.readyState === 4 && xhr.status >= 400) {
             alert("Error: " + xhr.status + " " + xhr.response);
         }

@@ -88,55 +88,55 @@ CREATE TABLE `contacts_list_db`.`attachment`
 
 
 
-drop procedure if exists fillContacts;
-
-delimiter $$$
-CREATE PROCEDURE fillContacts()
-BEGIN
-    DECLARE i int DEFAULT 0;
-    WHILE i <= 15
-        DO
-            INSERT INTO `contacts_list_db`.`contact`(first_name, last_name, middle_name, birthday, sex, nationality,
-                                                     marital_status,
-                                                     url, job, image_name)
-            VALUES ('Ivan', 'Ivanov', 'Ivanovich', '1990-01-03', 'male', 'Belarus', 'single', 'google.com',
-                    'iTechArt', 'fileNameTest.png'),
-                   ('Jack', 'Klinton', 'Bobovich', '1993-02-01', 'male', 'USA', 'married', 'yandex.com',
-                    'iTechArt', 'fileNameTest.png'),
-                   ('Marina', 'Vaika', 'Viktorovna', '1992-11-03', 'female', 'Russia', 'married', 'google.com',
-                    'EPAM', 'fileNameTest.png'),
-                   ('Lexa', 'Lennon', 'Valerevich', '1988-01-04', 'male', 'Belarus', 'single', 'github.com',
-                    'Wargaming', 'fileNameTest.png');
-            SET i = i + 1;
-        END WHILE;
-END $$$
-delimiter ;
-
-call fillContacts();
-
-
-drop procedure if exists fillAddress;
-
-delimiter $$$
-CREATE PROCEDURE fillAddress()
-BEGIN
-    DECLARE i int DEFAULT 1;
-    WHILE i <= 60
-        DO
-            INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
-            VALUES ('Belarus', 'Minsk', 'Nemiga 20/42', '220040', i);
-            SET i = i + 1;
-            INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
-            VALUES ('USA', 'New York', '114 Indian Summer St.', '10016', i);
-            SET i = i + 1;
-            INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
-            VALUES ('Russia', 'Moscow', 'Lenina', '23234', i);
-            SET i = i + 1;
-            INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
-            VALUES ('Belarus', 'Minsk', 'Temeryazeva 23/15', '22334', i);
-            SET i = i + 1;
-        END WHILE;
-END $$$
-delimiter ;
-
-call fillAddress();
+# drop procedure if exists fillContacts;
+#
+# delimiter $$$
+# CREATE PROCEDURE fillContacts()
+# BEGIN
+#     DECLARE i int DEFAULT 0;
+#     WHILE i <= 15
+#         DO
+#             INSERT INTO `contacts_list_db`.`contact`(first_name, last_name, middle_name, birthday, sex, nationality,
+#                                                      marital_status,
+#                                                      url, job, image_name)
+#             VALUES ('Ivan', 'Ivanov', 'Ivanovich', '1990-01-03', 'male', 'Belarus', 'single', 'google.com',
+#                     'iTechArt', 'fileNameTest.png'),
+#                    ('Jack', 'Klinton', 'Bobovich', '1993-02-01', 'male', 'USA', 'married', 'yandex.com',
+#                     'iTechArt', 'fileNameTest.png'),
+#                    ('Marina', 'Vaika', 'Viktorovna', '1992-11-03', 'female', 'Russia', 'married', 'google.com',
+#                     'EPAM', 'fileNameTest.png'),
+#                    ('Lexa', 'Lennon', 'Valerevich', '1988-01-04', 'male', 'Belarus', 'single', 'github.com',
+#                     'Wargaming', 'fileNameTest.png');
+#             SET i = i + 1;
+#         END WHILE;
+# END $$$
+# delimiter ;
+#
+# call fillContacts();
+#
+#
+# drop procedure if exists fillAddress;
+#
+# delimiter $$$
+# CREATE PROCEDURE fillAddress()
+# BEGIN
+#     DECLARE i int DEFAULT 1;
+#     WHILE i <= 60
+#         DO
+#             INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
+#             VALUES ('Belarus', 'Minsk', 'Nemiga 20/42', '220040', i);
+#             SET i = i + 1;
+#             INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
+#             VALUES ('USA', 'New York', '114 Indian Summer St.', '10016', i);
+#             SET i = i + 1;
+#             INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
+#             VALUES ('Russia', 'Moscow', 'Lenina', '23234', i);
+#             SET i = i + 1;
+#             INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
+#             VALUES ('Belarus', 'Minsk', 'Temeryazeva 23/15', '22334', i);
+#             SET i = i + 1;
+#         END WHILE;
+# END $$$
+# delimiter ;
+#
+# call fillAddress();

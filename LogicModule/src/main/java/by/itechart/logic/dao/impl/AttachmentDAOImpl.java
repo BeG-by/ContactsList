@@ -23,9 +23,12 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     private static final String ATTACHMENTS_SAVE_QUERY = String.format("INSERT INTO attachment (%s,%s,%s,%s) VALUES (?,?,?,?) ",
             CONTACT_ID_COL, FILE_NAME_COL, LOAD_DATE_COL, COMMENT_COL);
 
-    private static final String DELETE_ATTACHMENT_LIST_QUERY = String.format("DELETE FROM attachment WHERE %s=?;", CONTACT_ID_COL);
+    private static final String DELETE_BY_ID_QUERY = String.format("DELETE FROM attachment WHERE %s=?;", ID_COL);
 
     private static final String FIND_BY_CONTACT_ID_QUERY = String.format("SELECT * FROM attachment WHERE %s=?;", CONTACT_ID_COL);
+
+    private static final String UPDATE_BY_ID_QUERY = String.format("UPDATE attachment SET %s=?, %s=?, %s=? WHERE %s=?;",
+            FILE_NAME_COL, LOAD_DATE_COL, COMMENT_COL, ID_COL);
 
     private static final Logger logger = Logger.getLogger(AttachmentDAOImpl.class);
 
@@ -37,11 +40,11 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     }
 
     @Override
-    public List<Long> save(List<Attachment> attachments) throws DaoException {
+    public List<Long> saveAll(List<Attachment> attachments) throws DaoException {
 
         List<Long> idList = new ArrayList<>();
 
-        try (PreparedStatement statement = connection.prepareStatement(ATTACHMENTS_SAVE_QUERY , Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement statement = connection.prepareStatement(ATTACHMENTS_SAVE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
             for (Attachment attachment : attachments) {
                 statement.setLong(1, attachment.getContactId());
@@ -73,14 +76,16 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     }
 
     @Override
-    public void deleteAll(long contactId) throws DaoException {
+    public void deleteAllById(List<Long> attachmentIdList) throws DaoException {
 
-        try (PreparedStatement statement = connection.prepareStatement(DELETE_ATTACHMENT_LIST_QUERY)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY)) {
 
-            statement.setLong(1, contactId);
-            statement.executeUpdate();
+            for (Long id : attachmentIdList) {
+                statement.setLong(1, id);
+                statement.executeUpdate();
+            }
 
-            logger.info(String.format("Attachments for contact with id [%s] were removed", contactId));
+            logger.info(String.format("Attachments list were removed %s", attachmentIdList));
 
         } catch (Exception e) {
             logger.error("Deleting attachments has been failed --- ", e);
@@ -89,7 +94,34 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     }
 
     @Override
-    public List<Attachment> findByContactId(long contactId) throws DaoException {
+    public void updateAll(List<Attachment> attachments) throws DaoException {
+
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_BY_ID_QUERY)) {
+
+            for (Attachment att : attachments) {
+                statement.setString(1, att.getFileName());
+
+                if (att.getDateOfLoad() != null) {
+                    statement.setDate(2, Date.valueOf(att.getDateOfLoad()));
+                } else {
+                    statement.setNull(2, Types.DATE);
+                }
+
+                statement.setString(3, att.getComment());
+                statement.setLong(4, att.getId());
+                statement.executeUpdate();
+            }
+
+            logger.info(String.format("Attachments list were updated %s", attachments));
+
+        } catch (Exception e) {
+            logger.error("Deleting attachments has been failed --- ", e);
+            throw new DaoException("Incorrect attachments data !");
+        }
+    }
+
+    @Override
+    public List<Attachment> findAllByContactId(long contactId) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(FIND_BY_CONTACT_ID_QUERY)) {
 

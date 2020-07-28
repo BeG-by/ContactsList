@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface PhoneDAO {
 
-    void save(List<Phone> phone) throws DaoException;
+    void saveAll(List<Phone> phone) throws DaoException;
 
-    void deleteAll(long contactId) throws DaoException;
+    void deleteAllByContactId(long contactId) throws DaoException;
 
     List<Phone> findByContactId(long contactId) throws DaoException;
 

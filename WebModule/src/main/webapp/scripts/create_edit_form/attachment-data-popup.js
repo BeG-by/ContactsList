@@ -2,7 +2,7 @@
 
 // --- Attachments for request ---
 
-function getAttachmentsForRequest() {
+function getAttachmentsList() {
 
     var items = document.querySelectorAll("#attachment-body tr");
 
@@ -13,7 +13,7 @@ function getAttachmentsForRequest() {
         var date = items[i].children[2].textContent.split("-");
 
         var attachment = {
-            "id": i,
+            "id": items[i].id.replace(/a/g , ""),
             "contactId": -1,
             "fileName": items[i].children[1].textContent,
             "dateOfLoad": {
@@ -60,6 +60,7 @@ function getDataForUpdateAttachment() {
 
         attachment["id"] = attachmentRow.id;
         attachment["file"] = attachmentsForRequest[attachment.id];
+        attachment["fileName"] = attachmentRow.children[1].textContent;
         attachment["comment"] = attachmentRow.children[3].textContent;
 
         return attachment;
