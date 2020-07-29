@@ -128,7 +128,6 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public void updateOne(ContactDTO contactDTO) throws ServiceException {
 
-
         final Contact contact = contactDTO.getContact();
         final long contactId = contact.getId();
 
@@ -183,6 +182,11 @@ public class ContactServiceImpl implements ContactService {
                         FileManagerUtil.deleteFile(pathToAvatar);
                     }
                     String pathToDirectory = FileManagerUtil.findDirectory(contactId);
+
+                    if (pathToDirectory == null) {
+                        pathToDirectory = FileManagerUtil.createDirectory(contactId);
+                    }
+
                     final String imgPath = FileManagerUtil.saveImg(avatar, pathToDirectory, contact.getImageName(), IMG_PREFIX);
                     logger.info("Image has been saved on the disk: " + imgPath);
 
@@ -211,7 +215,10 @@ public class ContactServiceImpl implements ContactService {
                 int index = 0;
                 for (Attachment attachment : insertAttachment) {
                     final Long id = saveIdList.get(index);
-                    final String directory = FileManagerUtil.findDirectory(contactId);
+                    String directory = FileManagerUtil.findDirectory(contactId);
+                    if (directory == null) {
+                        directory = FileManagerUtil.createDirectory(contactId);
+                    }
                     final String newFile = FileManagerUtil.saveFile(attachmentsMap.get(attachment.getId()), directory, String.valueOf(id), attachment.getFileName(), ATTACHMENT_POSTFIX);
                     index++;
                     logger.info("Attachment file has been saved " + newFile);
@@ -247,7 +254,7 @@ public class ContactServiceImpl implements ContactService {
                 con.setAutoCommit(false);
                 contactDAO.deleteAllById(contactList);
 
-                for (Long id: contactList) {
+                for (Long id : contactList) {
                     FileManagerUtil.deleteDirectory(id);
                 }
 

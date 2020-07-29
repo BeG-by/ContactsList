@@ -37,9 +37,11 @@ public class FindAllContactsCommand implements Command {
         final String page = req.getParameter("page");
         final String pageLimit = req.getParameter("pageLimit");
 
-        if (page == null || pageLimit == null || !page.matches("\\d+") || !pageLimit.matches("\\d+")) {
+        if (page == null || pageLimit == null || !page.matches("\\d+") ||
+                !pageLimit.matches("\\d+") || Integer.parseInt(page) > 0) {
+
             resp.setStatus(resp.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Page and page limit must be digit !"));
+            resp.getWriter().write(gson.toJson("Page and page limit must be digit and more then zero !"));
             return;
         }
 

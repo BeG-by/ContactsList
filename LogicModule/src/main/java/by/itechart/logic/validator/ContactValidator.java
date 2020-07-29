@@ -81,7 +81,9 @@ public class ContactValidator {
         }
 
         if (!urlWebSite.isEmpty()) {
-            validateNonRequired(urlWebSite, 200, "URL");
+            if (urlWebSite.length() > 200) {
+                errorList.add(String.format("%s length can't be more than %d !\n", urlWebSite, 20));
+            }
         } else {
             contact.setUrlWebSite(null);
         }

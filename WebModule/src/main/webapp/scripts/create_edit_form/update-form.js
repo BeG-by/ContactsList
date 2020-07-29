@@ -4,7 +4,6 @@ var href = window.location.href;
 var url = new URL(href);
 var updateContactId = url.searchParams.get("id");
 
-var findByIdUrl = "http://localhost:8080/api/v1/contactsList/contacts/findById";
 
 if (updateContactId != null) {
     sendRequest(findByIdUrl + "?contactId=" + updateContactId, "GET", fillContact);

@@ -47,16 +47,15 @@ function createTableContactBody(rowCounts) {
 
 function fillTableContacts(response) {
 
-    var jsonResponse = response;
-
     var count = 0;
 
-    for (var jsonKey in jsonResponse) {
+    for (var jsonKey in response) {
         var tr = trBodyArr[count];
         count++;
 
-        if (jsonResponse.hasOwnProperty(jsonKey)) {
-            var contact = jsonResponse[jsonKey];
+
+        if (response.hasOwnProperty(jsonKey)) {
+            var contact = response[jsonKey];
         }
 
         var address = contact["address"];
@@ -91,6 +90,10 @@ function fillTableContacts(response) {
         };
 
 
+        if(contact["middleName"] === undefined){
+            contact["middleName"] = "";
+        }
+
         tableContact.checkbox.children[0].value = contact["id"];
         tableContact.checkbox.children[0].disabled = false;
         tableContact.fullName.children[0].textContent = contact["firstName"] + " " + contact["lastName"] + " " + contact["middleName"];
@@ -115,7 +118,7 @@ function fillTableContacts(response) {
 
 function setEmptyValues() {
 
-    for (var i = 1; i < trBodyArr.length; i++) {
+    for (var i = 0; i < trBodyArr.length; i++) {
         for (var j = 0; j < countOfTd; j++) {
             if (j === 0) {
                 trBodyArr[i].children[0].children[0].value = "";
