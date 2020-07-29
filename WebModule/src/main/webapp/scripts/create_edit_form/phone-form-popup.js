@@ -1,6 +1,6 @@
 "use strict";
 
-var formPhonePhoneClassName = "phone-form shadow p-3 mb-5 bg-white rounded";
+var formPhoneClassName = "phone-form shadow p-3 mb-5 bg-white rounded";
 var saveBtnPhoneClassName = "btn btn-success save-btn";
 var cancelBtnPhoneClassName = "btn btn-danger close-btn";
 
@@ -21,16 +21,16 @@ function createPhoneForm(phoneDTO) {
     windowForm.appendChild(mainContent);
 
     var phoneForm = document.createElement("div");
-    phoneForm.className = formPhonePhoneClassName;
+    phoneForm.className = formPhoneClassName;
     mainContent.appendChild(phoneForm);
 
-    var countryCode = createInput("text", "countryCode", "countryCode-form", "Country code");
+    var countryCode = createInput("text", "countryCode", "countryCode-form", "Country code" , replaceLetters);
     phoneForm.appendChild(countryCode);
 
-    var operatorCode = createInput("text", "operatorCode", "operatorCode-form", "Operator code");
+    var operatorCode = createInput("text", "operatorCode", "operatorCode-form", "Operator code" , replaceLetters);
     phoneForm.appendChild(operatorCode);
 
-    var number = createInput("text", "number", "number-form", "Phone Number");
+    var number = createInput("text", "number", "number-form", "Phone Number" , replaceLetters);
     phoneForm.appendChild(number);
 
     var typePhoneDiv = document.createElement("div");

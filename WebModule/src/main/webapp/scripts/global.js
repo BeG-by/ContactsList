@@ -22,7 +22,7 @@ var page = localStorage.getItem("currentPage");
 var currentPage = page === null ? currentPage = 1 : currentPage = page;
 
 
-function replaceLetters() {
+function replaceLetters(length) {
     this.value = this.value.replace(/\D/, "");
 }
 

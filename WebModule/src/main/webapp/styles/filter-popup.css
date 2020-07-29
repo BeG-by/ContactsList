@@ -1,0 +1,95 @@
+.window-main-filter {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(109, 150, 240, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    overflow: hidden;
+
+}
+
+
+.window-filter {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    height: auto;
+    width: 40%;
+    border: 1px solid #007bff;
+    border-radius: 30px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    overflow: auto;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex; /*IE*/
+    flex-direction: column; /*IE*/
+}
+
+.main-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.window-form {
+    width: 35%;
+    margin: 1rem auto;
+}
+
+.window-filter header {
+    color: white;
+    background-color: #007bff;
+}
+
+.window-filter main {
+    padding: 5px;
+}
+
+.window-filter input[type=text] {
+    width: 70%;
+    padding-top: 0;
+}
+
+
+.window-filter .form-check {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+
+#single-div, #male-div {
+    margin-right: 20px;
+}
+
+#married-div, #female-div {
+    margin-left: 20px;
+}
+
+.window-filter button {
+    background-color: #007bff;
+    border-width: 0;
+    font-family: 'Montserrat', sans-serif;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.date-form {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.save-btn:hover {
+    background-color: #28a745;
+}
+
+.close-btn:hover {
+    background-color: #dc3545;
+}

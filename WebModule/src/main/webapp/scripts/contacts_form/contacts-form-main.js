@@ -5,12 +5,13 @@ sendRequest(findAllUrl + "?page=" + currentPage + "&pageLimit=" + pageLimit, "GE
 sendRequest(countAllUrl, "GET", createPagination);
 
 
-document.getElementById("delete-btn").addEventListener("click", function () {
+document.getElementById("delete-btn").addEventListener("click", function (e) {
     var idList = getCheckedCheckbox();
 
     if (idList.length > 0) {
         sendRequestWithBody(deleteAllUrl, "DELETE", idList, false, "Contacts have been deleted");
     } else {
+        e.preventDefault();
         alert("You should choose the contacts !");
     }
 });
@@ -33,7 +34,15 @@ document.getElementById("update-btn").addEventListener("click", function (e) {
 
 });
 
+document.getElementById("filter-btn").addEventListener("click", function (e) {
 
-// --- Pagination ---
+    e.preventDefault();
+
+    createFilterForm();
+
+});
+
+
+
 
 

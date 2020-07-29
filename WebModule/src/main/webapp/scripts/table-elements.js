@@ -1,6 +1,6 @@
 "use strict";
 
-function createInput(type, name, id, textLabel) {
+function createInput(type, name, id, textLabel, filter) {
 
     var div = document.createElement("div");
     div.className = "form-group";
@@ -15,7 +15,9 @@ function createInput(type, name, id, textLabel) {
     input.type = type;
     input.name = name;
     input.id = id;
-    input.addEventListener("input", replaceLetters);
+    if (filter !== undefined) {
+        input.addEventListener("input", replaceLetters);
+    }
 
     p.appendChild(input);
     div.appendChild(p);
