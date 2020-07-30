@@ -3,7 +3,6 @@ package by.itechart.logic.dao.impl;
 import by.itechart.logic.dao.PhoneDAO;
 import by.itechart.logic.entity.Phone;
 import by.itechart.logic.exception.DaoException;
-import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +29,6 @@ public class PhoneDAOImpl implements PhoneDAO {
 
     private static final String FIND_BY_CONTACT_ID_QUERY = String.format("SELECT * FROM phone WHERE %s=?;", CONTACT_ID_COL);
 
-    private static final Logger logger = Logger.getLogger(PhoneDAOImpl.class);
 
     public PhoneDAOImpl() {
     }
@@ -40,42 +38,35 @@ public class PhoneDAOImpl implements PhoneDAO {
     }
 
     @Override
-    public void saveAll(List<Phone> phoneList) throws DaoException {
+    public void save(Phone phone) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(SAVE_PHONE_QUERY)) {
 
-            for (Phone phone : phoneList) {
-                statement.setLong(1, phone.getContactId());
-                statement.setInt(2, phone.getCountryCode());
-                statement.setInt(3, phone.getOperatorCode());
-                statement.setInt(4, phone.getNumber());
-                statement.setString(5, phone.getType());
-                statement.setString(6, phone.getComment());
-                statement.executeUpdate();
-            }
-
-            logger.info(String.format("Phones were saved, phoneList= [%s]", phoneList));
+            statement.setLong(1, phone.getContactId());
+            statement.setInt(2, phone.getCountryCode());
+            statement.setInt(3, phone.getOperatorCode());
+            statement.setInt(4, phone.getNumber());
+            statement.setString(5, phone.getType());
+            statement.setString(6, phone.getComment());
+            statement.executeUpdate();
 
         } catch (Exception e) {
-            logger.error("Saving phone list has been failed --- ", e);
-            throw new DaoException("Incorrect phone list data !", e);
+            throw new DaoException(e);
         }
 
     }
 
     @Override
-    public void deleteAllByContactId(long contactId) throws DaoException {
+    public void deleteByContactId(long contactId) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(DELETE_PHONE_LIST_QUERY)) {
 
             statement.setLong(1, contactId);
             statement.executeUpdate();
 
-            logger.info(String.format("Phones for contact with id [%s] were removed", contactId));
 
         } catch (Exception e) {
-            logger.error("Deleting phone list has been failed --- ", e);
-            throw new DaoException("Incorrect phone list data !", e);
+            throw new DaoException(e);
         }
 
     }
@@ -106,8 +97,7 @@ public class PhoneDAOImpl implements PhoneDAO {
             return phones;
 
         } catch (Exception e) {
-            logger.error("Finding phone list has been failed --- ", e);
-            throw new DaoException("Incorrect phone list data !", e);
+            throw new DaoException(e);
         }
     }
 

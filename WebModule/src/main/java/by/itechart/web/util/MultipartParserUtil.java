@@ -2,13 +2,13 @@ package by.itechart.web.util;
 
 import by.itechart.logic.dto.ContactDTO;
 import by.itechart.logic.entity.Contact;
-import by.itechart.logic.exception.ServiceException;
 import by.itechart.web.exception.RequestParseException;
 import com.google.gson.Gson;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -19,7 +19,7 @@ import java.util.*;
 public class MultipartParserUtil {
 
     private static Gson gson = new Gson();
-    private static final Logger logger = Logger.getLogger(MultipartParserUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MultipartParserUtil.class);
 
     private static final String JSON_CONTACT_FIELD_NAME = "jsonContact";
     private static final String AVATAR_FIELD_NAME = "avatar";
@@ -50,12 +50,12 @@ public class MultipartParserUtil {
                 }
             }
 
-            logger.info("Contact has been parsed: " + contact);
+            LOGGER.info("Contact has been parsed: {}", contact);
 
             return new ContactDTO(contact, avatar, attachments);
 
         } catch (Exception e) {
-            logger.error("Parse multipart request failed ! ", e);
+            LOGGER.error("Parse multipart request failed ! ", e);
             throw new RequestParseException("Incorrect request data !", e);
         }
 

@@ -2,7 +2,9 @@ package by.itechart.logic.dao.connection;
 
 import by.itechart.logic.exception.LoadPropertiesException;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +25,7 @@ public class ConnectionFactory {
 
     private static final String PROPERTIES_PATH = "/db.properties";
 
-    private static final Logger logger = Logger.getLogger(ConnectionFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
 
     private static BasicDataSource dataSource = new BasicDataSource();
 
@@ -65,7 +67,7 @@ public class ConnectionFactory {
             maxStatement = properties.getProperty("pool.max.prepare.statement");
 
         } catch (IOException e) {
-            logger.error("Database properties haven't been loaded" , e);
+            logger.error("Database properties haven't been loaded", e);
         }
 
     }

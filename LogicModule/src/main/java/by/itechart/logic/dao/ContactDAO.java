@@ -13,7 +13,7 @@ public interface ContactDAO {
 
     void update(Contact contact) throws DaoException;
 
-    void deleteAllById(List<Long> idList) throws DaoException;
+    void delete(long contactId) throws DaoException;
 
     long countAll() throws DaoException;
 

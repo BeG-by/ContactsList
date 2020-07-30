@@ -3,7 +3,8 @@ package by.itechart.web.controller;
 
 import by.itechart.web.command.Command;
 import by.itechart.web.command.CommandFactory;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +16,7 @@ import java.io.IOException;
 @WebServlet("/api/v1/contactsList/*")
 public class FrontController extends HttpServlet {
 
-    private static final Logger logger = Logger.getLogger(FrontController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private final static String ENTRY_POINT = "/api/v1/contactsList/";
 
     @Override
@@ -35,7 +36,7 @@ public class FrontController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        processRequest(req , resp);
+        processRequest(req, resp);
     }
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -43,7 +44,7 @@ public class FrontController extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
 
-        logger.info(String.format("Request is processing... [url: %s , method: %s]", req.getRequestURI(), req.getMethod()));
+        LOGGER.info("Request is processing... [url: {} , method: {}]", req.getRequestURI(), req.getMethod());
 
         final String requestURI = req.getRequestURI();
         final String commandKey = requestURI.substring(requestURI.lastIndexOf(ENTRY_POINT) + ENTRY_POINT.length());
@@ -52,9 +53,9 @@ public class FrontController extends HttpServlet {
 
         if (command != null) {
             command.execute(req, resp);
-            logger.info(String.format("Request [url: %s , method: %s] has been processed", req.getRequestURI(), req.getMethod()));
+            LOGGER.info("Request [url: {} , method: {}] has been processed", req.getRequestURI(), req.getMethod());
         } else {
-            logger.error(String.format("Command didn't find [%s] ", commandKey));
+            LOGGER.error("Command didn't find [{}] ", commandKey);
         }
 
     }

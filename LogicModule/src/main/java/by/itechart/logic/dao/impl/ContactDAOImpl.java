@@ -1,11 +1,10 @@
 package by.itechart.logic.dao.impl;
 
-import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.dao.ContactDAO;
+import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.entity.Address;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.exception.DaoException;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -58,8 +57,8 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String UPDATE_ADDRESS_QUERY = String.format("UPDATE address SET %s=?, %s=?, %s=?, %s=? WHERE %s=?;",
             COUNTRY_COL, CITY_COL, STREET_COL, POST_INDEX_COL, CONTACT_ID_COL);
 
-    private static final String DELETE_ALL_CONTACTS_QUERY = String.format("DELETE FROM contact WHERE %s = ?;", ID_COL);
-    private static final String DELETE_ALL_ADDRESS_QUERY = String.format("DELETE FROM address WHERE %s = ?;", CONTACT_ID_COL);
+    private static final String DELETE_CONTACT_QUERY = String.format("DELETE FROM contact WHERE %s = ?;", ID_COL);
+    private static final String DELETE_ADDRESS_QUERY = String.format("DELETE FROM address WHERE %s = ?;", CONTACT_ID_COL);
 
     private static final String COUNT_CONTACTS_QUERY = "SELECT count(*) FROM contact";
 
@@ -69,7 +68,6 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String FIND_BY_EMAIL_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s WHERE c.%s=?;",
             ID_COL, CONTACT_ID_COL, EMAIL_COL);
 
-    private static Logger logger = Logger.getLogger(ContactDAOImpl.class);
 
 
     @Override
@@ -91,8 +89,7 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
         } catch (Exception e) {
-            logger.error("Finding contact has been failed --- ", e);
-            throw new DaoException();
+            throw new DaoException(e);
         }
 
         return contacts;
@@ -120,11 +117,9 @@ public class ContactDAOImpl implements ContactDAO {
             buildAddressStatement(addressStatement, address, contactId);
             addressStatement.executeUpdate();
 
-            logger.info(String.format("Contact was saved [id= %d]", contactId));
 
         } catch (Exception e) {
-            logger.error("Saving contact has been failed --- ", e);
-            throw new DaoException("Incorrect contact data !");
+            throw new DaoException(e);
         }
 
         return contactId;
@@ -144,33 +139,26 @@ public class ContactDAOImpl implements ContactDAO {
             buildAddressStatement(addressStatement, address, contact.getId());
             addressStatement.executeUpdate();
 
-            logger.info(String.format("Contact was updated %s ", contact));
 
         } catch (Exception e) {
-            logger.error("Updating contact has been failed --- ", e);
-            throw new DaoException("Incorrect contact data !");
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void deleteAllById(List<Long> idList) throws DaoException {
+    public void delete(long contactId) throws DaoException {
 
-        try (final PreparedStatement contactStatement = connection.prepareStatement(DELETE_ALL_CONTACTS_QUERY);
-             final PreparedStatement addressStatement = connection.prepareStatement(DELETE_ALL_ADDRESS_QUERY)) {
+        try (final PreparedStatement contactStatement = connection.prepareStatement(DELETE_CONTACT_QUERY);
+             final PreparedStatement addressStatement = connection.prepareStatement(DELETE_ADDRESS_QUERY)) {
 
-            for (Long id : idList) {
-                addressStatement.setLong(1, id);
-                addressStatement.executeUpdate();
-                contactStatement.setLong(1, id);
-                contactStatement.executeUpdate();
-            }
-
-            logger.info(String.format("Contacts were removed [listId= %s]", idList));
+            addressStatement.setLong(1, contactId);
+            addressStatement.executeUpdate();
+            contactStatement.setLong(1, contactId);
+            contactStatement.executeUpdate();
 
 
         } catch (Exception e) {
-            logger.error("Removing contacts has been failed --- ", e);
-            throw new DaoException();
+            throw new DaoException(e);
         }
 
 
@@ -189,8 +177,7 @@ public class ContactDAOImpl implements ContactDAO {
             }
 
         } catch (Exception e) {
-            logger.error("Counting contacts has been failed --- ", e);
-            throw new DaoException();
+            throw new DaoException(e);
         }
 
         return count;
@@ -216,7 +203,6 @@ public class ContactDAOImpl implements ContactDAO {
 
 
         } catch (Exception e) {
-            logger.error("Finding contact has been failed --- ", e);
             throw new DaoException(e);
         }
 
@@ -242,7 +228,6 @@ public class ContactDAOImpl implements ContactDAO {
 
 
         } catch (Exception e) {
-            logger.error("Finding contact has been failed --- ", e);
             throw new DaoException(e);
         }
     }

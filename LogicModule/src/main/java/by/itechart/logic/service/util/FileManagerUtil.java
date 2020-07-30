@@ -3,7 +3,9 @@ package by.itechart.logic.service.util;
 import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.exception.LoadPropertiesException;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +22,7 @@ public class FileManagerUtil {
     private static final String PROPERTIES_PATH = "/diskPath.properties";
     private static String directoryPath;
 
-    private static final Logger logger = Logger.getLogger(FileManagerUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileManagerUtil.class);
 
     static {
         loadProperties();
@@ -36,7 +38,7 @@ public class FileManagerUtil {
             directoryPath = properties.getProperty("directory.path");
 
         } catch (IOException e) {
-            logger.error("Database properties haven't been loaded !" + e);
+            LOGGER.error("Database properties haven't been loaded !", e);
         }
     }
 
@@ -62,7 +64,7 @@ public class FileManagerUtil {
 
         final String pathToDirectory = directoryPath + File.separator + contactId;
         Files.createDirectory(Paths.get(pathToDirectory));
-        logger.info(String.format("Directory %s has been created", pathToDirectory));
+        LOGGER.info("Directory {} has been created", pathToDirectory);
         return pathToDirectory;
     }
 

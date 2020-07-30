@@ -1,25 +1,24 @@
 package by.itechart.logic.service;
 
-import by.itechart.logic.dto.ContactDTO;
 import by.itechart.logic.entity.Contact;
-import by.itechart.logic.exception.AlreadyExistException;
 import by.itechart.logic.exception.ServiceException;
 
 import java.util.List;
 
 public interface ContactService {
 
-
     List<Contact> findAllWithLimit(int page, int pageLimit) throws ServiceException;
 
-    void saveOne(ContactDTO contactDTO) throws ServiceException, AlreadyExistException;
+    long save(Contact contact) throws ServiceException;
 
-    void updateOne(ContactDTO contactDTO) throws ServiceException;
+    void update(Contact contact) throws ServiceException;
 
-    void deleteAllById(List<Long> contactId) throws ServiceException;
+    void deleteAll(List<Long> contactListId) throws ServiceException;
 
     long countAll() throws ServiceException;
 
     Contact findById(long id) throws ServiceException;
+
+    Contact findByEmail(String email) throws ServiceException;
 
 }

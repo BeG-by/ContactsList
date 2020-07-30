@@ -1,5 +1,7 @@
 "use strict";
 
+var updateUrlHref = "create-edit-form.html";
+
 createTableContactBody(pageLimit);
 sendRequest(findAllUrl + "?page=" + currentPage + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
 sendRequest(countAllUrl, "GET", createPagination);
@@ -21,7 +23,7 @@ document.getElementById("update-btn").addEventListener("click", function (e) {
     var idList = getCheckedCheckbox();
 
     if (idList.length === 1) {
-        this.parentNode.href = findByIdUrl + "?id=" + idList[0];
+        this.parentNode.href = updateUrlHref + "?id=" + idList[0];
         this.click();
 
     } else if (idList.length === 0) {

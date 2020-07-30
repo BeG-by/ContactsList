@@ -3,7 +3,6 @@ package by.itechart.logic.dao.impl;
 import by.itechart.logic.dao.AttachmentDAO;
 import by.itechart.logic.entity.Attachment;
 import by.itechart.logic.exception.DaoException;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -30,7 +29,6 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     private static final String UPDATE_BY_ID_QUERY = String.format("UPDATE attachment SET %s=?, %s=?, %s=? WHERE %s=?;",
             FILE_NAME_COL, LOAD_DATE_COL, COMMENT_COL, ID_COL);
 
-    private static final Logger logger = Logger.getLogger(AttachmentDAOImpl.class);
 
     public AttachmentDAOImpl() {
     }
@@ -40,84 +38,71 @@ public class AttachmentDAOImpl implements AttachmentDAO {
     }
 
     @Override
-    public List<Long> saveAll(List<Attachment> attachments) throws DaoException {
+    public Long save(Attachment attachment) throws DaoException {
 
-        List<Long> idList = new ArrayList<>();
+        long attachmentId = -1L;
 
         try (PreparedStatement statement = connection.prepareStatement(ATTACHMENTS_SAVE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
 
-            for (Attachment attachment : attachments) {
-                statement.setLong(1, attachment.getContactId());
-                statement.setString(2, attachment.getFileName());
+            statement.setLong(1, attachment.getContactId());
+            statement.setString(2, attachment.getFileName());
 
-                if (attachment.getDateOfLoad() != null) {
-                    statement.setDate(3, Date.valueOf(attachment.getDateOfLoad()));
-                } else {
-                    statement.setNull(3, Types.DATE);
-                }
+            if (attachment.getDateOfLoad() != null) {
+                statement.setDate(3, Date.valueOf(attachment.getDateOfLoad()));
+            } else {
+                statement.setNull(3, Types.DATE);
+            }
 
-                statement.setString(4, attachment.getComment());
-                statement.executeUpdate();
+            statement.setString(4, attachment.getComment());
+            statement.executeUpdate();
 
-                try (final ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                    while (generatedKeys.next()) {
-                        idList.add(generatedKeys.getLong(1));
-                    }
+            try (final ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                while (generatedKeys.next()) {
+                    attachmentId = generatedKeys.getLong(1);
                 }
             }
 
-            logger.info(String.format("Attachments were saved, attachmentsList= [%s]", attachments));
-            return idList;
+            return attachmentId;
 
         } catch (Exception e) {
-            logger.error("Saving attachments has been failed --- ", e);
-            throw new DaoException("Incorrect attachments data !");
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void deleteAllById(List<Long> attachmentIdList) throws DaoException {
+    public void delete(long attachmentId) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY)) {
 
-            for (Long id : attachmentIdList) {
-                statement.setLong(1, id);
+                statement.setLong(1, attachmentId);
                 statement.executeUpdate();
-            }
-
-            logger.info(String.format("Attachments list were removed %s", attachmentIdList));
 
         } catch (Exception e) {
-            logger.error("Deleting attachments has been failed --- ", e);
-            throw new DaoException("Incorrect attachments data !");
+            throw new DaoException(e);
         }
     }
 
     @Override
-    public void updateAll(List<Attachment> attachments) throws DaoException {
+    public void update(Attachment attachment) throws DaoException {
 
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_BY_ID_QUERY)) {
 
-            for (Attachment att : attachments) {
-                statement.setString(1, att.getFileName());
+                statement.setString(1, attachment.getFileName());
 
-                if (att.getDateOfLoad() != null) {
-                    statement.setDate(2, Date.valueOf(att.getDateOfLoad()));
+                if (attachment.getDateOfLoad() != null) {
+                    statement.setDate(2, Date.valueOf(attachment.getDateOfLoad()));
                 } else {
                     statement.setNull(2, Types.DATE);
                 }
 
-                statement.setString(3, att.getComment());
-                statement.setLong(4, att.getId());
+                statement.setString(3, attachment.getComment());
+                statement.setLong(4, attachment.getId());
                 statement.executeUpdate();
-            }
-
-            logger.info(String.format("Attachments list were updated %s", attachments));
 
         } catch (Exception e) {
-            logger.error("Deleting attachments has been failed --- ", e);
-            throw new DaoException("Incorrect attachments data !");
+            throw new DaoException(e);
         }
+
     }
 
     @Override
@@ -144,8 +129,7 @@ public class AttachmentDAOImpl implements AttachmentDAO {
             return attachmentList;
 
         } catch (Exception e) {
-            logger.error("Finding attachment list has been failed --- ", e);
-            throw new DaoException("Incorrect attachment list data !", e);
+            throw new DaoException(e);
         }
     }
 
@@ -158,6 +142,3 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 
 
 }
-
-
-

@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface AttachmentDAO {
 
-    List<Long> saveAll(List<Attachment> attachments) throws DaoException;
+    Long save(Attachment attachment) throws DaoException;
 
-    void deleteAllById(List<Long> attachmentIdList) throws DaoException;
+    void delete(long attachmentId) throws DaoException;
 
-    void updateAll(List<Attachment> attachments) throws DaoException;
+    void update(Attachment attachment) throws DaoException;
 
     List<Attachment> findAllByContactId(long contactId) throws DaoException;
 

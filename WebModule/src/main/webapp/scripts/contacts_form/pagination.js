@@ -86,6 +86,11 @@ function createPagination(contactsCountResponse) {
 
 
 function createLi(text, numberOfPage, list) {
+
+    if (numberOfPage === 0) {
+        numberOfPage = 1;
+    }
+
     var li = document.createElement("li");
     li.className = "page-item pagination-btn";
     var a = document.createElement("a");
