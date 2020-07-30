@@ -8,6 +8,7 @@ import by.itechart.logic.exception.DaoException;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +34,6 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String STREET_COL = "street";
     private static final String POST_INDEX_COL = "post_index";
     private static final String CONTACT_ID_COL = "contact_id";
-
-    public ContactDAOImpl() {
-    }
 
     public ContactDAOImpl(Connection connection) {
         this.connection = connection;
@@ -68,6 +66,8 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String FIND_BY_EMAIL_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s WHERE c.%s=?;",
             ID_COL, CONTACT_ID_COL, EMAIL_COL);
 
+    private static final String FIND_BY_BIRTHDAY_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s WHERE day(%s)=? AND month(%s)=?;",
+            ID_COL, CONTACT_ID_COL, BIRTHDAY_COL, BIRTHDAY_COL);
 
 
     @Override
@@ -80,13 +80,13 @@ public class ContactDAOImpl implements ContactDAO {
             statement.setInt(1, (page - 1) * pageLimit);
             statement.setInt(2, pageLimit);
 
-            try (final ResultSet resultSet = statement.executeQuery()) {
+            final ResultSet resultSet = statement.executeQuery();
 
-                while (resultSet.next()) {
-                    final Contact contact = buildContact(resultSet);
-                    contacts.add(contact);
-                }
+            while (resultSet.next()) {
+                final Contact contact = buildContact(resultSet);
+                contacts.add(contact);
             }
+
 
         } catch (Exception e) {
             throw new DaoException(e);
@@ -107,10 +107,10 @@ public class ContactDAOImpl implements ContactDAO {
             buildContactStatement(contactStatement, contact);
             contactStatement.executeUpdate();
 
-            try (final ResultSet generatedKeys = contactStatement.getGeneratedKeys()) {
-                while (generatedKeys.next()) {
-                    contactId = generatedKeys.getLong(1);
-                }
+            final ResultSet generatedKeys = contactStatement.getGeneratedKeys();
+
+            while (generatedKeys.next()) {
+                contactId = generatedKeys.getLong(1);
             }
 
             Address address = contact.getAddress();
@@ -190,16 +190,15 @@ public class ContactDAOImpl implements ContactDAO {
 
             statement.setLong(1, contactId);
 
-            try (final ResultSet resultSet = statement.executeQuery()) {
+            final ResultSet resultSet = statement.executeQuery();
 
-                Contact contact = null;
+            Contact contact = null;
 
-                while (resultSet.next()) {
-                    contact = buildContact(resultSet);
-                }
-
-                return contact;
+            while (resultSet.next()) {
+                contact = buildContact(resultSet);
             }
+
+            return contact;
 
 
         } catch (Exception e) {
@@ -215,22 +214,48 @@ public class ContactDAOImpl implements ContactDAO {
 
             statement.setString(1, email);
 
-            try (final ResultSet resultSet = statement.executeQuery()) {
+            final ResultSet resultSet = statement.executeQuery();
 
-                Contact contact = null;
+            Contact contact = null;
 
-                while (resultSet.next()) {
-                    contact = buildContact(resultSet);
-                }
-
-                return contact;
+            while (resultSet.next()) {
+                contact = buildContact(resultSet);
             }
+
+            return contact;
 
 
         } catch (Exception e) {
             throw new DaoException(e);
         }
     }
+
+    @Override
+    public List<Contact> findByTodayDate(LocalDate date) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_BY_BIRTHDAY_QUERY)) {
+
+            List<Contact> contacts = new ArrayList<>();
+
+            final int day = date.getDayOfMonth();
+            final int month = date.getMonth().getValue();
+
+            statement.setInt(1, day);
+            statement.setInt(2, month);
+
+            final ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                contacts.add(buildContact(resultSet));
+            }
+
+            return contacts;
+
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+
+    }
+
 
     private Contact buildContact(ResultSet resultSet) throws SQLException {
 

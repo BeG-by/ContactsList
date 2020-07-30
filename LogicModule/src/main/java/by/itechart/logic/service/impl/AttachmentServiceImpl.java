@@ -19,9 +19,6 @@ public class AttachmentServiceImpl implements AttachmentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AttachmentServiceImpl.class);
 
-    public AttachmentServiceImpl() {
-    }
-
     public AttachmentServiceImpl(Connection connection) {
         attachmentDAO = new AttachmentDAOImpl(connection);
     }

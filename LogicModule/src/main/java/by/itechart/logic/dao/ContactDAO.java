@@ -3,6 +3,7 @@ package by.itechart.logic.dao;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.exception.DaoException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ContactDAO {
@@ -20,5 +21,7 @@ public interface ContactDAO {
     Contact findById(long contactId) throws DaoException;
 
     Contact findByEmail(String email) throws DaoException;
+
+    List<Contact> findByTodayDate(LocalDate date) throws DaoException;
 
 }

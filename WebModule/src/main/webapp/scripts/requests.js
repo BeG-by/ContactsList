@@ -86,3 +86,16 @@ function sendMultipartRequest(type, url, json, avatar, attachments, message) {
     xhr.send(formData);
 
 }
+
+function testSend() {
+
+    var message = {
+        "emails": ["istokx08@mail.ru" , "istok08@mail.ru"],
+        "subject": "test theme",
+        "text": "content"
+    };
+
+
+    // sendRequestWithBody("http://localhost:8080/api/v1/contactsList/contacts/email", "POST", message, true);
+
+}

@@ -66,6 +66,7 @@ function createPagination(contactsCountResponse) {
 
         a.addEventListener("click", function (e) {
             e.preventDefault();
+            clearCheckboxes();
             clickToPageBtn(this.textContent, paginationList);
         });
 
@@ -100,6 +101,7 @@ function createLi(text, numberOfPage, list) {
 
     a.addEventListener("click", function (e) {
         e.preventDefault();
+        clearCheckboxes();
         clickToPageBtn(numberOfPage, list)
     });
 

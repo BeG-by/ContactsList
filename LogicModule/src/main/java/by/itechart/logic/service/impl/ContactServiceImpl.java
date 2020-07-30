@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -19,9 +20,6 @@ public class ContactServiceImpl implements ContactService {
     private ContactDAO contactDAO;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactServiceImpl.class);
-
-    public ContactServiceImpl() {
-    }
 
     public ContactServiceImpl(Connection connection) {
         contactDAO = new ContactDAOImpl(connection);
@@ -105,6 +103,17 @@ public class ContactServiceImpl implements ContactService {
 
         try {
             return contactDAO.findByEmail(email);
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+
+    }
+
+    @Override
+    public List<Contact> findByTodayDate(LocalDate birthday) throws ServiceException {
+
+        try {
+            return contactDAO.findByTodayDate(birthday);
         } catch (Exception e) {
             throw new ServiceException(e);
         }

@@ -44,7 +44,17 @@ document.getElementById("filter-btn").addEventListener("click", function (e) {
 
 });
 
+document.getElementById("email-btn").addEventListener("click", function (e) {
+
+    e.preventDefault();
+
+    var emails = getEmails();
+
+    if (emails.length > 0) {
+        createEmailForm(emails);
+    } else {
+        alert("You should choose the contacts or selected contacts haven't email !");
+    }
 
 
-
-
+});

@@ -19,10 +19,6 @@ public class PhoneServiceImpl implements PhoneService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PhoneServiceImpl.class);
 
-
-    public PhoneServiceImpl() {
-    }
-
     public PhoneServiceImpl(Connection connection) {
         phoneDao = new PhoneDAOImpl(connection);
     }

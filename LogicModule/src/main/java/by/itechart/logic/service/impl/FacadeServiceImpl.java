@@ -2,16 +2,14 @@ package by.itechart.logic.service.impl;
 
 import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.dto.ContactDTO;
+import by.itechart.logic.dto.MessageRequest;
 import by.itechart.logic.entity.Attachment;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.entity.Phone;
 import by.itechart.logic.exception.AlreadyExistException;
 import by.itechart.logic.exception.LoadPropertiesException;
 import by.itechart.logic.exception.ServiceException;
-import by.itechart.logic.service.AttachmentService;
-import by.itechart.logic.service.ContactService;
-import by.itechart.logic.service.FacadeService;
-import by.itechart.logic.service.PhoneService;
+import by.itechart.logic.service.*;
 import by.itechart.logic.service.util.FileManagerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +25,7 @@ public class FacadeServiceImpl implements FacadeService {
     private ContactService contactService;
     private PhoneService phoneService;
     private AttachmentService attachmentService;
+    private EmailService emailService;
 
     private static final String IMG_PREFIX = "Avatar_";
     private static final String IMG_FIND_PREFIX = "Avatar";
@@ -289,8 +288,6 @@ public class FacadeServiceImpl implements FacadeService {
             throw new ServiceException(e);
         }
 
-        //
-
     }
 
     @Override
@@ -359,5 +356,21 @@ public class FacadeServiceImpl implements FacadeService {
 
     }
 
+    @Override
+    public void sendMessagesViaEmail(MessageRequest message) throws ServiceException {
+
+        emailService = new EmailServiceImpl();
+
+        for (String email : message.getEmails()) {
+            try {
+                emailService.sendEmail(email, message.getSubject(), message.getText());
+                LOGGER.info("Message has been sent {}", email);
+            } catch (Exception e) {
+                LOGGER.error("Sending message to {} was failed", email, e);
+                throw new ServiceException(e);
+            }
+        }
+
+    }
 
 }

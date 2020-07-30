@@ -30,9 +30,6 @@ public class AttachmentDAOImpl implements AttachmentDAO {
             FILE_NAME_COL, LOAD_DATE_COL, COMMENT_COL, ID_COL);
 
 
-    public AttachmentDAOImpl() {
-    }
-
     public AttachmentDAOImpl(Connection connection) {
         this.connection = connection;
     }
@@ -56,10 +53,9 @@ public class AttachmentDAOImpl implements AttachmentDAO {
             statement.setString(4, attachment.getComment());
             statement.executeUpdate();
 
-            try (final ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                while (generatedKeys.next()) {
-                    attachmentId = generatedKeys.getLong(1);
-                }
+            final ResultSet generatedKeys = statement.getGeneratedKeys();
+            while (generatedKeys.next()) {
+                attachmentId = generatedKeys.getLong(1);
             }
 
             return attachmentId;
@@ -74,8 +70,8 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 
         try (PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY)) {
 
-                statement.setLong(1, attachmentId);
-                statement.executeUpdate();
+            statement.setLong(1, attachmentId);
+            statement.executeUpdate();
 
         } catch (Exception e) {
             throw new DaoException(e);
@@ -87,17 +83,17 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_BY_ID_QUERY)) {
 
-                statement.setString(1, attachment.getFileName());
+            statement.setString(1, attachment.getFileName());
 
-                if (attachment.getDateOfLoad() != null) {
-                    statement.setDate(2, Date.valueOf(attachment.getDateOfLoad()));
-                } else {
-                    statement.setNull(2, Types.DATE);
-                }
+            if (attachment.getDateOfLoad() != null) {
+                statement.setDate(2, Date.valueOf(attachment.getDateOfLoad()));
+            } else {
+                statement.setNull(2, Types.DATE);
+            }
 
-                statement.setString(3, attachment.getComment());
-                statement.setLong(4, attachment.getId());
-                statement.executeUpdate();
+            statement.setString(3, attachment.getComment());
+            statement.setLong(4, attachment.getId());
+            statement.executeUpdate();
 
         } catch (Exception e) {
             throw new DaoException(e);
@@ -114,16 +110,15 @@ public class AttachmentDAOImpl implements AttachmentDAO {
 
             List<Attachment> attachmentList = new ArrayList<>();
 
-            try (final ResultSet resultSet = statement.executeQuery()) {
+            final ResultSet resultSet = statement.executeQuery();
 
-                while (resultSet.next()) {
-                    final long id = resultSet.getLong(ID_COL);
-                    final String fileName = resultSet.getString(FILE_NAME_COL);
-                    final LocalDate date = convertToLocalDate(resultSet.getDate(LOAD_DATE_COL));
-                    final String comment = resultSet.getString(COMMENT_COL);
+            while (resultSet.next()) {
+                final long id = resultSet.getLong(ID_COL);
+                final String fileName = resultSet.getString(FILE_NAME_COL);
+                final LocalDate date = convertToLocalDate(resultSet.getDate(LOAD_DATE_COL));
+                final String comment = resultSet.getString(COMMENT_COL);
 
-                    attachmentList.add(new Attachment(id, contactId, fileName, date, comment));
-                }
+                attachmentList.add(new Attachment(id, contactId, fileName, date, comment));
             }
 
             return attachmentList;
@@ -139,6 +134,5 @@ public class AttachmentDAOImpl implements AttachmentDAO {
         }
         return null;
     }
-
 
 }

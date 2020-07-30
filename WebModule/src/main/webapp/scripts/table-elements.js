@@ -47,12 +47,13 @@ function createRadioInput(name, value, labelText, isChecked) {
     return div;
 }
 
-function createTextArea(name, textLabel) {
+function createTextArea(name, textLabel, returnTextArea) {
 
     var div = document.createElement("div");
     var textArea = document.createElement("textarea");
     textArea.name = name;
     textArea.id = name;
+
     textArea.cols = 30;
     textArea.rows = 2;
 
@@ -62,6 +63,11 @@ function createTextArea(name, textLabel) {
     p.appendChild(textArea);
     div.appendChild(label);
     div.appendChild(p);
+
+    if(returnTextArea === true) {
+        return textArea;
+    }
+
     return div;
 }
 

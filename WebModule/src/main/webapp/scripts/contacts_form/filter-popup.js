@@ -1,8 +1,8 @@
 "use strict";
 
 var formFilterClassName = "window-form shadow p-3 mb-5 bg-white rounded";
-var saveBtnFilterClassName = "btn btn-success save-btn";
-var cancelBtnFilterClassName = "btn btn-danger close-btn";
+var saveBtnClassName = "btn btn-success save-btn";
+var cancelBtnClassName = "btn btn-danger close-btn";
 
 function createFilterForm() {
 
@@ -93,14 +93,14 @@ function createFilterForm() {
 
     var saveBtn = document.createElement("button");
     saveBtn.textContent = "Save";
-    saveBtn.className = saveBtnFilterClassName;
+    saveBtn.className = saveBtnClassName;
     mainContent.appendChild(saveBtn);
 
     //--- Close button ---
 
     var closeBtn = document.createElement("button");
     closeBtn.textContent = "Cancel";
-    closeBtn.className = cancelBtnFilterClassName;
+    closeBtn.className = cancelBtnClassName;
     mainContent.appendChild(closeBtn);
 
     closeBtn.addEventListener("click", function () {

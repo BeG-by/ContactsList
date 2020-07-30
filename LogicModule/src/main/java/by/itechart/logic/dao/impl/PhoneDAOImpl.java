@@ -30,9 +30,6 @@ public class PhoneDAOImpl implements PhoneDAO {
     private static final String FIND_BY_CONTACT_ID_QUERY = String.format("SELECT * FROM phone WHERE %s=?;", CONTACT_ID_COL);
 
 
-    public PhoneDAOImpl() {
-    }
-
     public PhoneDAOImpl(Connection connection) {
         this.connection = connection;
     }
@@ -80,19 +77,19 @@ public class PhoneDAOImpl implements PhoneDAO {
 
             List<Phone> phones = new ArrayList<>();
 
-            try (final ResultSet resultSet = statement.executeQuery()) {
+            final ResultSet resultSet = statement.executeQuery();
 
-                while (resultSet.next()) {
-                    final long id = resultSet.getLong(ID_COL);
-                    final int country = resultSet.getInt(COUNTRY_CODE_COL);
-                    final int operator = resultSet.getInt(OPERATOR_CODE_COL);
-                    final int number = resultSet.getInt(NUMBER_COL);
-                    final String type = resultSet.getString(TYPE_COL);
-                    final String comment = resultSet.getString(COMMENT_COL);
+            while (resultSet.next()) {
+                final long id = resultSet.getLong(ID_COL);
+                final int country = resultSet.getInt(COUNTRY_CODE_COL);
+                final int operator = resultSet.getInt(OPERATOR_CODE_COL);
+                final int number = resultSet.getInt(NUMBER_COL);
+                final String type = resultSet.getString(TYPE_COL);
+                final String comment = resultSet.getString(COMMENT_COL);
 
-                    phones.add(new Phone(id, contactId, country, operator, number, type, comment));
-                }
+                phones.add(new Phone(id, contactId, country, operator, number, type, comment));
             }
+
 
             return phones;
 

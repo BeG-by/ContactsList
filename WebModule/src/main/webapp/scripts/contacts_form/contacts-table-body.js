@@ -90,10 +90,11 @@ function fillTableContacts(response) {
         };
 
 
-        if(contact["middleName"] === undefined){
+        if (contact["middleName"] === undefined) {
             contact["middleName"] = "";
         }
 
+        tableContact.checkbox.className = contact["email"];
         tableContact.checkbox.children[0].value = contact["id"];
         tableContact.checkbox.children[0].disabled = false;
         tableContact.fullName.children[0].textContent = contact["firstName"] + " " + contact["lastName"] + " " + contact["middleName"];
@@ -143,5 +144,15 @@ function getCheckedCheckbox() {
     }
 
     return list;
+
+}
+
+function clearCheckboxes() {
+
+    var checkboxes = document.querySelectorAll("input[type=checkbox]:checked");
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+    }
 
 }
