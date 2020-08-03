@@ -8,7 +8,6 @@ import by.itechart.logic.exception.DaoException;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,22 +16,22 @@ public class ContactDAOImpl implements ContactDAO {
     private Connection connection;
 
     private static final String ID_COL = "id";
-    private static final String FIRST_NAME_COL = "first_name";
-    private static final String LAST_NAME_COL = "last_name";
-    private static final String MIDDLE_NAME_COL = "middle_name";
-    private static final String BIRTHDAY_COL = "birthday";
-    private static final String SEX_COL = "sex";
-    private static final String NATIONALITY_COL = "nationality";
-    private static final String MARITAL_STATUS_COL = "marital_status";
+    public static final String FIRST_NAME_COL = "first_name";
+    public static final String LAST_NAME_COL = "last_name";
+    public static final String MIDDLE_NAME_COL = "middle_name";
+    public static final String BIRTHDAY_COL = "birthday";
+    public static final String SEX_COL = "sex";
+    public static final String NATIONALITY_COL = "nationality";
+    public static final String MARITAL_STATUS_COL = "marital_status";
     private static final String WEBSITE_URL_COL = "url";
     private static final String EMAIL_COL = "email";
     private static final String CURRENT_JOB_COL = "job";
     private static final String IMAGE_NAME_COL = "image_name";
 
-    private static final String COUNTRY_COL = "country";
-    private static final String CITY_COL = "city";
-    private static final String STREET_COL = "street";
-    private static final String POST_INDEX_COL = "post_index";
+    public static final String COUNTRY_COL = "country";
+    public static final String CITY_COL = "city";
+    public static final String STREET_COL = "street";
+    public static final String POST_INDEX_COL = "post_index";
     private static final String CONTACT_ID_COL = "contact_id";
 
     public ContactDAOImpl(Connection connection) {

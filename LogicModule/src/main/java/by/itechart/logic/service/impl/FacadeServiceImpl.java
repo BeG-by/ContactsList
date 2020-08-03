@@ -3,6 +3,7 @@ package by.itechart.logic.service.impl;
 import by.itechart.logic.dao.connection.ConnectionFactory;
 import by.itechart.logic.dto.ContactDTO;
 import by.itechart.logic.dto.MessageRequest;
+import by.itechart.logic.dto.SearchRequest;
 import by.itechart.logic.entity.Attachment;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.entity.Phone;
@@ -369,6 +370,20 @@ public class FacadeServiceImpl implements FacadeService {
                 LOGGER.error("Sending message to {} was failed", email, e);
                 throw new ServiceException(e);
             }
+        }
+
+    }
+
+    @Override
+    public List<Contact> searchContactWithFilter(SearchRequest searchRequest, int page, int pageLimit) throws ServiceException {
+
+        try (Connection connection = ConnectionFactory.createConnection()) {
+            contactService = new ContactServiceImpl(connection);
+            return contactService.searchContact(searchRequest, page, pageLimit);
+
+        } catch (Exception e) {
+            LOGGER.error("Finding contact by email was failed", e);
+            throw new ServiceException(e);
         }
 
     }

@@ -2,6 +2,7 @@ package by.itechart.logic.service;
 
 import by.itechart.logic.dto.ContactDTO;
 import by.itechart.logic.dto.MessageRequest;
+import by.itechart.logic.dto.SearchRequest;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.exception.AlreadyExistException;
 import by.itechart.logic.exception.ServiceException;
@@ -25,5 +26,7 @@ public interface FacadeService {
     Contact findByEmail(String email) throws ServiceException;
 
     void sendMessagesViaEmail(MessageRequest message) throws ServiceException;
+
+    List<Contact> searchContactWithFilter(SearchRequest searchRequest, int page, int pageLimit) throws ServiceException;
 
 }

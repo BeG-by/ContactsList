@@ -1,6 +1,6 @@
 package by.itechart.web.command.impl;
 
-import by.itechart.logic.entity.Contact;
+import by.itechart.logic.dto.SearchRequest;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.FacadeService;
 import by.itechart.logic.service.impl.FacadeServiceImpl;
@@ -10,9 +10,9 @@ import com.google.gson.Gson;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-public class FindAllContactsCommand implements Command {
+public class SearchCommand implements Command {
+
 
     private FacadeService facadeService = new FacadeServiceImpl();
     private Gson gson = new Gson();
@@ -20,8 +20,6 @@ public class FindAllContactsCommand implements Command {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-        resp.setContentType("application/json");
 
         final String page = req.getParameter("page");
         final String pageLimit = req.getParameter("pageLimit");
@@ -34,14 +32,14 @@ public class FindAllContactsCommand implements Command {
             return;
         }
 
-        try {
-            final List<Contact> contacts = facadeService.findAllWithPagination(Integer.parseInt(page), Integer.parseInt(pageLimit));
-            resp.setStatus(resp.SC_OK);
-            resp.getWriter().write(gson.toJson(contacts));
 
+        final SearchRequest searchRequest = gson.fromJson(req.getReader().readLine(), SearchRequest.class);
+        System.out.println("COMMAND" + searchRequest);
+
+        try {
+            facadeService.searchContactWithFilter(searchRequest, Integer.parseInt(page), Integer.parseInt(pageLimit));
         } catch (ServiceException e) {
-            resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+            e.printStackTrace();
         }
 
     }

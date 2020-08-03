@@ -67,8 +67,8 @@ function createFilterForm() {
     var statusDiv = document.createElement("div");
     statusDiv.className = "form-check";
 
-    var single = createRadioInput("sex", "single", "Single", false);
-    var married = createRadioInput("sex", "married", "Married", false);
+    var single = createRadioInput("maritalStatus", "single", "Single", false);
+    var married = createRadioInput("maritalStatus", "married", "Married", false);
     statusDiv.appendChild(single);
     statusDiv.appendChild(married);
     filterSecondForm.appendChild(statusDiv);
@@ -85,7 +85,7 @@ function createFilterForm() {
     var street = createInput("text", "street", "street", "Street");
     filterSecondForm.appendChild(street);
 
-    var postIndex = createInput("text", "postIndex", "postIndex", "Post index" , replaceLetters);
+    var postIndex = createInput("text", "postIndex", "postIndex", "Post index", replaceLetters);
     filterSecondForm.appendChild(postIndex);
 
 
@@ -111,12 +111,14 @@ function createFilterForm() {
     document.body.appendChild(mainWindow);
 
 
-    saveBtn.addEventListener("click", function (e) {
+    saveBtn.addEventListener("click", function () {
 
-        // var phone = getDataFromPhoneForm();
+        var searchRequest = getSearchRequest();
+        console.log(searchRequest);
 
+        sendRequestWithBody(searchUrl + "?page=1&pageLimit=" + pageLimit, "POST", searchRequest, true);
 
-        mainWindow.parentNode.removeChild(mainWindow);
+        // mainWindow.parentNode.removeChild(mainWindow);
 
     });
 
@@ -163,4 +165,65 @@ function createDateDiv(name, placeHolder, size, postFix) {
 
 }
 
+function getSearchRequest() {
 
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var middleName = document.getElementById("middleName").value;
+
+    var dayBefore = document.getElementById("dayBefore").value;
+    var monthBefore = document.getElementById("monthBefore").value;
+    var yearBefore = document.getElementById("yearBefore").value;
+
+    var dateBefore = dayBefore + "-" + monthBefore + "-" + yearBefore;
+
+    var dayAfter = document.getElementById("dayAfter").value;
+    var monthAfter = document.getElementById("monthAfter").value;
+    var yearAfter = document.getElementById("yearAfter").value;
+
+    var dateAfter = dayAfter + "-" + monthAfter + "-" + yearAfter;
+
+    var male = document.getElementById("male");
+    var female = document.getElementById("female");
+
+    var sex = "";
+
+    if (male.checked) {
+        sex = "male"
+    } else if (female.checked) {
+        sex = "female";
+    }
+
+    var maritalStatus = "";
+
+    var single = document.getElementById("single");
+    var married = document.getElementById("married");
+
+    if (single.checked) {
+        maritalStatus = "single"
+    } else if (married.checked) {
+        maritalStatus = "married";
+    }
+
+    var nationality = document.getElementById("nationality").value;
+    var country = document.getElementById("country").value;
+    var city = document.getElementById("city").value;
+    var street = document.getElementById("street").value;
+    var postIndex = document.getElementById("postIndex").value;
+
+    return {
+        "firstName": firstName,
+        "lastName": lastName,
+        "middleName": middleName,
+        "dateBefore": dateBefore,
+        "dateAfter": dateAfter,
+        "sex": sex,
+        "maritalStatus": maritalStatus,
+        "nationality": nationality,
+        "country": country,
+        "city": city,
+        "street": street,
+        "postIndex": postIndex
+    };
+
+}

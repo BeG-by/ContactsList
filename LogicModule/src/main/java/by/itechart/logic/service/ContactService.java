@@ -1,5 +1,6 @@
 package by.itechart.logic.service;
 
+import by.itechart.logic.dto.SearchRequest;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.exception.ServiceException;
 
@@ -23,5 +24,7 @@ public interface ContactService {
     Contact findByEmail(String email) throws ServiceException;
 
     List<Contact> findByTodayDate(LocalDate birthday) throws ServiceException;
+
+    List<Contact> searchContact(SearchRequest searchRequest, int page, int pageLimit) throws ServiceException;
 
 }

@@ -2,6 +2,7 @@ package by.itechart.logic.service.impl;
 
 import by.itechart.logic.dao.ContactDAO;
 import by.itechart.logic.dao.impl.ContactDAOImpl;
+import by.itechart.logic.dto.SearchRequest;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.exception.DaoException;
 import by.itechart.logic.exception.ServiceException;
@@ -117,6 +118,70 @@ public class ContactServiceImpl implements ContactService {
         } catch (Exception e) {
             throw new ServiceException(e);
         }
+
+    }
+
+    @Override
+    public List<Contact> searchContact(SearchRequest searchRequest, int page, int pageLimit) throws ServiceException {
+
+        StringBuilder searchQuery = new StringBuilder("SELECT * FROM contact WHERE ");
+
+        System.out.println(searchRequest);
+
+        if (!searchRequest.getFirstName().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.FIRST_NAME_COL, searchRequest.getFirstName()));
+        }
+
+        if (!searchRequest.getLastName().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.LAST_NAME_COL, searchRequest.getLastName()));
+        }
+
+        if (!searchRequest.getMiddleName().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.MIDDLE_NAME_COL, searchRequest.getMiddleName()));
+        }
+
+        if (!searchRequest.getDateBefore().isEmpty()) {
+            searchQuery.append(String.format("%s < '%s' AND ", ContactDAOImpl.BIRTHDAY_COL, searchRequest.getDateBefore()));
+        }
+
+        if (!searchRequest.getDateAfter().isEmpty()) {
+            searchQuery.append(String.format("%s > '%s' AND ", ContactDAOImpl.BIRTHDAY_COL, searchRequest.getDateAfter()));
+        }
+
+        if (!searchRequest.getSex().isEmpty()) {
+            searchQuery.append(String.format("%s = '%s' AND ", ContactDAOImpl.SEX_COL, searchRequest.getSex()));
+        }
+
+        if (!searchRequest.getMaritalStatus().isEmpty()) {
+            searchQuery.append(String.format("%s = '%s' AND ", ContactDAOImpl.MARITAL_STATUS_COL, searchRequest.getMaritalStatus()));
+        }
+
+        if (!searchRequest.getNationality().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.NATIONALITY_COL, searchRequest.getNationality()));
+        }
+
+        if (!searchRequest.getCountry().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.COUNTRY_COL, searchRequest.getCountry()));
+        }
+
+        if (!searchRequest.getCity().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.CITY_COL, searchRequest.getCity()));
+        }
+
+        if (!searchRequest.getStreet().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.STREET_COL, searchRequest.getStreet()));
+        }
+
+        if (!searchRequest.getStreet().isEmpty()) {
+            searchQuery.append(String.format("%s LIKE '%%%s%%' AND ", ContactDAOImpl.POST_INDEX_COL, searchRequest.getPostIndex()));
+        }
+
+
+        System.out.println(searchQuery);
+        String searchReady = searchQuery.substring(0, searchQuery.length() - 5);
+        System.out.println(searchReady);
+
+        return null;
 
     }
 

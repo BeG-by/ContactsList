@@ -17,7 +17,8 @@ public class CommandFactory {
         commandMap.put("contacts/update", new UpdateContactCommand());
         commandMap.put("contacts/findById", new FindByIdContactCommand());
         commandMap.put("contacts/email", new SendEmailsCommand());
-}
+        commandMap.put("contacts/search", new SearchCommand());
+    }
 
 
     public Command getInstance(String key) {
