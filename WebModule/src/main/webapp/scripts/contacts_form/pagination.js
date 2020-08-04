@@ -111,8 +111,13 @@ function createLi(text, numberOfPage, list) {
 function clickToPageBtn(page, list) {
     setEmptyValues();
     currentPage = page;
-    sendRequest(findAllUrl + "?page=" + currentPage + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
-    sendRequest(countAllUrl, "GET", createPagination);
+    if (filterRequestBody === null) {
+        sendRequest(findAllUrl + "?page=" + currentPage + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
+        sendRequest(countAllUrl, "GET", createPagination);
+    } else {
+        sendFilterRequest(searchUrl + "?page=" + currentPage + "&pageLimit=" + pageLimit, "POST", filterRequestBody, fillTableContacts)
+        sendFilterRequest(searchCountAllUrl, "POST", filterRequestBody, createPagination);
+    }
     localStorage.setItem("currentPage", currentPage);
     list.parentNode.removeChild(list);
 }

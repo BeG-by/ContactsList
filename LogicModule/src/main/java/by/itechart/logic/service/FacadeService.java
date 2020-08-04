@@ -15,7 +15,7 @@ public interface FacadeService {
 
     void saveFullContact(ContactDTO contactDTO) throws ServiceException, AlreadyExistException;
 
-    void updateFullContact(ContactDTO contactDTO) throws ServiceException;
+    void updateFullContact(ContactDTO contactDTO) throws ServiceException, AlreadyExistException;
 
     void deleteContacts(List<Long> contactIdList) throws ServiceException;
 
@@ -28,5 +28,7 @@ public interface FacadeService {
     void sendMessagesViaEmail(MessageRequest message) throws ServiceException;
 
     List<Contact> searchContactWithFilter(SearchRequest searchRequest, int page, int pageLimit) throws ServiceException;
+
+   long countAllContactsWithFilter(SearchRequest searchRequest) throws ServiceException;
 
 }

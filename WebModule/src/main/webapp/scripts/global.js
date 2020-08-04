@@ -14,12 +14,14 @@ var putUrl = "http://localhost:8080/api/v1/contactsList/contacts/update";
 var findByIdUrl = "http://localhost:8080/api/v1/contactsList/contacts/findById";
 var sendEmailUrl = "http://localhost:8080/api/v1/contactsList/contacts/email";
 var searchUrl = "http://localhost:8080/api/v1/contactsList/contacts/search";
+var searchCountAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/searchCountAll";
 
 var pageLimit = 10;
 
-
 var page = localStorage.getItem("currentPage");
 var currentPage = page === null ? currentPage = 1 : currentPage = page;
+
+var filterRequestBody = null;
 
 
 function replaceLetters() {

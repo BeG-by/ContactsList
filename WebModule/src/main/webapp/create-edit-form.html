@@ -52,40 +52,40 @@
                             <div class="form-group">
                                 <label for="firstName">First name*</label>
                                 <p>
-                                    <input type="text" name="firstName" id="firstName">
+                                    <input type="text" name="firstName" id="firstName" maxlength="16">
                                 </p>
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last name*</label>
                                 <p>
-                                    <input type="text" name="lastName" id="lastName">
+                                    <input type="text" name="lastName" id="lastName" maxlength="16">
                                 </p>
                             </div>
                             <div class="form-group">
                                 <label for="middleName">Middle name</label>
                                 <p>
-                                    <input type="text" name="middleName" id="middleName">
+                                    <input type="text" name="middleName" id="middleName" maxlength="16">
                                 </p>
                             </div>
                             <div class="form-group">
                                 <label>Day of birth</label>
                                 <div class="date-form">
                                     <div>
-                                        <input type="text" name="day" id="day" placeholder="--"
+                                        <input type="text" name="day" id="day" placeholder=""
                                                aria-describedby="dayHelp"
-                                               size="1">
+                                               size="1" maxlength="2">
                                         <small id="dayHelp" class="form-text text-muted">day</small>
                                     </div>
                                     <div>
-                                        <input type="text" name="month" id="month" placeholder="--"
+                                        <input type="text" name="month" id="month" placeholder=""
                                                aria-describedby="monthHelp"
-                                               size="1">
+                                               size="1" maxlength="2">
                                         <small id="monthHelp" class="form-text text-muted">month</small>
                                     </div>
                                     <div>
-                                        <input type="text" name="year" id="year" placeholder="----"
+                                        <input type="text" name="year" id="year" placeholder=""
                                                aria-describedby="yearHelp"
-                                               size="3">
+                                               size="3" maxlength="4">
                                         <small id="yearHelp" class="form-text text-muted">year</small>
                                     </div>
                                 </div>
@@ -93,8 +93,7 @@
 
                             <div class="form-check sex-radio">
                                 <div>
-                                    <input class="form-check-input" type="radio" name="sex" id="male" value="male"
-                                           checked>
+                                    <input class="form-check-input" type="radio" name="sex" id="male" value="male">
                                     <label class="form-check-label" for="male">
                                         Male
                                     </label>
@@ -111,13 +110,13 @@
                             <div class="form-group">
                                 <label for="nationality">Nationality</label>
                                 <p>
-                                    <input type="text" name="nationality" id="nationality">
+                                    <input type="text" name="nationality" id="nationality" maxlength="16">
                                 </p>
                             </div>
                             <div class="form-check maritalStatus-radio">
                                 <div>
                                     <input class="form-check-input" type="radio" name="maritalStatus" id="single"
-                                           value="single" checked>
+                                           value="single">
                                     <label class="form-check-label" for="single">
                                         Single
                                     </label>
@@ -135,21 +134,21 @@
                             <div class="form-group">
                                 <label for="urlWebSite">Web site</label>
                                 <p>
-                                    <input type="text" name="urlWebSite" id="urlWebSite">
+                                    <input type="text" name="urlWebSite" id="urlWebSite" maxlength="200">
                                 </p>
                             </div>
 
                             <div class="form-group">
                                 <label for="email">Email*</label>
                                 <p>
-                                    <input type="email" name="email" id="email">
+                                    <input type="email" name="email" id="email" maxlength="24">
                                 </p>
                             </div>
 
                             <div class="form-group">
                                 <label for="currentJob">Job</label>
                                 <p>
-                                    <input type="text" name="currentJob" id="currentJob">
+                                    <input type="text" name="currentJob" id="currentJob" maxlength="100">
                                 </p>
                             </div>
                         </div>
@@ -158,25 +157,25 @@
                             <div class="form-group">
                                 <label for="country">Country</label>
                                 <p>
-                                    <input type="text" name="country" id="country">
+                                    <input type="text" name="country" id="country" maxlength="16">
                                 </p>
                             </div>
                             <div class="form-group">
                                 <label for="city">City</label>
                                 <p>
-                                    <input type="text" name="city" id="city">
+                                    <input type="text" name="city" id="city" maxlength="16">
                                 </p>
                             </div>
                             <div class="form-group">
                                 <label for="street">Street</label>
                                 <p>
-                                    <input type="text" name="street" id="street">
+                                    <input type="text" name="street" id="street" maxlength="24">
                                 </p>
                             </div>
                             <div class="form-group">
                                 <label for="postIndex">Post index</label>
                                 <p>
-                                    <input type="text" name="postIndex" id="postIndex">
+                                    <input type="text" name="postIndex" id="postIndex" maxlength="10">
                                 </p>
                             </div>
                         </div>
@@ -186,11 +185,14 @@
 
             <div class="tables-phone-att">
                 <div class="phone-container">
-                    <p>
-                        <button id="add-phone-btn" class="btn btn-primary">Add</button>
-                        <button id="delete-phone-btn" class="btn btn-primary">Delete</button>
-                        <button id="update-phone-btn" class="btn btn-primary">Update</button>
-                    </p>
+                    <div class="phone-header">
+                        <h3>Phones</h3>
+                        <div>
+                            <button id="add-phone-btn" class="btn btn-primary">Add</button>
+                            <button id="delete-phone-btn" class="btn btn-primary">Delete</button>
+                            <button id="update-phone-btn" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
                     <table class="table table-sm">
                         <thead class="thead-light">
                         <tr>
@@ -204,11 +206,14 @@
                     </table>
                 </div>
                 <div class="att-container">
-                    <p>
-                        <button id="add-att-btn" class="btn btn-primary">Add</button>
-                        <button id="delete-att-btn" class="btn btn-primary">Delete</button>
-                        <button id="update-att-btn" class="btn btn-primary">Update</button>
-                    </p>
+                    <div class="att-header">
+                        <h3>Attachments</h3>
+                        <div>
+                            <button id="add-att-btn" class="btn btn-primary">Add</button>
+                            <button id="delete-att-btn" class="btn btn-primary">Delete</button>
+                            <button id="update-att-btn" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
                     <table class="table table-sm">
                         <thead class="thead-light">
                         <tr>

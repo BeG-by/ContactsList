@@ -118,7 +118,7 @@ public class FacadeServiceImpl implements FacadeService {
     }
 
     @Override
-    public void updateFullContact(ContactDTO contactDTO) throws ServiceException {
+    public void updateFullContact(ContactDTO contactDTO) throws ServiceException, AlreadyExistException {
 
         final Contact contact = contactDTO.getContact();
         final long contactId = contact.getId();
@@ -131,6 +131,12 @@ public class FacadeServiceImpl implements FacadeService {
             contactService = new ContactServiceImpl(connection);
             phoneService = new PhoneServiceImpl(connection);
             attachmentService = new AttachmentServiceImpl(connection);
+
+            final Contact contactByEmail = contactService.findByEmail(contact.getEmail());
+
+            if (contactByEmail != null && contactByEmail.getId() != contact.getId()) {
+                throw new AlreadyExistException("Email already exists !");
+            }
 
             try {
                 connection.setAutoCommit(false);
@@ -382,10 +388,24 @@ public class FacadeServiceImpl implements FacadeService {
             return contactService.searchContact(searchRequest, page, pageLimit);
 
         } catch (Exception e) {
-            LOGGER.error("Finding contact by email was failed", e);
+            LOGGER.error("Finding contact with filter was failed", e);
             throw new ServiceException(e);
         }
 
+    }
+
+    @Override
+    public long countAllContactsWithFilter(SearchRequest searchRequest) throws ServiceException {
+
+        try (Connection connection = ConnectionFactory.createConnection()) {
+
+            contactService = new ContactServiceImpl(connection);
+            return contactService.countAllWithFilter(searchRequest);
+
+        } catch (Exception e) {
+            LOGGER.error("Counting contacts was failed", e);
+            throw new ServiceException(e);
+        }
     }
 
 }

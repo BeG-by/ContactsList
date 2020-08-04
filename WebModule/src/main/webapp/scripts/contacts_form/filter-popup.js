@@ -48,8 +48,8 @@ function createFilterForm() {
 
     var before = createBlockDate("Date of birth (Before)", "Before");
     var after = createBlockDate("Date of birth (After)", "After");
-    filterFirstForm.appendChild(before);
     filterFirstForm.appendChild(after);
+    filterFirstForm.appendChild(before);
 
     var sexDiv = document.createElement("div");
     sexDiv.className = "form-check";
@@ -104,7 +104,8 @@ function createFilterForm() {
     mainContent.appendChild(closeBtn);
 
     closeBtn.addEventListener("click", function () {
-        mainWindow.parentNode.removeChild(mainWindow);
+        localStorage.setItem("currentPage", "1");
+        location.reload();
     });
 
 
@@ -114,11 +115,22 @@ function createFilterForm() {
     saveBtn.addEventListener("click", function () {
 
         var searchRequest = getSearchRequest();
-        console.log(searchRequest);
 
-        sendRequestWithBody(searchUrl + "?page=1&pageLimit=" + pageLimit, "POST", searchRequest, true);
+        currentPage = 1;
 
-        // mainWindow.parentNode.removeChild(mainWindow);
+        setEmptyValues();
+
+        sendFilterRequest(searchCountAllUrl, "POST", searchRequest, createPagination);
+        sendFilterRequest(searchUrl + "?page=1&pageLimit=" + pageLimit, "POST", searchRequest, fillTableContacts);
+
+        var paginationList = document.getElementById("paginationList");
+        paginationList.parentNode.removeChild(paginationList);
+
+        var filterBtn = document.getElementById("filter-btn");
+        filterBtn.classList.add("filter-btn-on");
+
+        filterRequestBody = searchRequest;
+        mainWindow.style.display = "none";
 
     });
 
@@ -132,9 +144,9 @@ function createBlockDate(text, postFix) {
     dataDiv.appendChild(dataLabel);
     var dataForm = document.createElement("div");
     dataForm.className = "date-form";
-    var day = createDateDiv("day", "--", 1, postFix);
-    var month = createDateDiv("month", "--", 1, postFix);
-    var year = createDateDiv("year", "----", 3, postFix);
+    var day = createDateDiv("day", "", 1, postFix, "2");
+    var month = createDateDiv("month", "", 1, postFix, "2");
+    var year = createDateDiv("year", "", 3, postFix, "4");
     dataForm.appendChild(day);
     dataForm.appendChild(month);
     dataForm.appendChild(year);
@@ -143,7 +155,7 @@ function createBlockDate(text, postFix) {
 }
 
 
-function createDateDiv(name, placeHolder, size, postFix) {
+function createDateDiv(name, placeHolder, size, postFix, maxLength) {
 
     var div = document.createElement("div");
     var input = document.createElement("input");
@@ -151,6 +163,7 @@ function createDateDiv(name, placeHolder, size, postFix) {
     input.name = name;
     input.id = name + postFix;
     input.placeholder = placeHolder;
+    input.maxLength = maxLength;
     input.setAttribute("aria-describedby", name + "Help");
     input.size = size;
     input.addEventListener("input", replaceLetters);
@@ -175,13 +188,21 @@ function getSearchRequest() {
     var monthBefore = document.getElementById("monthBefore").value;
     var yearBefore = document.getElementById("yearBefore").value;
 
-    var dateBefore = dayBefore + "-" + monthBefore + "-" + yearBefore;
+    var dateBefore = yearBefore + "-" + monthBefore + "-" + dayBefore;
+
+    if (dateBefore === "--") {
+        dateBefore = "";
+    }
 
     var dayAfter = document.getElementById("dayAfter").value;
     var monthAfter = document.getElementById("monthAfter").value;
     var yearAfter = document.getElementById("yearAfter").value;
 
-    var dateAfter = dayAfter + "-" + monthAfter + "-" + yearAfter;
+    var dateAfter = yearAfter + "-" + monthAfter + "-" + dayAfter;
+
+    if (dateAfter === "--") {
+        dateAfter = "";
+    }
 
     var male = document.getElementById("male");
     var female = document.getElementById("female");

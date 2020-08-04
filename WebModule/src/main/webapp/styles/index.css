@@ -87,6 +87,12 @@ nav {
     border-radius: 15px;
 }
 
+.filter-btn-on {
+    background-color: #28a745;
+    color: white;
+    border: 2px solid white !important;
+}
+
 #menu-list button:active {
     background-color: black;
     color: red;

@@ -1,6 +1,7 @@
 package by.itechart.web.command.impl;
 
 import by.itechart.logic.dto.ContactDTO;
+import by.itechart.logic.exception.AlreadyExistException;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.FacadeService;
 import by.itechart.logic.service.impl.FacadeServiceImpl;
@@ -44,6 +45,10 @@ public class UpdateContactCommand implements Command {
                 resp.setStatus(resp.SC_BAD_REQUEST);
                 resp.getWriter().write(gson.toJson(errorList));
             }
+
+        } catch (AlreadyExistException e) {
+            resp.setStatus(resp.SC_BAD_REQUEST);
+            resp.getWriter().write(gson.toJson("Email already exists !"));
 
         } catch (ServiceException | RequestParseException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);

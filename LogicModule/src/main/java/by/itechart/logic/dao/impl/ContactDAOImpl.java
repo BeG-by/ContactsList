@@ -15,7 +15,7 @@ public class ContactDAOImpl implements ContactDAO {
 
     private Connection connection;
 
-    private static final String ID_COL = "id";
+    public static final String ID_COL = "id";
     public static final String FIRST_NAME_COL = "first_name";
     public static final String LAST_NAME_COL = "last_name";
     public static final String MIDDLE_NAME_COL = "middle_name";
@@ -26,13 +26,12 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String WEBSITE_URL_COL = "url";
     private static final String EMAIL_COL = "email";
     private static final String CURRENT_JOB_COL = "job";
-    private static final String IMAGE_NAME_COL = "image_name";
 
     public static final String COUNTRY_COL = "country";
     public static final String CITY_COL = "city";
     public static final String STREET_COL = "street";
     public static final String POST_INDEX_COL = "post_index";
-    private static final String CONTACT_ID_COL = "contact_id";
+    public static final String CONTACT_ID_COL = "contact_id";
 
     public ContactDAOImpl(Connection connection) {
         this.connection = connection;
@@ -41,15 +40,14 @@ public class ContactDAOImpl implements ContactDAO {
     private static final String FIND_ALL_CONTACTS_QUERY = String.format("SELECT * FROM contact c LEFT JOIN address a ON c.%s = a.%s ORDER BY c.id LIMIT ? , ?;",
             ID_COL, CONTACT_ID_COL);
 
-    private static final String SAVE_CONTACT_QUERY = String.format("INSERT INTO contact (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (?,?,?,?,?,?,?,?,?,?,?);",
-            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL, EMAIL_COL, CURRENT_JOB_COL, IMAGE_NAME_COL);
+    private static final String SAVE_CONTACT_QUERY = String.format("INSERT INTO contact (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) VALUES (?,?,?,?,?,?,?,?,?,?);",
+            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL, EMAIL_COL, CURRENT_JOB_COL);
 
     private static final String SAVE_ADDRESS_QUERY = String.format("INSERT INTO address (%s,%s,%s,%s,%s) VALUES (?,?,?,?,?);",
             COUNTRY_COL, CITY_COL, STREET_COL, POST_INDEX_COL, CONTACT_ID_COL);
 
-    private static final String UPDATE_CONTACT_QUERY = String.format("UPDATE contact SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=IF(%s IS NOT NULL,%s,?) WHERE %s=?;",
-            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL,
-            EMAIL_COL, CURRENT_JOB_COL, IMAGE_NAME_COL, IMAGE_NAME_COL, IMAGE_NAME_COL, ID_COL);
+    private static final String UPDATE_CONTACT_QUERY = String.format("UPDATE contact SET %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=?, %s=? WHERE %s=?;",
+            FIRST_NAME_COL, LAST_NAME_COL, MIDDLE_NAME_COL, BIRTHDAY_COL, SEX_COL, NATIONALITY_COL, MARITAL_STATUS_COL, WEBSITE_URL_COL, EMAIL_COL, CURRENT_JOB_COL, ID_COL);
 
     private static final String UPDATE_ADDRESS_QUERY = String.format("UPDATE address SET %s=?, %s=?, %s=?, %s=? WHERE %s=?;",
             COUNTRY_COL, CITY_COL, STREET_COL, POST_INDEX_COL, CONTACT_ID_COL);
@@ -131,7 +129,7 @@ public class ContactDAOImpl implements ContactDAO {
              final PreparedStatement addressStatement = connection.prepareStatement(UPDATE_ADDRESS_QUERY)) {
 
             buildContactStatement(contactStatement, contact);
-            contactStatement.setLong(12, contact.getId());
+            contactStatement.setLong(11, contact.getId());
             contactStatement.executeUpdate();
 
             Address address = contact.getAddress();
@@ -175,11 +173,12 @@ public class ContactDAOImpl implements ContactDAO {
                 count = resultSet.getLong(1);
             }
 
+            return count;
+
         } catch (Exception e) {
             throw new DaoException(e);
         }
 
-        return count;
     }
 
     @Override
@@ -255,6 +254,47 @@ public class ContactDAOImpl implements ContactDAO {
 
     }
 
+    @Override
+    public List<Contact> findAllWithFilter(String searchSql) throws DaoException {
+
+        List<Contact> contacts = new ArrayList<>();
+
+        try (final Statement statement = connection.createStatement()) {
+
+            final ResultSet resultSet = statement.executeQuery(searchSql);
+
+            while (resultSet.next()) {
+                contacts.add(buildContact(resultSet));
+            }
+
+            return contacts;
+
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+
+    }
+
+    @Override
+    public long countAllWithFilter(String sql) throws DaoException {
+
+        long count = 0;
+
+        try (final Connection connection = ConnectionFactory.createConnection();
+             final ResultSet resultSet = connection.createStatement().executeQuery(sql)) {
+
+            while (resultSet.next()) {
+                count = resultSet.getLong(1);
+            }
+
+            return count;
+
+        } catch (Exception e) {
+            throw new DaoException(e);
+        }
+
+    }
+
 
     private Contact buildContact(ResultSet resultSet) throws SQLException {
 
@@ -298,7 +338,6 @@ public class ContactDAOImpl implements ContactDAO {
         statement.setString(8, contact.getUrlWebSite());
         statement.setString(9, contact.getEmail());
         statement.setString(10, contact.getCurrentJob());
-        statement.setString(11, contact.getImageName());
 
     }
 

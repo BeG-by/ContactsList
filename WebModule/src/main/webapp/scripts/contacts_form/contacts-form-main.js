@@ -40,7 +40,14 @@ document.getElementById("filter-btn").addEventListener("click", function (e) {
 
     e.preventDefault();
 
-    createFilterForm();
+    var filterForm = document.getElementsByClassName("window-main-filter")[0];
+
+    if (filterForm === undefined) {
+        createFilterForm();
+    } else {
+        filterForm.style.display = "";
+    }
+
 
 });
 

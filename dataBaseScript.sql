@@ -17,7 +17,6 @@ CREATE TABLE `contacts_list_db`.`contact`
     `url`            VARCHAR(255)               NULL,
     `email`          VARCHAR(45)                NULL,
     `job`            VARCHAR(45)                NULL,
-    `image_name`     VARCHAR(255)               NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
@@ -98,15 +97,15 @@ BEGIN
         DO
             INSERT INTO `contacts_list_db`.`contact`(first_name, last_name, middle_name, birthday, sex, nationality,
                                                      marital_status,
-                                                     url, job, image_name)
+                                                     url, job)
             VALUES ('Ivan', 'Ivanov', 'Ivanovich', '1990-01-03', 'male', 'Belarus', 'single', 'google.com',
-                    'iTechArt', 'fileNameTest.png'),
+                    'iTechArt'),
                    ('Jack', 'Klinton', 'Bobovich', '1993-02-01', 'male', 'USA', 'married', 'yandex.com',
-                    'iTechArt', 'fileNameTest.png'),
+                    'iTechArt'),
                    ('Marina', 'Vaika', 'Viktorovna', '1992-11-03', 'female', 'Russia', 'married', 'google.com',
-                    'EPAM', 'fileNameTest.png'),
+                    'EPAM'),
                    ('Lexa', 'Lennon', 'Valerevich', '1988-01-04', 'male', 'Belarus', 'single', 'github.com',
-                    'Wargaming', 'fileNameTest.png');
+                    'Wargaming');
             SET i = i + 1;
         END WHILE;
 END $$$

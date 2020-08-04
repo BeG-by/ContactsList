@@ -87,15 +87,24 @@ function sendMultipartRequest(type, url, json, avatar, attachments, message) {
 
 }
 
-function testSend() {
+function sendFilterRequest(url, type, body, callback) {
 
-    var message = {
-        "emails": ["istokx08@mail.ru" , "istok08@mail.ru"],
-        "subject": "test theme",
-        "text": "content"
+    var xhr = new XMLHttpRequest();
+
+    xhr.open(type, url);
+    xhr.responseType = "json";
+    xhr.setRequestHeader("Content-type", "application/json");
+    xhr.setRequestHeader("Accept", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
+            callback(xhr.response);
+        } else if (xhr.readyState === 4 && xhr.status >= 400) {
+            alert("Error: " + xhr.status + " " + xhr.response);
+        }
+
     };
 
-
-    // sendRequestWithBody("http://localhost:8080/api/v1/contactsList/contacts/email", "POST", message, true);
+    xhr.send(JSON.stringify(body));
 
 }

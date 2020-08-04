@@ -24,4 +24,8 @@ public interface ContactDAO {
 
     List<Contact> findByTodayDate(LocalDate date) throws DaoException;
 
+    List<Contact> findAllWithFilter(String searchSql) throws DaoException;
+
+    long countAllWithFilter(String sql) throws DaoException;
+
 }

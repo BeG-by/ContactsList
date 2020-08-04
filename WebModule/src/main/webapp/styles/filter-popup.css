@@ -55,6 +55,7 @@
 .window-filter input[type=text] {
     width: 70%;
     padding-top: 0;
+    text-align: center;
 }
 
 

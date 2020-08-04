@@ -1,18 +1,16 @@
 main {
     flex-basis: 70%;
+    margin-top: 5px;
 }
 
 aside {
     flex-basis: 15%;
 }
 
-main {
-    margin-top: 5px;
-}
-
 h3 {
     text-align: center;
     margin-bottom: 10px;
+    color: #439BF9;
 }
 
 #avatar {
@@ -35,6 +33,11 @@ h3 {
     font-size: 14px;
     justify-content: space-between;
     border-width: 1px;
+}
+
+
+#day, #month, #year {
+    text-align: center;
 }
 
 #avatar-div {
@@ -66,10 +69,22 @@ h3 {
     font-family: 'Montserrat', sans-serif;
 }
 
-.tables-phone-att button:hover,
-.tables-phone-att button:active,
-.tables-phone-att button:focus {
+#update-phone-btn:hover, #update-att-btn:hover,
+#update-phone-btn:active, #update-att-btn:active,
+#update-phone-btn:focus, #update-att-btn:focus {
     background-color: #F4BD11;
+}
+
+#add-phone-btn:hover, #add-att-btn:hover,
+#add-phone-btn:active, #add-att-btn:active,
+#add-phone-btn:focus, #add-att-btn:focus {
+    background-color: #28a745;
+}
+
+#delete-phone-btn:hover, #delete-att-btn:hover,
+#delete-phone-btn:active, #delete-att-btn:active,
+#delete-phone-btn:focus, #delete-att-btn:focus {
+    background-color: #dc3545;
 }
 
 
@@ -81,10 +96,17 @@ h3 {
     flex-basis: 47%;
 }
 
+.att-header, .phone-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+}
+
 .date-form {
     display: flex;
     justify-content: space-between;
 }
+
 
 .sex-radio, .maritalStatus-radio {
     display: flex;

@@ -31,6 +31,8 @@
 
     </appender>
 
+    <logger name="org.quartz.core.QuartzSchedulerThread" level="WARN" />
+
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
         <appender-ref ref="STDOUT"/>

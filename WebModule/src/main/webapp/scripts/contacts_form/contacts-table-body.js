@@ -53,7 +53,6 @@ function fillTableContacts(response) {
         var tr = trBodyArr[count];
         count++;
 
-
         if (response.hasOwnProperty(jsonKey)) {
             var contact = response[jsonKey];
         }

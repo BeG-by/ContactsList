@@ -62,10 +62,14 @@ public class ContactValidator {
             errorList.add("Date should be before " + LocalDate.now());
         }
 
-        if (sex.equalsIgnoreCase("male") || sex.equalsIgnoreCase("female")) {
-            contact.setSex(sex.toLowerCase());
+        if (!sex.isEmpty()) {
+            if (sex.equalsIgnoreCase("male") || sex.equalsIgnoreCase("female")) {
+                contact.setSex(sex.toLowerCase());
+            } else {
+                errorList.add("Sex should be \"male\" or \"female\"");
+            }
         } else {
-            errorList.add("Sex should be \"male\" or \"female\"");
+            contact.setSex(null);
         }
 
         if (!nationality.isEmpty()) {
@@ -74,10 +78,14 @@ public class ContactValidator {
             contact.setNationality(null);
         }
 
-        if (maritalStatus.equalsIgnoreCase("married") || maritalStatus.equalsIgnoreCase("single")) {
-            contact.setSex(sex.toLowerCase());
+        if (!maritalStatus.isEmpty()) {
+            if (maritalStatus.equalsIgnoreCase("married") || maritalStatus.equalsIgnoreCase("single")) {
+                contact.setSex(sex.toLowerCase());
+            } else {
+                errorList.add("Marital status should be \"married\" or \"single\"");
+            }
         } else {
-            errorList.add("Marital status should be \"married\" or \"single\"");
+            contact.setMaritalStatus(null);
         }
 
         if (!urlWebSite.isEmpty()) {

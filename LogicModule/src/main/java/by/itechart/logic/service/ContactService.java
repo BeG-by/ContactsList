@@ -27,4 +27,6 @@ public interface ContactService {
 
     List<Contact> searchContact(SearchRequest searchRequest, int page, int pageLimit) throws ServiceException;
 
+    long countAllWithFilter(SearchRequest searchRequest) throws ServiceException;
+
 }

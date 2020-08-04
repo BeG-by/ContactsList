@@ -74,13 +74,28 @@ function getFormContactData() {
             return false;
         }
 
+        if (!isValidDate(year, month, day)) {
+            alert("This date doesn't exist !");
+            return;
+        }
+
     } else {
         day = 1;
         month = 11;
         year = 1111;
     }
 
-    var sex = document.getElementById("male").checked ? "male" : "female";
+    var male = document.getElementById("male");
+    var female = document.getElementById("female");
+    var sex = "";
+
+    if (male.checked) {
+        sex = "male";
+    } else if (female.checked) {
+        sex = "female";
+    }
+
+
     var nationality = document.getElementById("nationality").value;
 
     if (nationality.length > 16) {
@@ -93,7 +108,16 @@ function getFormContactData() {
         return false;
     }
 
-    var maritalStatus = document.getElementById("single").checked ? "single" : "married";
+    var single = document.getElementById("single");
+    var married = document.getElementById("married");
+    var maritalStatus = "";
+
+    if (single.checked) {
+        maritalStatus = "single";
+    } else if (married.checked) {
+        maritalStatus = "married";
+    }
+
 
     var webSiteUrl = document.getElementById("urlWebSite").value;
 
@@ -114,7 +138,7 @@ function getFormContactData() {
     var currentJob = document.getElementById("currentJob").value;
 
     if (currentJob.length > 100) {
-        alert("Job name length should be less than 16 !");
+        alert("Job name length should be less than 100 !");
         return false;
     }
 
@@ -205,18 +229,8 @@ function getFormContactData() {
 
 }
 
-// function isValidDate(year, month, day) {
-//     month = month - 1;
-//     var date = new Date(year, month, day);
-//     return date.getFullYear() === year && date.getMonth() === month && date.getDate() === day;
-//
-// }
-
-// var number1 = new Date(year, month - 1, day);
-// console.log(number1.getTime());
-// console.log(number1);
-// console.log(number1.toISOString());
-// console.log(number1.getFullYear());
-// console.log(number1.getMonth());
-// console.log(number1.getDay());
-// console.log(number1.getDate());
+function isValidDate(year, month, day) {
+    month = month - 1;
+    var date = new Date(year, month, day);
+    return date.getFullYear() === Number(year) && date.getMonth() === Number(month) && date.getDate() === Number(day);
+}
