@@ -26,7 +26,7 @@ public class FindByIdContactCommand implements Command {
 
         if (contactId == null || !contactId.matches("\\d+")) {
             resp.setStatus(resp.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Page and page limit must be digit !"));
+            resp.getWriter().write(gson.toJson("Page and page limit must be digit."));
             return;
         }
 
@@ -35,7 +35,7 @@ public class FindByIdContactCommand implements Command {
 
             if(contact == null){
                 resp.setStatus(resp.SC_BAD_REQUEST);
-                resp.getWriter().write(gson.toJson("Contact not found !"));
+                resp.getWriter().write(gson.toJson("Contact not found."));
             } else {
                 resp.getWriter().write(gson.toJson(contact));
                 resp.setStatus(resp.SC_OK);
@@ -44,7 +44,7 @@ public class FindByIdContactCommand implements Command {
 
         } catch (ServiceException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
         }
 
     }

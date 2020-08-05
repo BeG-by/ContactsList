@@ -4,6 +4,7 @@ import by.itechart.logic.dto.SearchRequest;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.FacadeService;
 import by.itechart.logic.service.impl.FacadeServiceImpl;
+import by.itechart.logic.validator.SearchRequestValidator;
 import by.itechart.web.command.Command;
 import com.google.gson.Gson;
 
@@ -24,14 +25,14 @@ public class SearchCountAllCommand implements Command {
         final SearchRequest searchRequest = gson.fromJson(req.getReader().readLine(), by.itechart.logic.dto.SearchRequest.class);
 
         try {
-
+            SearchRequestValidator.validate(searchRequest);
             final long count = facadeService.countAllContactsWithFilter(searchRequest);
             resp.getWriter().write(gson.toJson(count));
             resp.setStatus(resp.SC_OK);
 
         } catch (ServiceException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
         }
 
     }

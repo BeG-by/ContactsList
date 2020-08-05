@@ -16,12 +16,12 @@ uploadInput.addEventListener("change", function () {
     if (file !== undefined && file.type.match("image.*")) {
 
         if (file.size > maxSizeOfImg) {
-            alert("File is to large ! Max size is :" + maxSizeOfImg / 1000000 + "MB");
+            alert("File is to large. Max size is :" + maxSizeOfImg / 1000000 + "MB");
             return;
         }
 
         if (file.name.length > 100) {
-            alert("Image name length should be less than 100");
+            alert("File name is too long (maximum is 100 characters).");
             return;
         }
 

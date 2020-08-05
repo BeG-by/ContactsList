@@ -24,13 +24,13 @@ function createPhoneForm(phoneDTO) {
     phoneForm.className = formPhoneClassName;
     mainContent.appendChild(phoneForm);
 
-    var countryCode = createInput("text", "countryCode", "countryCode-form", "Country code" , replaceLetters);
+    var countryCode = createInput("text", "countryCode", "countryCode-form", "Country code", "8", replaceLetters);
     phoneForm.appendChild(countryCode);
 
-    var operatorCode = createInput("text", "operatorCode", "operatorCode-form", "Operator code" , replaceLetters);
+    var operatorCode = createInput("text", "operatorCode", "operatorCode-form", "Operator code", "8", replaceLetters);
     phoneForm.appendChild(operatorCode);
 
-    var number = createInput("text", "number", "number-form", "Phone Number" , replaceLetters);
+    var number = createInput("text", "number", "number-form", "Phone Number", "16", replaceLetters);
     phoneForm.appendChild(number);
 
     var typePhoneDiv = document.createElement("div");
@@ -44,6 +44,9 @@ function createPhoneForm(phoneDTO) {
 
     var comment = createTextArea("comment-form", "Comment");
     comment.className = "comment-phone";
+
+    comment.querySelector("textarea").maxLength = "45";
+
     phoneForm.appendChild(comment);
 
     // --- Save button ---

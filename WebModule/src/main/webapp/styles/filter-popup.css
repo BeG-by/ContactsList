@@ -52,12 +52,18 @@
     padding: 5px;
 }
 
+.window-filter h3 {
+    color: #439BF9;
+}
+
 .window-filter input[type=text] {
     width: 70%;
     padding-top: 0;
-    text-align: center;
 }
 
+.date-filter {
+    text-align: center;
+}
 
 .window-filter .form-check {
     display: flex;
@@ -93,4 +99,8 @@
 
 .close-btn:hover {
     background-color: #dc3545;
+}
+
+.clear-btn:hover {
+    background-color: #F4BD11;
 }

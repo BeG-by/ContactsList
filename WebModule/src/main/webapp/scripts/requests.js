@@ -77,6 +77,7 @@ function sendMultipartRequest(type, url, json, avatar, attachments, message) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 300) {
             alert(message);
+            location.href = indexHref;
         } else if (xhr.readyState === 4 && xhr.status >= 400) {
             alert("Error: " + xhr.status + " " + xhr.response);
         }

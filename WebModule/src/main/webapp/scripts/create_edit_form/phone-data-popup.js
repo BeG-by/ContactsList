@@ -8,19 +8,19 @@ function getDataFromPhoneForm() {
 
     var country = document.getElementById("countryCode-form");
     if (country.value.length === 0 || country.value.length > 8) {
-        alert("Country code should be 1-8 symbols !");
+        alert("Country code may be between 1 and 8 characters.");
         return false;
     }
 
     var operator = document.getElementById("operatorCode-form");
     if (operator.value.length === 0 || operator.value.length > 8) {
-        alert("Operator code should be 1-8 symbols !");
+        alert("Operator code may be between 1 and 8 characters.");
         return false;
     }
 
     var number = document.getElementById("number-form");
     if (number.value.length < 4 || number.value.length > 16) {
-        alert("Phone number should be 4-16 symbols !");
+        alert("Phone number may be between 4 and 16 characters.");
         return false;
     }
 
@@ -28,7 +28,7 @@ function getDataFromPhoneForm() {
 
     var comment = document.getElementById("comment-form");
     if (comment.value.length > 45) {
-        alert("Max length of comment is 45 symbols !");
+        alert("Comment is too long (maximum is 45 characters).");
         return false;
     }
 
@@ -49,7 +49,7 @@ function deletePhoneRow() {
     var items = document.querySelectorAll(".checkbox-phone");
 
     if (items.length === 0) {
-        alert("You should add a contact phone !");
+        alert("You should add a contact phone.");
         return;
     }
 
@@ -63,7 +63,7 @@ function deletePhoneRow() {
     }
 
     if (!checkedExist) {
-        alert("You should choose a contact phone !");
+        alert("You should choose a contact phone.");
     }
 
 }
@@ -75,7 +75,7 @@ function getDataForUpdatePhone() {
     var items = document.querySelectorAll(".checkbox-phone");
 
     if (items.length === 0) {
-        alert("You should add a contact phone !");
+        alert("You should add a contact phone.");
         return null;
     }
 
@@ -92,10 +92,10 @@ function getDataForUpdatePhone() {
     }
 
     if (checkedExist === 0) {
-        alert("You should choose a contact phone !");
+        alert("You should choose a contact phone.");
         return null;
     } else if (checkedExist !== 1) {
-        alert("You should choose one contact phone !");
+        alert("You should choose one contact phone.");
         return null;
 
     } else {
@@ -114,4 +114,5 @@ function getDataForUpdatePhone() {
         return phone;
 
     }
+
 }

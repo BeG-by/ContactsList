@@ -30,7 +30,7 @@ public class FindAllContactsCommand implements Command {
                 !pageLimit.matches("\\d+") || Integer.parseInt(page) <= 0) {
 
             resp.setStatus(resp.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Page and page limit must be digit and more then zero !"));
+            resp.getWriter().write(gson.toJson("Page and page limit must be digit and more then zero."));
             return;
         }
 
@@ -41,7 +41,7 @@ public class FindAllContactsCommand implements Command {
 
         } catch (ServiceException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
         }
 
     }

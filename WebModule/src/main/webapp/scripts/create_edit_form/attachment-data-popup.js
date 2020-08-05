@@ -82,12 +82,12 @@ function validateAttachmentsCheckboxes(isUpdated) {
     var checked = document.querySelectorAll("#attachment-body input[type=checkbox]:checked");
 
     if (checked.length === 0) {
-        alert("You should choose attachments !");
+        alert("You should choose attachments.");
         return false;
     }
 
     if (isUpdated && checked.length !== 1) {
-        alert("You should choose one attachment !");
+        alert("You should choose one attachment.");
         return false;
     }
 

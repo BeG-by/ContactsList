@@ -45,44 +45,48 @@ public class ContactValidator {
         final String imageName = contact.getImageName();
 
 
-        validateRequired(firstName, 16, "First name");
-        validateRequired(lastName, 16, "Last name");
+        validateField(firstName, 1, 16, "First name");
+        validateField(lastName, 1, 16, "Last name");
 
         if (!middleName.isEmpty()) {
-            validateNonRequired(middleName, 16, "Middle name");
+            validateField(middleName, 0, 16, "Middle name");
         } else {
             contact.setMiddleName(null);
         }
 
+
         if (birthday.equals(LocalDate.of(1111, 11, 1))) {
             contact.setBirthday(null);
         } else if (birthday.isBefore(LocalDate.of(1900, 1, 1))) {
-            errorList.add("Date should be after 01.01.1990");
+            errorList.add("Date may be after 01.01.1990");
         } else if (birthday.isAfter(LocalDate.now())) {
-            errorList.add("Date should be before " + LocalDate.now());
+            errorList.add("Date may be before " + LocalDate.now());
         }
+
 
         if (!sex.isEmpty()) {
             if (sex.equalsIgnoreCase("male") || sex.equalsIgnoreCase("female")) {
                 contact.setSex(sex.toLowerCase());
             } else {
-                errorList.add("Sex should be \"male\" or \"female\"");
+                errorList.add("Sex may be \"male\" or \"female\"");
             }
         } else {
             contact.setSex(null);
         }
 
+
         if (!nationality.isEmpty()) {
-            validateNonRequired(nationality, 16, "Nationality");
+            validateField(nationality, 0, 16, "Nationality");
         } else {
             contact.setNationality(null);
         }
+
 
         if (!maritalStatus.isEmpty()) {
             if (maritalStatus.equalsIgnoreCase("married") || maritalStatus.equalsIgnoreCase("single")) {
                 contact.setSex(sex.toLowerCase());
             } else {
-                errorList.add("Marital status should be \"married\" or \"single\"");
+                errorList.add("Marital status may be \"married\" or \"single\"");
             }
         } else {
             contact.setMaritalStatus(null);
@@ -90,30 +94,32 @@ public class ContactValidator {
 
         if (!urlWebSite.isEmpty()) {
             if (urlWebSite.length() > 200) {
-                errorList.add(String.format("%s length can't be more than %d !\n", urlWebSite, 20));
+                errorList.add(String.format("URL is too long (maximum is %d characters).\n", 200));
             }
         } else {
             contact.setUrlWebSite(null);
         }
 
         if (!email.isEmpty()) {
-
             if (!email.matches("[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}")) {
-                errorList.add("Invalid email !");
+                errorList.add("Invalid email.");
             }
-
         } else {
             contact.setEmail(null);
         }
 
+
         if (!currentJob.isEmpty()) {
-            validateNonRequired(currentJob, 100, "Job place");
+            if (currentJob.length() > 100) {
+                errorList.add(String.format("Job is too long (maximum is %d characters).\n", 100));
+            }
         } else {
             contact.setCurrentJob(null);
         }
 
+
         if (imageName != null && !imageName.isEmpty() && imageName.length() > 100) {
-            errorList.add("Image name length can't be more than 100");
+            errorList.add(String.format("Image name is too long (maximum is %d characters).\n", 100));
         }
 
         validateAddress(contact.getAddress());
@@ -133,13 +139,13 @@ public class ContactValidator {
         final Integer postIndex = address.getPostIndex();
 
         if (!country.isEmpty()) {
-            validateNonRequired(country, 16, "Country");
+            validateField(country, 0, 16, "Country");
         } else {
             address.setCountry(null);
         }
 
         if (!city.isEmpty()) {
-            validateNonRequired(city, 16, "City");
+            validateField(city, 0, 16, "City");
         } else {
             address.setCity(null);
         }
@@ -147,11 +153,11 @@ public class ContactValidator {
         if (street.isEmpty()) {
             address.setStreet(null);
         } else if (street.length() > 24) {
-            errorList.add("Street length can't be more than 24");
+            errorList.add(String.format("Street is too long (maximum is %d characters).\n", 24));
         }
 
         if (postIndex != null && Integer.toString(postIndex).length() > 10) {
-            errorList.add("Post index length can't be more than 10");
+            errorList.add("Index may only contain digits (between 1 and 10 digits).");
         }
 
     }
@@ -170,22 +176,22 @@ public class ContactValidator {
             final String comment = phone.getComment();
 
             if (countryCode.length() > 8) {
-                errorList.add("Country code should be 1-8 characters");
+                errorList.add("Country code may be between 1 and 8 characters.");
                 isBreak = true;
             }
 
             if (operatorCode.length() > 8) {
-                errorList.add("Operator code should be 1-8 characters");
+                errorList.add("Operator code may be between 1 and 8 characters");
                 isBreak = true;
             }
 
             if (number.length() < 4 || number.length() > 16) {
-                errorList.add("Phone number should be 4-16 characters");
+                errorList.add("Phone number may be between 4 and 16 characters");
                 isBreak = true;
             }
 
             if (comment.length() > 45) {
-                errorList.add("Comment length can't be more than 45");
+                errorList.add(String.format("Comment is too long (maximum is %d characters).\n", 45));
                 isBreak = true;
             }
 
@@ -205,7 +211,7 @@ public class ContactValidator {
             final String comment = attachment.getComment();
 
             if (fileName.length() > 100) {
-                errorList.add("File name length can't be more than 100");
+                errorList.add(String.format("File name is too long (maximum is %d characters).\n", 100));
                 isBreak = true;
             }
 
@@ -220,7 +226,7 @@ public class ContactValidator {
             }
 
             if (comment.length() > 45) {
-                errorList.add("Comment length can't be more than 45");
+                errorList.add(String.format("Comment is too long (maximum is %d characters).\n", 45));
                 isBreak = true;
             }
 
@@ -229,26 +235,16 @@ public class ContactValidator {
     }
 
 
-    private void validateRequired(String property, int propertyLength, String propertyName) {
+    private void validateField(String property, int minLength, int maxLength, String propertyName) {
 
-        if (property.isEmpty()) {
-            errorList.add(String.format("%s can't be empty !\n", propertyName));
-        } else if (property.length() > propertyLength) {
-            errorList.add(String.format("%s length can't be more than %d !\n", propertyName, propertyLength));
+        if (property.length() < minLength || property.length() > maxLength) {
+            errorList.add(String.format("%s may be between %d and %d characters long.\n", propertyName, minLength, maxLength));
         }
 
-        if (!property.matches("[A-Za-zА-Яа-я\\s-]*")) {
-            errorList.add(String.format("%s must have only English or Russian letters, hyphen or space !\n", propertyName));
-        }
-    }
+        if (!property.matches("[A-Za-zА-Яа-я\\s-]*") || property.split("-").length > 2 || property.split("\\s").length > 2
+                || property.startsWith("-") || property.endsWith("-") || property.startsWith(" ") || property.endsWith(" ")) {
 
-    private void validateNonRequired(String property, int propertyLength, String propertyName) {
-
-        if (property.length() > propertyLength) {
-            errorList.add(String.format("%s length can't be more than %d !\n", propertyName, propertyLength));
-        }
-        if (!property.matches("[A-Za-zА-Яа-я\\s-]*")) {
-            errorList.add(String.format("%s must have only English or Russian letters !\n", propertyName));
+            errorList.add(String.format("%s may only contain English or Russian characters or single hyphens or space, and cannot begin or end with a hyphen or space. !\n", propertyName));
         }
 
     }

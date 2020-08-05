@@ -124,12 +124,12 @@ function getMessage() {
     var text = document.getElementById("textMessage").value;
 
     if (subject.length === 0) {
-        alert("Subject can't be empty !");
+        alert("Subject can't be empty.");
         return null;
     }
 
     if (text.length === 0) {
-        alert("Text can't be empty !");
+        alert("Text can't be empty.");
         return null;
     }
 

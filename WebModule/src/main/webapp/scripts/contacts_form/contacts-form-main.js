@@ -3,6 +3,7 @@
 var updateUrlHref = "create-edit-form.html";
 
 createTableContactBody(pageLimit);
+
 sendRequest(findAllUrl + "?page=" + currentPage + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
 sendRequest(countAllUrl, "GET", createPagination);
 
@@ -11,7 +12,7 @@ document.getElementById("delete-btn").addEventListener("click", function (e) {
     var idList = getCheckedCheckbox();
 
     if (idList.length > 0) {
-        sendRequestWithBody(deleteAllUrl, "DELETE", idList, false, "Contacts have been deleted");
+        sendRequestWithBody(deleteAllUrl, "DELETE", idList, false, "Contacts have been deleted.");
     } else {
         e.preventDefault();
         alert("You should choose the contacts !");
@@ -60,7 +61,7 @@ document.getElementById("email-btn").addEventListener("click", function (e) {
     if (emails.length > 0) {
         createEmailForm(emails);
     } else {
-        alert("You should choose the contacts or selected contacts haven't email !");
+        alert("You should choose the contacts or selected contacts haven't email.");
     }
 
 

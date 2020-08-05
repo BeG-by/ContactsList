@@ -29,16 +29,16 @@ public class DeleteAllContactsCommand implements Command {
 
             try {
                 facadeService.deleteContacts(Arrays.stream(listId).boxed().collect(Collectors.toList()));
-                resp.getWriter().write(gson.toJson("Contacts have been deleted"));
+                resp.getWriter().write(gson.toJson("Contacts have been deleted."));
                 resp.setStatus(resp.SC_OK);
             } catch (ServiceException e) {
                 resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-                resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+                resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
             }
 
         } else {
             resp.setStatus(resp.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Contacts list is empty !"));
+            resp.getWriter().write(gson.toJson("Contacts list is empty."));
         }
 
     }

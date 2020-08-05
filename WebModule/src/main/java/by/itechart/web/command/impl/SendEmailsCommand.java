@@ -27,10 +27,10 @@ public class SendEmailsCommand implements Command {
         try {
             facadeService.sendMessagesViaEmail(message);
             resp.setStatus(resp.SC_OK);
-            resp.getWriter().write("Emails have been sent");
+            resp.getWriter().write("Emails have been sent.");
         } catch (Exception e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
         }
 
     }

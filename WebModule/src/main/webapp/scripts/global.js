@@ -5,6 +5,7 @@ var requestAvatar = null; //-- Avatar for request
 var idAttachmentTableRow = -1; // --- Id for attachment table ---
 var idPhoneTableRow = -1000; // --- Id for phone table ---
 
+var indexHref = "http://localhost:8080/index.html";
 
 var findAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/findAll";
 var deleteAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/deleteAll";

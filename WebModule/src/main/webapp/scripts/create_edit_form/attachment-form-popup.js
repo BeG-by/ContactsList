@@ -55,12 +55,12 @@ function createAttachmentForm(attachmentDTO) {
         if (file !== undefined) {
 
             if (file.size > maxSizeOfImg) {
-                alert("File is to large ! Max size is :" + maxSize / 1200000 + "MB");
+                alert("File is to large. Max size is :" + maxSize / 1200000 + "MB");
                 return;
             }
 
             if (file.name.length > 100) {
-                alert("File name length should be less than 100");
+                alert("File name is too long (maximum is 100 characters).");
                 return;
             }
 
@@ -74,6 +74,7 @@ function createAttachmentForm(attachmentDTO) {
     // --- Comment ---
 
     var comment = createTextArea("comment-att", "Comment");
+    comment.querySelector("textarea").maxLength = "45";
     formDiv.appendChild(comment);
 
 
@@ -91,14 +92,14 @@ function createAttachmentForm(attachmentDTO) {
     saveBtn.addEventListener("click", function () {
 
         if (currentLoadedFile == null) {
-            alert("Choose a file from disk !");
+            alert("Choose a file from disk.");
             return;
         }
 
         var commentText = document.getElementById("comment-att").value;
 
         if (commentText.length > 45) {
-            alert("Max length of comment is 45 symbols !");
+            alert("Comment is too long (maximum is 45 characters).");
             return false;
         }
 
@@ -110,8 +111,6 @@ function createAttachmentForm(attachmentDTO) {
             attachmentsForRequest[id] = currentLoadedFile;
         }
         currentLoadedFile = null;
-
-        console.log(attachmentsForRequest);
 
         mainWindow.parentNode.removeChild(mainWindow);
     });

@@ -1,6 +1,6 @@
 "use strict";
 
-function createInput(type, name, id, textLabel, filter) {
+function createInput(type, name, id, textLabel, maxLength, filter) {
 
     var div = document.createElement("div");
     div.className = "form-group";
@@ -15,6 +15,7 @@ function createInput(type, name, id, textLabel, filter) {
     input.type = type;
     input.name = name;
     input.id = id;
+    input.maxLength = maxLength;
     if (filter !== undefined) {
         input.addEventListener("input", replaceLetters);
     }
@@ -64,7 +65,7 @@ function createTextArea(name, textLabel, returnTextArea) {
     div.appendChild(label);
     div.appendChild(p);
 
-    if(returnTextArea === true) {
+    if (returnTextArea === true) {
         return textArea;
     }
 

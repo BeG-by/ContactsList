@@ -6,7 +6,7 @@ document.getElementById("create-btn").addEventListener("click", function () {
     if (validateContact !== false) {
 
         validateContact["attachmentList"] = getAttachmentsList();
-        sendMultipartRequest("POST", saveUrl, validateContact, requestAvatar, attachmentsForRequest, "Contact has been saved !");
+        sendMultipartRequest("POST", saveUrl, validateContact, requestAvatar, attachmentsForRequest, "Contact has been saved.");
 
     }
 
@@ -17,7 +17,7 @@ document.getElementById("update-btn").addEventListener("click", function () {
 
     if (validateContact !== false) {
         validateContact["attachmentList"] = getAttachmentsList();
-        sendMultipartRequest("PUT", putUrl, validateContact, requestAvatar, attachmentsForRequest, "Contact has been updated !");
+        sendMultipartRequest("PUT", putUrl, validateContact, requestAvatar, attachmentsForRequest, "Contact has been updated.");
     }
 
 });

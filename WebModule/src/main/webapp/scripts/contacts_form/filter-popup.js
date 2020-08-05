@@ -3,6 +3,7 @@
 var formFilterClassName = "window-form shadow p-3 mb-5 bg-white rounded";
 var saveBtnClassName = "btn btn-success save-btn";
 var cancelBtnClassName = "btn btn-danger close-btn";
+var clearBtnClassName = "btn btn-primary clear-btn";
 
 function createFilterForm() {
 
@@ -37,13 +38,13 @@ function createFilterForm() {
     filterFirstForm.className = formFilterClassName;
     mainWrapper.appendChild(filterFirstForm);
 
-    var firstName = createInput("text", "firstName", "firstName", "First name");
+    var firstName = createInput("text", "firstName", "firstName", "First name", "16");
     filterFirstForm.appendChild(firstName);
 
-    var lastName = createInput("text", "lastName", "lastName", "Last name");
+    var lastName = createInput("text", "lastName", "lastName", "Last name", "16");
     filterFirstForm.appendChild(lastName);
 
-    var middleName = createInput("text", "middleName", "middleName", "Middle name");
+    var middleName = createInput("text", "middleName", "middleName", "Middle name", "16");
     filterFirstForm.appendChild(middleName);
 
     var before = createBlockDate("Date of birth (Before)", "Before");
@@ -73,48 +74,34 @@ function createFilterForm() {
     statusDiv.appendChild(married);
     filterSecondForm.appendChild(statusDiv);
 
-    var nationality = createInput("text", "nationality", "nationality", "Nationality");
+    var nationality = createInput("text", "nationality", "nationality", "Nationality", "16");
     filterSecondForm.appendChild(nationality);
 
-    var country = createInput("text", "country", "country", "Country");
+    var country = createInput("text", "country", "country", "Country", "16");
     filterSecondForm.appendChild(country);
 
-    var city = createInput("text", "city", "city", "City");
+    var city = createInput("text", "city", "city", "City", "16");
     filterSecondForm.appendChild(city);
 
-    var street = createInput("text", "street", "street", "Street");
+    var street = createInput("text", "street", "street", "Street", "24");
     filterSecondForm.appendChild(street);
 
-    var postIndex = createInput("text", "postIndex", "postIndex", "Post index", replaceLetters);
+    var postIndex = createInput("text", "postIndex", "postIndex", "Post index", "10", replaceLetters);
     filterSecondForm.appendChild(postIndex);
 
 
     // --- Save button ---
 
     var saveBtn = document.createElement("button");
-    saveBtn.textContent = "Save";
+    saveBtn.textContent = "Filter ON";
     saveBtn.className = saveBtnClassName;
     mainContent.appendChild(saveBtn);
-
-    //--- Close button ---
-
-    var closeBtn = document.createElement("button");
-    closeBtn.textContent = "Cancel";
-    closeBtn.className = cancelBtnClassName;
-    mainContent.appendChild(closeBtn);
-
-    closeBtn.addEventListener("click", function () {
-        localStorage.setItem("currentPage", "1");
-        location.reload();
-    });
-
-
-    document.body.appendChild(mainWindow);
-
 
     saveBtn.addEventListener("click", function () {
 
         var searchRequest = getSearchRequest();
+
+        console.log(searchRequest);
 
         currentPage = 1;
 
@@ -134,7 +121,31 @@ function createFilterForm() {
 
     });
 
+    // --- Clear button ---
+
+    var clearBtn = document.createElement("button");
+    clearBtn.textContent = "Clear";
+    clearBtn.className = clearBtnClassName;
+    clearBtn.addEventListener("click", clearFields);
+    mainContent.appendChild(clearBtn);
+
+    //--- Close button ---
+
+    var closeBtn = document.createElement("button");
+    closeBtn.textContent = "Filter OFF";
+    closeBtn.className = cancelBtnClassName;
+    mainContent.appendChild(closeBtn);
+
+    closeBtn.addEventListener("click", function () {
+        localStorage.setItem("currentPage", "1");
+        location.reload();
+    });
+
+
+    document.body.appendChild(mainWindow);
+
 }
+
 
 function createBlockDate(text, postFix) {
     var dataDiv = document.createElement("div");
@@ -146,7 +157,7 @@ function createBlockDate(text, postFix) {
     dataForm.className = "date-form";
     var day = createDateDiv("day", "", 1, postFix, "2");
     var month = createDateDiv("month", "", 1, postFix, "2");
-    var year = createDateDiv("year", "", 3, postFix, "4");
+    var year = createDateDiv("year", "", 4, postFix, "4");
     dataForm.appendChild(day);
     dataForm.appendChild(month);
     dataForm.appendChild(year);
@@ -164,6 +175,7 @@ function createDateDiv(name, placeHolder, size, postFix, maxLength) {
     input.id = name + postFix;
     input.placeholder = placeHolder;
     input.maxLength = maxLength;
+    input.className = "date-filter";
     input.setAttribute("aria-describedby", name + "Help");
     input.size = size;
     input.addEventListener("input", replaceLetters);
@@ -184,25 +196,17 @@ function getSearchRequest() {
     var lastName = document.getElementById("lastName").value;
     var middleName = document.getElementById("middleName").value;
 
-    var dayBefore = document.getElementById("dayBefore").value;
-    var monthBefore = document.getElementById("monthBefore").value;
-    var yearBefore = document.getElementById("yearBefore").value;
+    var dayBefore = document.getElementById("dayBefore");
+    var monthBefore = document.getElementById("monthBefore");
+    var yearBefore = document.getElementById("yearBefore");
 
-    var dateBefore = yearBefore + "-" + monthBefore + "-" + dayBefore;
+    var dateBefore = validateDate(dayBefore, monthBefore, yearBefore, false);
 
-    if (dateBefore === "--") {
-        dateBefore = "";
-    }
+    var dayAfter = document.getElementById("dayAfter");
+    var monthAfter = document.getElementById("monthAfter");
+    var yearAfter = document.getElementById("yearAfter");
 
-    var dayAfter = document.getElementById("dayAfter").value;
-    var monthAfter = document.getElementById("monthAfter").value;
-    var yearAfter = document.getElementById("yearAfter").value;
-
-    var dateAfter = yearAfter + "-" + monthAfter + "-" + dayAfter;
-
-    if (dateAfter === "--") {
-        dateAfter = "";
-    }
+    var dateAfter = validateDate(dayAfter, monthAfter, yearAfter, true);
 
     var male = document.getElementById("male");
     var female = document.getElementById("female");
@@ -246,5 +250,61 @@ function getSearchRequest() {
         "street": street,
         "postIndex": postIndex
     };
+
+}
+
+
+function validateDate(day, month, year, after) {
+
+    var dayVal = day.value;
+    var monthVal = month.value;
+    var yearVal = year.value;
+
+    if (dayVal === "" && monthVal === "" && yearVal === "") {
+        return "";
+    }
+
+    if (dayVal.length === 1) {
+        dayVal = "0" + dayVal;
+    }
+
+    if (!matchStrict(/0[1-9]|[12][0-9]|3[01]/, dayVal)) {
+        dayVal = "01";
+    }
+
+    if (monthVal.length === 1) {
+        monthVal = "0" + monthVal;
+    }
+
+    if (!matchStrict(/0[1-9]|1[0-2]/, monthVal)) {
+        monthVal = "01";
+    }
+
+    if (!matchStrict(/[12]\d{3}/, yearVal)) {
+        yearVal = after ? yearVal = "1990" : yearVal = new Date().getFullYear();
+    }
+
+    day.value = dayVal;
+    month.value = monthVal;
+    year.value = yearVal;
+
+    return yearVal + "-" + monthVal + "-" + dayVal
+
+}
+
+
+function clearFields() {
+
+    var inputs = document.querySelectorAll(".window-filter input[type=text]");
+
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].value = "";
+    }
+
+    var checkboxes = document.querySelectorAll(".window-filter input[type=radio]:checked");
+
+    for (var j = 0; j < checkboxes.length; j++) {
+        checkboxes[j].checked = false;
+    }
 
 }

@@ -28,7 +28,7 @@ public class CountAllContactsCommand implements Command {
 
         } catch (ServiceException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable"));
+            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
         }
 
     }

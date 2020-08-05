@@ -10,40 +10,14 @@ function getFormContactData() {
     var phonesArr = [];
 
     var firstName = document.getElementById("firstName").value;
-
-    if (firstName.length < 1 || firstName.length > 16) {
-        alert("First name length should be 1-16 symbols !");
-        return false;
-    }
-
-    if (!matchStrict(/[A-Za-zА-Яа-я\s-]+/, firstName)) {
-        alert("First name must have only English or Russian letters, hyphen or space !");
-        return false;
-    }
+    if (!validateInput("First name", firstName, 1, 16)) return false;
 
     var lastName = document.getElementById("lastName").value;
-
-    if (lastName.length < 1 || lastName.length > 16) {
-        alert("Last name length should be 1-16 symbols !");
-        return false;
-    }
-
-    if (!matchStrict(/[A-Za-zА-Яа-я\s-]+/, lastName)) {
-        alert("Last name must have only English or Russian letters, hyphen or space !");
-        return false;
-    }
+    if (!validateInput("Last name", lastName, 1, 16)) return false;
 
     var middleName = document.getElementById("middleName").value;
+    if (!validateInput("Middle name", middleName, 0, 16)) return false;
 
-    if (middleName.length > 16) {
-        alert("Middle name length should be less than 16 !");
-        return false;
-    }
-
-    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, middleName)) {
-        alert("Middle name must have only English or Russian letters, hyphen or space !");
-        return false;
-    }
 
     var day = document.getElementById("day").value;
     var month = document.getElementById("month").value;
@@ -52,31 +26,32 @@ function getFormContactData() {
     if (day !== "" || month !== "" || year !== "") {
 
         if (!matchStrict(/0[1-9]|[12][0-9]|3[01]/, day)) {
-            alert("Incorrect day !");
+            alert("Incorrect day.");
             return false;
         }
 
         if (!matchStrict(/0[1-9]|1[0-2]/, month)) {
-            alert("Incorrect month !");
+            alert("Incorrect month.");
             return false;
         }
 
 
         if (!matchStrict(/[12]\d{3}/, year)) {
-            alert("Incorrect year !");
+            alert("Incorrect year.");
             return false;
         }
 
         var today = new Date();
+        var inputDate = new Date(year, month - 1, day);
 
-        if (year < 1900 || year > today.getFullYear()) {
-            alert("Your birthday can't be in " + year);
+        if (year < 1900 || inputDate > today) {
+            alert("Your birthday can't be in " + inputDate.getDate() + "-" + (inputDate.getMonth() + 1) + "-" + inputDate.getFullYear());
             return false;
         }
 
         if (!isValidDate(year, month, day)) {
-            alert("This date doesn't exist !");
-            return;
+            alert("This date doesn't exist.");
+            return false;
         }
 
     } else {
@@ -97,16 +72,8 @@ function getFormContactData() {
 
 
     var nationality = document.getElementById("nationality").value;
+    if (!validateInput("Nationality", nationality, 0, 16)) return false;
 
-    if (nationality.length > 16) {
-        alert("Nationality length should be less than 16 !");
-        return false;
-    }
-
-    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, nationality)) {
-        alert("Nationality must have only English or Russian letters, hyphen or space !");
-        return false;
-    }
 
     var single = document.getElementById("single");
     var married = document.getElementById("married");
@@ -122,7 +89,7 @@ function getFormContactData() {
     var webSiteUrl = document.getElementById("urlWebSite").value;
 
     if (webSiteUrl.length > 200) {
-        alert("URL length should be less than 200 !");
+        alert("URL is too long (maximum is 200 characters).");
         return false;
     }
 
@@ -131,52 +98,34 @@ function getFormContactData() {
     var regExpEmail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!regExpEmail.test(email)) {
-        alert("Incorrect email !");
+        alert("Incorrect email.");
         return false;
     }
 
     var currentJob = document.getElementById("currentJob").value;
 
     if (currentJob.length > 100) {
-        alert("Job name length should be less than 100 !");
+        alert("Job is too long (maximum is 100 characters).");
         return false;
     }
 
     var country = document.getElementById("country").value;
-
-    if (country.length > 16) {
-        alert("Country length should be less than 16 !");
-        return false;
-    }
-
-    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, country)) {
-        alert("Country must have only English or Russian letters, hyphen or space !");
-        return false;
-    }
+    if (!validateInput("Country", country, 0, 16)) return false;
 
     var city = document.getElementById("city").value;
-
-    if (city.length > 16) {
-        alert("City length should be less than 16 !");
-        return false;
-    }
-
-    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, city)) {
-        alert("City must have only English or Russian letters, hyphen or space !");
-        return false;
-    }
+    if (!validateInput("City", city, 0, 16)) return false;
 
     var street = document.getElementById("street").value;
 
     if (street.length > 24) {
-        alert("Street length should be less than 16 !");
+        alert("Street is too long (maximum is 24 characters).");
         return false;
     }
 
     var postIndex = document.getElementById("postIndex").value;
 
     if (!matchStrict(/\d{0,10}/, postIndex)) {
-        alert("Index length should be less than 10 !");
+        alert("Index may only contain digits (between 1 and 10 digits).");
         return false;
     } else if (postIndex === "") {
         postIndex = null;
@@ -233,4 +182,22 @@ function isValidDate(year, month, day) {
     month = month - 1;
     var date = new Date(year, month, day);
     return date.getFullYear() === Number(year) && date.getMonth() === Number(month) && date.getDate() === Number(day);
+}
+
+function validateInput(propertyName, value, minLength, maxLength) {
+
+    if (value.length < minLength || value.length > maxLength) {
+        alert(propertyName + " may be between " + minLength + " and " + maxLength + " characters long.");
+        return false;
+    }
+
+    if (!matchStrict(/[A-Za-zА-Яа-я\s-]*/, value) || value.startsWith("-") || value.endsWith("-") || value.startsWith(" ")
+        || value.endsWith(" ") || value.split("-").length > 2 || value.split(" ").length > 2) {
+
+        alert(propertyName + " may only contain English or Russian characters or single hyphens or space, and cannot begin or end with a hyphen or space.");
+        return false;
+    }
+
+    return true;
+
 }

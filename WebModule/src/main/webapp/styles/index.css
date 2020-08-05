@@ -110,6 +110,13 @@ nav {
     cursor: default;
 }
 
+#git-img {
+    height: 19px;
+    width: 19px;
+    margin-left: 10px;
+    margin-bottom: 3px;
+}
+
 #pagination-div {
     margin-bottom: 30px;
 }

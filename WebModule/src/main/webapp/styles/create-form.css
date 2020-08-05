@@ -105,6 +105,7 @@ h3 {
 .date-form {
     display: flex;
     justify-content: space-between;
+    text-align: center;
 }
 
 
