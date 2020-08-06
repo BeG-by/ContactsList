@@ -7,6 +7,8 @@ createTableContactBody(pageLimit);
 sendRequest(findAllUrl + "?page=" + currentPage + "&pageLimit=" + pageLimit, "GET", fillTableContacts);
 sendRequest(countAllUrl, "GET", createPagination);
 
+sendRequest(findAllTemplatesUrl, "GET", getTemplatesContent);
+
 
 document.getElementById("delete-btn").addEventListener("click", function (e) {
     var idList = getCheckedCheckbox();
@@ -65,4 +67,8 @@ document.getElementById("email-btn").addEventListener("click", function (e) {
     }
 
 
+});
+
+document.getElementById("logo").addEventListener("click", function () {
+    location.reload();
 });

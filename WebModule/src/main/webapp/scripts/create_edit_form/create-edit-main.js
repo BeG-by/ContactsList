@@ -52,6 +52,10 @@ document.getElementById("update-att-btn").addEventListener("click", function () 
     }
 });
 
+document.getElementById("logo").addEventListener("click", function () {
+    location.reload();
+});
+
 
 // --- Validation number ---
 

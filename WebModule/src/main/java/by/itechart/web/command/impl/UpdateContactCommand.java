@@ -1,7 +1,7 @@
 package by.itechart.web.command.impl;
 
 import by.itechart.logic.dto.ContactDTO;
-import by.itechart.logic.exception.AlreadyExistException;
+import by.itechart.logic.exception.EmailAlreadyExistException;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.FacadeService;
 import by.itechart.logic.service.impl.FacadeServiceImpl;
@@ -31,7 +31,6 @@ public class UpdateContactCommand implements Command {
 
         resp.setContentType("application/json");
 
-
         try {
             final ContactDTO contactDTO = MultipartParserUtil.parseMultipartRequest(req);
             final List<String> errorList = contactValidator.validateContact(contactDTO);
@@ -46,7 +45,7 @@ public class UpdateContactCommand implements Command {
                 resp.getWriter().write(gson.toJson(errorList));
             }
 
-        } catch (AlreadyExistException e) {
+        } catch (EmailAlreadyExistException e) {
             resp.setStatus(resp.SC_BAD_REQUEST);
             resp.getWriter().write(gson.toJson("Email already exists."));
 

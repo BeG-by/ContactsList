@@ -46,12 +46,38 @@ function createEmailForm(emails) {
 
     divForm.appendChild(recipientDiv);
 
-    var subjectInput = createInput("text", "subject", "subject", "Subject");
+    var subjectInput = createInput("text", "subject", "subject", "Subject", 24);
     divForm.appendChild(subjectInput);
 
+    // --- Templates select ---
 
     var selectTemplate = document.createElement("select");
     selectTemplate.id = "template";
+
+    var optionDefault = document.createElement("option");
+    optionDefault.value = "";
+    optionDefault.textContent = "No template";
+    selectTemplate.add(optionDefault);
+
+    for (var key in contentTemplates) {
+        var option = document.createElement("option");
+        option.value = key;
+        option.textContent = key;
+        selectTemplate.add(option);
+    }
+
+    selectTemplate.addEventListener("change", function () {
+
+        var template = document.getElementById("template-div");
+        if (template !== null) {
+            template.parentNode.removeChild(template);
+        }
+
+        this.value === "" ? document.getElementById("text-message").style.display = "" : switchText(this.value, divForm);
+
+    });
+
+
     var div = document.createElement("div");
     div.className = "form-group";
     var label = document.createElement("label");
@@ -63,11 +89,15 @@ function createEmailForm(emails) {
     div.appendChild(pTemplate);
     divForm.appendChild(div);
 
+    // --- Text div ---
+
     var textArea = createTextArea("textMessage", "Text", true);
     textArea.cols = 50;
     textArea.rows = 8;
 
     var recipientText = document.createElement("div");
+    recipientText.id = "text-message";
+    recipientText.style.display = "";
     var pText = document.createElement("p");
     var labelText = createLabel("textMessage", "Text");
 
@@ -128,16 +158,22 @@ function getMessage() {
         return null;
     }
 
-    if (text.length === 0) {
+    var flag = document.getElementById("text-message").style.display === "";
+
+    if (text.length === 0 && flag) {
         alert("Text can't be empty.");
         return null;
     }
 
-    return {
+    var messageRequest = {
         "emails": emails,
-        "subject": subject,
-        "text": text
+        "subject": subject
     };
+
+    flag ? messageRequest["text"] = text :  messageRequest["templateKey"] = document.getElementById("template").value;
+
+    return messageRequest;
+
 
 }
 
@@ -155,5 +191,29 @@ function getEmails() {
     }
 
     return list;
+
+}
+
+function getTemplatesContent(templates) {
+    contentTemplates = templates
+}
+
+function switchText(key, divForm) {
+
+    var textMessageDiv = document.getElementById("text-message");
+    textMessageDiv.style.display = "none";
+
+    var template = document.createElement("div");
+    template.id = "template-div";
+    var divText = document.createElement("div");
+    divText.id = "template-div-content";
+
+    divText.innerHTML = contentTemplates[key];
+
+    var labelText = createLabel("template-div", "Template content");
+
+    template.appendChild(labelText);
+    template.appendChild(divText);
+    divForm.appendChild(template);
 
 }

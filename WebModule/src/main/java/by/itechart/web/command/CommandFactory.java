@@ -19,6 +19,7 @@ public class CommandFactory {
         commandMap.put("contacts/email", new SendEmailsCommand());
         commandMap.put("contacts/search", new SearchCommand());
         commandMap.put("contacts/searchCountAll", new SearchCountAllCommand());
+        commandMap.put("contacts/templates", new FindAllTemplates());
     }
 
 

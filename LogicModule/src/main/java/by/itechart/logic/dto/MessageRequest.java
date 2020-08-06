@@ -6,14 +6,16 @@ import java.util.Objects;
 public class MessageRequest {
 
     private List<String> emails;
+    private String templateKey;
     private String subject;
     private String text;
 
     public MessageRequest() {
     }
 
-    public MessageRequest(List<String> emails, String subject, String text) {
+    public MessageRequest(List<String> emails, String templateKey, String subject, String text) {
         this.emails = emails;
+        this.templateKey = templateKey;
         this.subject = subject;
         this.text = text;
     }
@@ -24,6 +26,14 @@ public class MessageRequest {
 
     public void setEmails(List<String> emails) {
         this.emails = emails;
+    }
+
+    public String getTemplateKey() {
+        return templateKey;
+    }
+
+    public void setTemplateKey(String templateKey) {
+        this.templateKey = templateKey;
     }
 
     public String getSubject() {
@@ -48,19 +58,21 @@ public class MessageRequest {
         if (o == null || getClass() != o.getClass()) return false;
         MessageRequest that = (MessageRequest) o;
         return Objects.equals(emails, that.emails) &&
+                Objects.equals(templateKey, that.templateKey) &&
                 Objects.equals(subject, that.subject) &&
                 Objects.equals(text, that.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(emails, subject, text);
+        return Objects.hash(emails, templateKey, subject, text);
     }
 
     @Override
     public String toString() {
         return "MessageRequest{" +
                 "emails=" + emails +
+                ", templateKey='" + templateKey + '\'' +
                 ", subject='" + subject + '\'' +
                 ", text='" + text + '\'' +
                 '}';

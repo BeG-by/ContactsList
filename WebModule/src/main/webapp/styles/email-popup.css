@@ -30,7 +30,6 @@
     font-size: 16px;
     display: flex; /*IE*/
     flex-direction: column; /*IE*/
-    font-family: 'Montserrat', sans-serif;
 }
 
 .window-form-email {
@@ -42,6 +41,10 @@
     padding: 5px;
 }
 
+.window-email h3 {
+    color: #439BF9;
+}
+
 .window-email header {
     color: white;
     background-color: #007bff;
@@ -50,12 +53,11 @@
 .window-email button {
     background-color: #007bff;
     border-width: 0;
-    font-family: 'Montserrat', sans-serif;
     margin-right: 5px;
     margin-left: 5px;
 }
 
-.window-email input[type=text] , .window-email textarea {
+.window-email input[type=text], .window-email textarea {
     padding-top: 0;
 }
 
@@ -71,4 +73,13 @@
     margin: auto;
     width: 75%;
     overflow: scroll;
+}
+
+#template-div {
+    width: 80%;
+    margin: auto;
+}
+
+#template-div-content {
+    border: 3px solid #439BF9;
 }

@@ -7,14 +7,18 @@ import by.itechart.logic.dto.SearchRequest;
 import by.itechart.logic.entity.Attachment;
 import by.itechart.logic.entity.Contact;
 import by.itechart.logic.entity.Phone;
-import by.itechart.logic.exception.AlreadyExistException;
+import by.itechart.logic.exception.EmailAlreadyExistException;
 import by.itechart.logic.exception.LoadPropertiesException;
 import by.itechart.logic.exception.ServiceException;
+import by.itechart.logic.exception.TemplateNotFoundException;
 import by.itechart.logic.service.*;
 import by.itechart.logic.service.util.FileManagerUtil;
+import by.itechart.logic.service.util.TemplateUtil;
+import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -48,7 +52,7 @@ public class FacadeServiceImpl implements FacadeService {
     }
 
     @Override
-    public void saveFullContact(ContactDTO contactDTO) throws ServiceException, AlreadyExistException {
+    public void saveFullContact(ContactDTO contactDTO) throws ServiceException, EmailAlreadyExistException {
 
         final Contact contact = contactDTO.getContact();
         final byte[] avatar = contactDTO.getAvatar();
@@ -63,7 +67,7 @@ public class FacadeServiceImpl implements FacadeService {
             final Contact contactByEmail = contactService.findByEmail(contact.getEmail());
 
             if (contactByEmail != null) {
-                throw new AlreadyExistException("Email already exists !");
+                throw new EmailAlreadyExistException("Email already exists !");
             }
 
             try {
@@ -118,7 +122,7 @@ public class FacadeServiceImpl implements FacadeService {
     }
 
     @Override
-    public void updateFullContact(ContactDTO contactDTO) throws ServiceException, AlreadyExistException {
+    public void updateFullContact(ContactDTO contactDTO) throws ServiceException, EmailAlreadyExistException {
 
         final Contact contact = contactDTO.getContact();
         final long contactId = contact.getId();
@@ -135,7 +139,7 @@ public class FacadeServiceImpl implements FacadeService {
             final Contact contactByEmail = contactService.findByEmail(contact.getEmail());
 
             if (contactByEmail != null && contactByEmail.getId() != contact.getId()) {
-                throw new AlreadyExistException("Email already exists !");
+                throw new EmailAlreadyExistException("Email already exists !");
             }
 
             try {
@@ -364,18 +368,49 @@ public class FacadeServiceImpl implements FacadeService {
     }
 
     @Override
-    public void sendMessagesViaEmail(MessageRequest message) throws ServiceException {
+    public void sendMessagesViaEmail(MessageRequest message) throws ServiceException, TemplateNotFoundException {
 
         emailService = new EmailServiceImpl();
 
-        for (String email : message.getEmails()) {
-            try {
-                emailService.sendEmail(email, message.getSubject(), message.getText());
-                LOGGER.info("Message has been sent {}", email);
-            } catch (Exception e) {
-                LOGGER.error("Sending message to {} was failed", email, e);
-                throw new ServiceException(e);
+        try {
+
+            if (message.getTemplateKey() == null) {
+
+                for (String email : message.getEmails()) {
+                    emailService.sendEmail(email, message.getSubject(), message.getText());
+                    LOGGER.info("Message has been sent {}", email);
+                }
+
+            } else {
+
+                try (Connection connection = ConnectionFactory.createConnection()) {
+                    contactService = new ContactServiceImpl(connection);
+
+                    for (String email : message.getEmails()) {
+                        final Contact contact = contactService.findByEmail(email);
+                        final String templateString = TemplateUtil.getTemplateString(message.getTemplateKey(), contact);
+                        emailService.sendEmail(email, message.getSubject(), templateString);
+                        LOGGER.info("Message has been sent {}", email);
+                    }
+                }
             }
+
+        } catch (IOException | SQLException | LoadPropertiesException | TemplateException e) {
+            LOGGER.error("Sending message was failed", e);
+            throw new ServiceException(e);
+        }
+
+    }
+
+
+    @Override
+    public Map<String, String> findAllTemplates() throws ServiceException {
+
+        try {
+            return TemplateUtil.getTemplatesContent();
+        } catch (Exception e) {
+            LOGGER.error("Finding templates was failed", e);
+            throw new ServiceException(e);
         }
 
     }

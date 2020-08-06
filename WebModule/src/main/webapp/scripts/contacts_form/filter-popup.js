@@ -93,7 +93,7 @@ function createFilterForm() {
     // --- Save button ---
 
     var saveBtn = document.createElement("button");
-    saveBtn.textContent = "Filter ON";
+    saveBtn.textContent = "Filters ON";
     saveBtn.className = saveBtnClassName;
     mainContent.appendChild(saveBtn);
 
@@ -132,7 +132,7 @@ function createFilterForm() {
     //--- Close button ---
 
     var closeBtn = document.createElement("button");
-    closeBtn.textContent = "Filter OFF";
+    closeBtn.textContent = "Filters OFF";
     closeBtn.className = cancelBtnClassName;
     mainContent.appendChild(closeBtn);
 
