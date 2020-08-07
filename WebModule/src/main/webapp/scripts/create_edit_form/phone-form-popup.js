@@ -9,7 +9,7 @@ function createPhoneForm(phoneDTO) {
     //--- Phone data ---
 
     var windowForm = document.createElement("div");
-    windowForm.className = "window-form-phone";
+    windowForm.className = "window-form-phone show-form";
 
     var headerPhone = document.createElement("header");
     var h2 = document.createElement("h2");
@@ -64,7 +64,14 @@ function createPhoneForm(phoneDTO) {
     phoneForm.appendChild(closeBtn);
 
     closeBtn.addEventListener("click", function () {
-        mainWindow.parentNode.removeChild(mainWindow);
+
+        mainWindow.classList.add("delete-window");
+        windowForm.style.transform = "translate(-50%,-100%)";
+
+        setTimeout(function () {
+            mainWindow.parentNode.removeChild(mainWindow);
+        }, 650);
+
     });
 
     // --- Show window ---
@@ -73,7 +80,7 @@ function createPhoneForm(phoneDTO) {
     mainWindow.appendChild(windowForm);
     mainWindow.className = "window-main-phone";
 
-
+    mainWindow.classList.add("show-window");
     document.body.appendChild(mainWindow);
 
     if (phoneDTO !== null) {
@@ -89,9 +96,15 @@ function createPhoneForm(phoneDTO) {
             return;
         }
 
+        mainWindow.classList.add("delete-window");
+        windowForm.style.transform = "translate(-50%,-100%)";
+
         phoneDTO === null ? createPhoneRow(phone) : updatePhoneRow(phone, phoneDTO["id"]);
 
-        mainWindow.parentNode.removeChild(mainWindow);
+        setTimeout(function () {
+            mainWindow.parentNode.removeChild(mainWindow);
+        }, 650);
+
 
     });
 

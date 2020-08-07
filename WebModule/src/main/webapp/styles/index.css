@@ -111,7 +111,6 @@ nav {
 }
 
 
-
 #git-img {
     height: 19px;
     width: 19px;
@@ -130,6 +129,41 @@ nav {
 .pagination-btn {
     color: #007bff;
 }
+
+.delete-window {
+    opacity: 0;
+}
+
+
+@keyframes create-animate-window {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+@keyframes create-animate-form {
+    0% {
+        transform: translate(-50%, -100%);
+    }
+    100% {
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+.show-window {
+    animation-name: create-animate-window;
+    animation-duration: 0.6s;
+}
+
+.show-form {
+    animation-name: create-animate-form;
+    animation-duration: 0.6s;
+}
+
 
 footer {
     flex-grow: 0; /*IE*/

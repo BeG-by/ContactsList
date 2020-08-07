@@ -9,7 +9,7 @@
     left: 0;
     z-index: 100;
     overflow: hidden;
-
+    transition: all 0.6s ease;
 }
 
 .window-email {
@@ -30,6 +30,7 @@
     font-size: 16px;
     display: flex; /*IE*/
     flex-direction: column; /*IE*/
+    transition: all 0.6s ease;
 }
 
 .window-form-email {

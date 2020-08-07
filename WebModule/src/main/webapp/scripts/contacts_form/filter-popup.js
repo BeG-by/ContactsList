@@ -13,7 +13,7 @@ function createFilterForm() {
     mainWindow.className = "window-main-filter";
 
     var windowFilter = document.createElement("div");
-    windowFilter.className = "window-filter";
+    windowFilter.className = "window-filter show-form";
 
     mainWindow.appendChild(windowFilter);
 
@@ -101,8 +101,6 @@ function createFilterForm() {
 
         var searchRequest = getSearchRequest();
 
-        console.log(searchRequest);
-
         currentPage = 1;
 
         setEmptyValues();
@@ -117,7 +115,15 @@ function createFilterForm() {
         filterBtn.classList.add("filter-btn-on");
 
         filterRequestBody = searchRequest;
-        mainWindow.style.display = "none";
+
+        mainWindow.classList.add("delete-window");
+        windowFilter.style.transform = "translate(-50%,-100%)";
+
+        setTimeout(function () {
+            mainWindow.style.display = "none";
+            mainWindow.classList.remove("delete-window");
+            windowFilter.style.transform = "translate(-50%,-50%)";
+        }, 650);
 
     });
 
@@ -137,11 +143,19 @@ function createFilterForm() {
     mainContent.appendChild(closeBtn);
 
     closeBtn.addEventListener("click", function () {
-        localStorage.setItem("currentPage", "1");
-        location.reload();
+
+        mainWindow.classList.add("delete-window");
+        windowFilter.style.transform = "translate(-50%,-100%)";
+
+        setTimeout(function () {
+            localStorage.setItem("currentPage", "1");
+            location.reload();
+        }, 650);
+
+
     });
 
-
+    mainWindow.classList.add("show-window");
     document.body.appendChild(mainWindow);
 
 }

@@ -14,7 +14,7 @@ function createAttachmentForm(attachmentDTO) {
     mainWindow.className = "window-main-att";
 
     var windowForm = document.createElement("div");
-    windowForm.className = "window-form-att";
+    windowForm.className = "window-form-att show-form";
     mainWindow.appendChild(windowForm);
 
     var headerAtt = document.createElement("header");
@@ -112,7 +112,13 @@ function createAttachmentForm(attachmentDTO) {
         }
         currentLoadedFile = null;
 
-        mainWindow.parentNode.removeChild(mainWindow);
+        mainWindow.classList.add("delete-window");
+        windowForm.style.transform = "translate(-50%,-100%)";
+
+        setTimeout(function () {
+            mainWindow.parentNode.removeChild(mainWindow);
+        }, 650);
+
     });
 
     // --- Close button ---
@@ -123,10 +129,18 @@ function createAttachmentForm(attachmentDTO) {
     divBtn.appendChild(closeBtn);
 
     closeBtn.addEventListener("click", function () {
-        mainWindow.parentNode.removeChild(mainWindow);
+
+        mainWindow.classList.add("delete-window");
+        windowForm.style.transform = "translate(-50%,-100%)";
+
+        setTimeout(function () {
+            mainWindow.parentNode.removeChild(mainWindow);
+        }, 650);
+
     });
 
     // -- Show window ---
+    mainWindow.classList.add("show-window");
     document.body.appendChild(mainWindow);
 
     if (attachmentDTO !== null) {

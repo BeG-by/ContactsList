@@ -8,7 +8,7 @@ function createEmailForm(emails) {
     mainWindow.className = "window-main-email";
 
     var windowEmail = document.createElement("div");
-    windowEmail.className = "window-email";
+    windowEmail.className = "window-email show-form";
 
     mainWindow.appendChild(windowEmail);
 
@@ -123,7 +123,14 @@ function createEmailForm(emails) {
         if (messageRequest != null) {
             sendRequestWithBody(sendEmailUrl, "POST", messageRequest, true, "Emails has been sent");
             clearCheckboxes();
-            mainWindow.parentNode.removeChild(mainWindow);
+
+            mainWindow.classList.add("delete-window");
+            windowEmail.style.transform = "translate(-50%,-100%)";
+
+            setTimeout(function () {
+                mainWindow.parentNode.removeChild(mainWindow);
+            }, 650);
+
         }
 
     });
@@ -137,9 +144,17 @@ function createEmailForm(emails) {
 
     closeBtn.addEventListener("click", function () {
         clearCheckboxes();
-        mainWindow.parentNode.removeChild(mainWindow);
+
+        mainWindow.classList.add("delete-window");
+        windowEmail.style.transform = "translate(-50%,-100%)";
+
+        setTimeout(function () {
+            mainWindow.parentNode.removeChild(mainWindow);
+        }, 650);
+
     });
 
+    mainWindow.classList.add("show-window");
     document.body.appendChild(mainWindow);
 
 }
@@ -170,7 +185,7 @@ function getMessage() {
         "subject": subject
     };
 
-    flag ? messageRequest["text"] = text :  messageRequest["templateKey"] = document.getElementById("template").value;
+    flag ? messageRequest["text"] = text : messageRequest["templateKey"] = document.getElementById("template").value;
 
     return messageRequest;
 
