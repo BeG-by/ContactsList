@@ -4,12 +4,15 @@ import by.itechart.logic.entity.Contact;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.FacadeService;
 import by.itechart.logic.service.impl.FacadeServiceImpl;
+import by.itechart.logic.validator.ParameterValidator;
 import by.itechart.web.command.Command;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static by.itechart.web.command.ConstantMessages.*;
 
 public class FindByIdContactCommand implements Command {
 
@@ -20,22 +23,20 @@ public class FindByIdContactCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        resp.setContentType("application/json");
+        final String contactId = req.getParameter(CONTACT_ID_PARAMETER);
 
-        final String contactId = req.getParameter("contactId");
-
-        if (contactId == null || !contactId.matches("\\d+")) {
+        if (!ParameterValidator.contactIdValidate(contactId)) {
             resp.setStatus(resp.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Page and page limit must be digit."));
+            resp.getWriter().write(gson.toJson(CONTACT_ID_INCORRECT));
             return;
         }
 
         try {
             final Contact contact = facadeService.findContactById(Long.parseLong(contactId));
 
-            if(contact == null){
+            if (contact == null) {
                 resp.setStatus(resp.SC_BAD_REQUEST);
-                resp.getWriter().write(gson.toJson("Contact not found."));
+                resp.getWriter().write(gson.toJson(CONTACT_NOT_FOUND));
             } else {
                 resp.getWriter().write(gson.toJson(contact));
                 resp.setStatus(resp.SC_OK);
@@ -44,7 +45,7 @@ public class FindByIdContactCommand implements Command {
 
         } catch (ServiceException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
+            resp.getWriter().write(gson.toJson(SERVICE_UNAVAILABLE));
         }
 
     }

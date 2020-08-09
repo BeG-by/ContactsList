@@ -30,7 +30,6 @@ public class PhoneServiceImpl implements PhoneService {
         try {
             return phoneDao.findByContactId(contactId);
         } catch (DaoException e) {
-            LOGGER.error("Finding phones was failed !", e);
             throw new ServiceException(e);
         }
 
@@ -43,7 +42,6 @@ public class PhoneServiceImpl implements PhoneService {
             try {
                 phoneDao.save(phone);
             } catch (DaoException e) {
-                LOGGER.error("Saving phone list was failed {} !", phoneList, e);
                 throw new ServiceException(e);
             }
         }
@@ -58,7 +56,6 @@ public class PhoneServiceImpl implements PhoneService {
         try {
             phoneDao.deleteByContactId(contactId);
         } catch (DaoException e) {
-            LOGGER.error("Deleting contacts by id={} was failed", contactId, e);
             throw new ServiceException(e);
         }
 

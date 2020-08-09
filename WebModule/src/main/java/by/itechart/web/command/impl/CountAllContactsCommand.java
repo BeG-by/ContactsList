@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static by.itechart.web.command.ConstantMessages.SERVICE_UNAVAILABLE;
+
 public class CountAllContactsCommand implements Command {
 
     private FacadeService facadeService = new FacadeServiceImpl();
@@ -19,8 +21,6 @@ public class CountAllContactsCommand implements Command {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        resp.setContentType("application/json");
-
         try {
             final long count = facadeService.countAllContacts();
             resp.getWriter().write(gson.toJson(count));
@@ -28,7 +28,7 @@ public class CountAllContactsCommand implements Command {
 
         } catch (ServiceException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
+            resp.getWriter().write(gson.toJson(SERVICE_UNAVAILABLE));
         }
 
     }

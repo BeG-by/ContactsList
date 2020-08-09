@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static by.itechart.web.command.ConstantMessages.*;
+
 public class UpdateContactCommand implements Command {
 
     private FacadeService facadeService = new FacadeServiceImpl();
@@ -23,13 +25,8 @@ public class UpdateContactCommand implements Command {
     private Gson gson = new Gson();
 
 
-    public UpdateContactCommand() {
-    }
-
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-        resp.setContentType("application/json");
 
         try {
             final ContactDTO contactDTO = MultipartParserUtil.parseMultipartRequest(req);
@@ -38,7 +35,7 @@ public class UpdateContactCommand implements Command {
             if (errorList.isEmpty()) {
                 facadeService.updateFullContact(contactDTO);
                 resp.setStatus(resp.SC_OK);
-                resp.getWriter().write(gson.toJson("Contact has been updated."));
+                resp.getWriter().write(gson.toJson(CONTACT_UPDATE));
 
             } else {
                 resp.setStatus(resp.SC_BAD_REQUEST);
@@ -47,11 +44,11 @@ public class UpdateContactCommand implements Command {
 
         } catch (EmailAlreadyExistException e) {
             resp.setStatus(resp.SC_BAD_REQUEST);
-            resp.getWriter().write(gson.toJson("Email already exists."));
+            resp.getWriter().write(gson.toJson(EMAIL_EXISTS));
 
         } catch (ServiceException | RequestParseException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write(gson.toJson("Service is temporarily unavailable."));
+            resp.getWriter().write(gson.toJson(SERVICE_UNAVAILABLE));
         }
 
     }
