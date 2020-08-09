@@ -84,7 +84,7 @@ public class ContactValidator {
 
         if (!maritalStatus.isEmpty()) {
             if (maritalStatus.equalsIgnoreCase("married") || maritalStatus.equalsIgnoreCase("single")) {
-                contact.setSex(sex.toLowerCase());
+                contact.setMaritalStatus(maritalStatus.toLowerCase());
             } else {
                 errorList.add("Marital status may be \"married\" or \"single\"");
             }

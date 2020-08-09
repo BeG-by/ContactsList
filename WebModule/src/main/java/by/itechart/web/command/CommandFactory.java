@@ -10,16 +10,16 @@ public class CommandFactory {
     private Map<String, Command> commandMap = new HashMap<>();
 
     {
-        commandMap.put("contacts/findAll", new FindAllContactsCommand());
-        commandMap.put("contacts/deleteAll", new DeleteAllContactsCommand());
-        commandMap.put("contacts/save", new SaveContactCommand());
-        commandMap.put("contacts/countAll", new CountAllContactsCommand());
-        commandMap.put("contacts/update", new UpdateContactCommand());
-        commandMap.put("contacts/findById", new FindByIdContactCommand());
-        commandMap.put("contacts/email", new SendEmailsCommand());
-        commandMap.put("contacts/search", new SearchCommand());
-        commandMap.put("contacts/searchCountAll", new SearchCountAllCommand());
-        commandMap.put("contacts/templates", new FindAllTemplates());
+        commandMap.put("GET/", new FindAllContactsCommand());
+        commandMap.put("DELETE/", new DeleteAllContactsCommand());
+        commandMap.put("POST/", new SaveContactCommand());
+        commandMap.put("GET/quantity", new CountAllContactsCommand());
+        commandMap.put("PUT/", new UpdateContactCommand());
+        commandMap.put("GET/id", new FindByIdContactCommand());
+        commandMap.put("POST/email", new SendEmailsCommand());
+        commandMap.put("POST/filter", new SearchCommand());
+        commandMap.put("POST/filter/quantity", new SearchCountAllCommand());
+        commandMap.put("GET/templates", new FindAllTemplates());
     }
 
 

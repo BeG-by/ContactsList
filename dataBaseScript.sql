@@ -93,7 +93,7 @@ delimiter $$$
 CREATE PROCEDURE fillContacts()
 BEGIN
     DECLARE i int DEFAULT 0;
-    WHILE i <= 15
+    WHILE i <= 60
         DO
             INSERT INTO `contacts_list_db`.`contact`(first_name, last_name, middle_name, birthday, sex, nationality,
                                                      marital_status,
@@ -120,7 +120,7 @@ delimiter $$$
 CREATE PROCEDURE fillAddress()
 BEGIN
     DECLARE i int DEFAULT 1;
-    WHILE i <= 60
+    WHILE i <= 240
         DO
             INSERT INTO `contacts_list_db`.`address` (`country`, `city`, `street`, `post_index`, `contact_id`)
             VALUES ('Belarus', 'Minsk', 'Nemiga 20/42', '220040', i);

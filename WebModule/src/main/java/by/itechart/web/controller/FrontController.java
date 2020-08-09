@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/api/v1/contactsList/*")
+@WebServlet("/api/v1/contacts/*")
 public class FrontController extends HttpServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
-    private final static String ENTRY_POINT = "/api/v1/contactsList/";
+    private final static String ENTRY_POINT = "/api/v1/contacts/";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -44,10 +44,13 @@ public class FrontController extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
 
-        LOGGER.info("Request is processing... [url: {} , method: {}]", req.getRequestURI(), req.getMethod());
-
+        final String method = req.getMethod();
         final String requestURI = req.getRequestURI();
-        final String commandKey = requestURI.substring(requestURI.lastIndexOf(ENTRY_POINT) + ENTRY_POINT.length());
+
+        LOGGER.info("Request is processing... [url: {} , method: {}]", requestURI, method);
+
+        final String commandKey = method + "/" + requestURI.substring(requestURI.lastIndexOf(ENTRY_POINT) + ENTRY_POINT.length());
+
         CommandFactory commandFactory = new CommandFactory();
         final Command command = commandFactory.getInstance(commandKey);
 

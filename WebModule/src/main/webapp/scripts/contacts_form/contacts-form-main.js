@@ -72,3 +72,5 @@ document.getElementById("email-btn").addEventListener("click", function (e) {
 document.getElementById("logo").addEventListener("click", function () {
     location.reload();
 });
+
+document.getElementById("select-all").addEventListener("click", selectAllCheckboxes);

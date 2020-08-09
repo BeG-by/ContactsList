@@ -5,18 +5,20 @@ var requestAvatar = null; //-- Avatar for request
 var idAttachmentTableRow = -1; // --- Id for attachment table ---
 var idPhoneTableRow = -1000; // --- Id for phone table ---
 
-var indexHref = "http://localhost:8080/index.html";
+var domain = "http://localhost:8080/";
 
-var findAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/findAll";
-var deleteAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/deleteAll";
-var countAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/countAll";
-var saveUrl = "http://localhost:8080/api/v1/contactsList/contacts/save";
-var putUrl = "http://localhost:8080/api/v1/contactsList/contacts/update";
-var findByIdUrl = "http://localhost:8080/api/v1/contactsList/contacts/findById";
-var sendEmailUrl = "http://localhost:8080/api/v1/contactsList/contacts/email";
-var searchUrl = "http://localhost:8080/api/v1/contactsList/contacts/search";
-var searchCountAllUrl = "http://localhost:8080/api/v1/contactsList/contacts/searchCountAll";
-var findAllTemplatesUrl = "http://localhost:8080/api/v1/contactsList/contacts/templates";
+var indexHref = domain + "index.html";
+
+var findAllUrl = domain + "api/v1/contacts";
+var deleteAllUrl = domain + "api/v1/contacts";
+var countAllUrl = domain + "api/v1/contacts/quantity";
+var saveUrl = domain + "api/v1/contacts";
+var putUrl = domain + "api/v1/contacts";
+var findByIdUrl = domain + "api/v1/contacts/id";
+var sendEmailUrl = domain + "api/v1/contacts/email";
+var searchUrl = domain + "api/v1/contacts/filter";
+var searchCountAllUrl = domain + "api/v1/contacts/filter/quantity";
+var findAllTemplatesUrl = domain + "api/v1/contacts/templates";
 
 var pageLimit = 10;
 
@@ -26,6 +28,8 @@ var currentPage = page === null ? currentPage = 1 : currentPage = page;
 var filterRequestBody = null;
 
 var contentTemplates = null;
+
+var isSelectedCheckboxes = false;
 
 
 function replaceLetters() {

@@ -130,6 +130,11 @@ nav {
     color: #007bff;
 }
 
+#select-all:hover {
+    color: black;
+    cursor: default;
+}
+
 .delete-window {
     opacity: 0;
 }

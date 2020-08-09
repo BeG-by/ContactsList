@@ -155,3 +155,26 @@ function clearCheckboxes() {
     }
 
 }
+
+function selectAllCheckboxes() {
+
+    var checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+    if (isSelectedCheckboxes) {
+        for (var j = 0; j < checkboxes.length; j++) {
+            checkboxes[j].checked = false;
+        }
+
+        isSelectedCheckboxes = false;
+
+    } else {
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].disabled === false) {
+                checkboxes[i].checked = true;
+            }
+        }
+
+        isSelectedCheckboxes = true;
+    }
+
+}

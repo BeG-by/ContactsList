@@ -295,7 +295,7 @@ function validateDate(day, month, year, after) {
     }
 
     if (!matchStrict(/[12]\d{3}/, yearVal)) {
-        yearVal = after ? yearVal = "1990" : yearVal = new Date().getFullYear();
+        yearVal = after ? yearVal = "1900" : yearVal = new Date().getFullYear();
     }
 
     day.value = dayVal;

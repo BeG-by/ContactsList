@@ -119,5 +119,6 @@ function clickToPageBtn(page, list) {
         sendFilterRequest(searchCountAllUrl, "POST", filterRequestBody, createPagination);
     }
     localStorage.setItem("currentPage", currentPage);
+    isSelectedCheckboxes = false;
     list.parentNode.removeChild(list);
 }
