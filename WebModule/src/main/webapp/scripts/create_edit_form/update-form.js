@@ -17,7 +17,7 @@ function fillContact(contact) {
     var address = contact["address"];
     var birthday = contact["birthday"];
 
-    if(address["postIndex"] === 0){
+    if (address["postIndex"] === 0) {
         address["postIndex"] = "";
     }
 
@@ -96,6 +96,7 @@ function switchDisplay() {
     document.getElementById("update-title").style.display = "";
     document.getElementById("create-btn").style.display = "none";
     document.getElementById("update-btn").style.display = "";
+    document.getElementById("download-att-btn").style.display = "";
 }
 
 function loadImage(contact) {

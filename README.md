@@ -19,5 +19,5 @@ According to the project technical requirement, no modern framework (Spring, Rea
 
 ### Technology Stack
 * **Frontend:** JavaScript (ECMAscript 5), HTML5/CSS3, Bootstrap 4.5 CSS
-* **Backend:** Java 13, Servlets, JDBC, REST API, Apache libraries, Quartz-scheduler, FreeMarker Template, Maven, Apache Tomcat
+* **Backend:** Java 13, Servlets, JDBC, REST API, Apache libraries, Quartz-scheduler, Java Mail API, FreeMarker Template, Maven, Apache Tomcat
 * **Database:** MySQL

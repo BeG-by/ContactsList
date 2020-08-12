@@ -20,6 +20,7 @@ public class CommandFactory {
         commandMap.put("POST/filter", new SearchCommand());
         commandMap.put("POST/filter/quantity", new SearchCountAllCommand());
         commandMap.put("GET/templates", new FindAllTemplates());
+        commandMap.put("GET/attachment", new DownloadAttachmentCommand());
     }
 
 

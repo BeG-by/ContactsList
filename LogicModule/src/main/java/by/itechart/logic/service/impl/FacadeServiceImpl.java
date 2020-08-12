@@ -443,4 +443,19 @@ public class FacadeServiceImpl implements FacadeService {
         }
     }
 
+    @Override
+    public String findAttachmentFile(long contactId, long attachmentId) throws ServiceException {
+
+        try {
+
+            final String pathToFile = FileManagerUtil.findPathToFile(contactId, String.valueOf(attachmentId));
+            return pathToFile == null ? null : FileManagerUtil.FileToBase64(pathToFile);
+
+        } catch (Exception e) {
+            LOGGER.error("Attachment download was failed", e);
+            throw new ServiceException(e);
+        }
+
+    }
+
 }

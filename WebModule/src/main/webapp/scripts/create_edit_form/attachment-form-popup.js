@@ -109,6 +109,7 @@ function createAttachmentForm(attachmentDTO) {
 
         if (currentLoadedFile !== false) {
             attachmentsForRequest[id] = currentLoadedFile;
+            document.getElementById(id).classList.add("updatedFile");
         }
         currentLoadedFile = null;
 
@@ -201,7 +202,7 @@ function updateRowAttachment(commentText, id) {
     var tr = document.getElementById(id);
 
     tr.children[0].checked = false;
-    tr.children[1].textContent = document.getElementById("load-att-btn").textContent
+    tr.children[1].textContent = document.getElementById("load-att-btn").textContent;
     var today = new Date();
     tr.children[2].textContent = today.getDate() + "-" + (today.getMonth() + 1) + "-" + today.getFullYear();
     tr.children[3].textContent = commentText;

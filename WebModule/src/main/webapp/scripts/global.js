@@ -19,6 +19,7 @@ var sendEmailUrl = domain + "api/v1/contacts/email";
 var searchUrl = domain + "api/v1/contacts/filter";
 var searchCountAllUrl = domain + "api/v1/contacts/filter/quantity";
 var findAllTemplatesUrl = domain + "api/v1/contacts/templates";
+var downloadAttachmentUrl = domain + "api/v1/contacts/attachment";
 
 var pageLimit = 10;
 

@@ -1,5 +1,7 @@
 "use strict";
 
+var attachmentFilename = null;
+
 // --- Attachments for request ---
 
 function getAttachmentsList() {
@@ -13,7 +15,7 @@ function getAttachmentsList() {
         var date = items[i].children[2].textContent.split("-");
 
         var attachment = {
-            "id": items[i].id.replace(/a/g , ""),
+            "id": items[i].id.replace(/a/g, ""),
             "contactId": -1,
             "fileName": items[i].children[1].textContent,
             "dateOfLoad": {
@@ -69,6 +71,52 @@ function getDataForUpdateAttachment() {
     return null;
 
 }
+
+
+function downloadAttachment() {
+
+    var item = validateAttachmentsCheckboxes(true);
+
+    if (item !== false) {
+
+        var attachmentRow = item.parentNode;
+
+        if (attachmentRow.classList.contains("updatedFile")) {
+            alert("Attachment hasn't been download to the server.");
+
+        } else {
+
+            var attId = attachmentRow.id.replace(/a/g, "");
+            attachmentFilename = attachmentRow.children[1].textContent;
+            sendRequest(downloadAttachmentUrl + "?contactId=" + updateContactId + "&attId=" + attId, "GET", callbackDownload);
+        }
+
+    }
+
+}
+
+
+function callbackDownload(response) {
+
+    var bs = atob(response);
+    var buffer = new ArrayBuffer(bs.length);
+    var ba = new Uint8Array(buffer);
+    for (var i = 0; i < bs.length; i++) {
+        ba[i] = bs.charCodeAt(i);
+    }
+    var blob = new Blob([ba], {type: "octet/stream"});
+
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style.display = "none";
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = attachmentFilename;
+    a.click();
+    window.URL.revokeObjectURL(url);
+
+}
+
 
 function validateAttachmentsCheckboxes(isUpdated) {
 

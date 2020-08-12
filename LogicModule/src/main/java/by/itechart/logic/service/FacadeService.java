@@ -35,4 +35,6 @@ public interface FacadeService {
 
     long countAllContactsWithFilter(SearchRequest searchRequest) throws ServiceException;
 
+    String findAttachmentFile(long contactId, long attachmentId) throws ServiceException;
+
 }

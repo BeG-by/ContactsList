@@ -1,6 +1,5 @@
 package by.itechart.web.command.impl;
 
-import by.itechart.logic.entity.Contact;
 import by.itechart.logic.exception.ServiceException;
 import by.itechart.logic.service.FacadeService;
 import by.itechart.logic.service.impl.FacadeServiceImpl;
@@ -14,34 +13,33 @@ import java.io.IOException;
 
 import static by.itechart.web.command.ConstantMessages.*;
 
-public class FindByIdContactCommand implements Command {
+public class DownloadAttachmentCommand implements Command {
 
     private FacadeService facadeService = new FacadeServiceImpl();
-    private Gson gson = new Gson();
-
+    private final Gson gson = new Gson();
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         final String contactId = req.getParameter(CONTACT_ID_PARAMETER);
+        final String attachmentId = req.getParameter(ATTACHMENT_ID_PARAMETER);
 
-        if (!ParameterValidator.contactIdValidate(contactId)) {
+
+        if (!ParameterValidator.contactIdValidate(contactId) || !ParameterValidator.attachmentIdValidate(attachmentId)) {
             resp.setStatus(resp.SC_BAD_REQUEST);
             resp.getWriter().write(gson.toJson(ID_INCORRECT));
             return;
         }
 
         try {
-            final Contact contact = facadeService.findContactById(Long.parseLong(contactId));
+            final String attachmentFile = facadeService.findAttachmentFile(Long.parseLong(contactId), Long.parseLong(attachmentId));
 
-            if (contact == null) {
-                resp.setStatus(resp.SC_BAD_REQUEST);
-                resp.getWriter().write(gson.toJson(CONTACT_NOT_FOUND));
+            if (attachmentFile != null) {
+                resp.getWriter().write(gson.toJson(attachmentFile));
             } else {
-                resp.getWriter().write(gson.toJson(contact));
-                resp.setStatus(resp.SC_OK);
+                resp.setStatus(resp.SC_BAD_REQUEST);
+                resp.getWriter().write(gson.toJson(ATTACHMENT_NOT_FOUND));
             }
-
 
         } catch (ServiceException e) {
             resp.setStatus(resp.SC_INTERNAL_SERVER_ERROR);

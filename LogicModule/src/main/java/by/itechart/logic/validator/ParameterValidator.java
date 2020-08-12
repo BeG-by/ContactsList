@@ -8,8 +8,12 @@ public class ParameterValidator {
     }
 
 
-    public static boolean contactIdValidate(String contactId) {
-        return contactId != null && contactId.matches("\\d+");
+    public static boolean contactIdValidate(String id) {
+        return id != null && id.matches("\\d+") && Long.parseLong(id) > 0;
+    }
+
+    public static boolean attachmentIdValidate(String id) {
+        return id != null && id.matches("-?\\d+");
     }
 
 }

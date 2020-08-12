@@ -52,6 +52,8 @@ document.getElementById("update-att-btn").addEventListener("click", function () 
     }
 });
 
+document.getElementById("download-att-btn").addEventListener("click", downloadAttachment);
+
 document.getElementById("logo").addEventListener("click", function () {
     location.reload();
 });
