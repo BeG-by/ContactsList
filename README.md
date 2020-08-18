@@ -1,6 +1,7 @@
 # Contacts List
 Project for iTechArt's internship with multiple modules: business logic and web module.<br/>
-According to the project technical requirement, no modern framework (Spring, React, Angular etc.) can be used
+According to the project technical requirement, no modern framework (Spring, React, Angular etc.) can be used.<br/>
+Work period: 6 July 2020 - 12 August 2020
 
 ### Getting Started
 1) Set url, username, password for connection to database ( `LogicModule/src/main/resources/db.properties`)
@@ -19,5 +20,5 @@ According to the project technical requirement, no modern framework (Spring, Rea
 
 ### Technology Stack
 * **Frontend:** JavaScript (ECMAscript 5), HTML5/CSS3, Bootstrap 4.5 CSS
-* **Backend:** Java 13, Servlets, JDBC, REST API, Apache libraries, Quartz-scheduler, Java Mail API, FreeMarker Template, Maven, Apache Tomcat
+* **Backend:** Java 13, Servlets, JDBC, REST API, Slf4j (Logback), Apache libraries, Quartz-scheduler, Java Mail API, FreeMarker Template, Maven, Apache Tomcat
 * **Database:** MySQL

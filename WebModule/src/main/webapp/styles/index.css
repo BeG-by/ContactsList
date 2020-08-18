@@ -27,12 +27,10 @@ html, body {
 }
 
 .content-container {
-    /*flex-grow: 1;*/
     display: flex; /*IE*/
     flex-direction: column; /*IE*/
     min-height: 100%;
     flex-basis: 80%;
-    /*flex-shrink: 0;*/
 }
 
 aside {
@@ -137,6 +135,47 @@ nav {
 
 .delete-window {
     opacity: 0;
+}
+
+.window-main-att,
+.window-main-email,
+.window-main-filter,
+.window-main-phone {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(109, 150, 240, 0.3);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    overflow: hidden;
+    transition: all 0.6s ease;
+}
+
+.window-form-att,
+.window-email,
+.window-filter,
+.window-form-phone {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    width: 25%;
+    border: 1px solid #007bff;
+    border-radius: 30px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    overflow: auto;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex; /*IE*/
+    flex-direction: column; /*IE*/
+    transition: all 0.6s ease;
+
 }
 
 
